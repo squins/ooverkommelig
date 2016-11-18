@@ -1,11 +1,3 @@
-group 'org.ooverkommelig'
-version '1-SNAPSHOT'
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.2'
-    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
-}
-
 buildscript {
     ext.kotlinVersion = '1.0.5-2'
     repositories {
@@ -17,7 +9,19 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'kotlin'
+
+group 'org.ooverkommelig'
+version '1-SNAPSHOT'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
 
 repositories {
     jcenter()
@@ -37,4 +41,34 @@ dependencies {
 
     testCompile libraries.junit
     testCompile libraries.kotlin_test
+}
+
+if (project.hasProperty(bintrayUser) && project.hasProperty(bintrayKey)) {
+    publishing {
+        publications {
+            releasePublication(MavenPublication) {
+                from components.kotlin
+                groupId project.group
+                artifactId 'ooverkommelig'
+                version project.version
+            }
+        }
+    }
+
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+        publications = ['releasePublication']
+        pkg {
+            repo = 'maven'
+            name = 'ooverkommelig'
+            userOrg = 'squins'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/squins/ooverkommelig.git'
+            version {
+                name = project.version
+                vcsTag = "release-${project.version}"
+            }
+        }
+    }
 }
