@@ -14,6 +14,7 @@ plugins {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
 
 group 'org.ooverkommelig'
 version '1-SNAPSHOT'
@@ -43,11 +44,11 @@ dependencies {
     testCompile libraries.kotlin_test
 }
 
-if (project.hasProperty(bintrayUser) && project.hasProperty(bintrayKey)) {
+if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
     publishing {
         publications {
             releasePublication(MavenPublication) {
-                from components.kotlin
+                from components.java
                 groupId project.group
                 artifactId 'ooverkommelig'
                 version project.version
