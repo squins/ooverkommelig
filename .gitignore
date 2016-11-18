@@ -1,0 +1,14 @@
+.gradle
+build/
+gradle.properties
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+.idea/gradle.xml
+.idea/kannotator.xml
+.idea/libraries/Gradle_*.xml
+.idea/tasks.xml
+.idea/workspace.xml
+
+annotations/

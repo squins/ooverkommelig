@@ -1,0 +1,40 @@
+group 'org.ooverkommelig'
+version '1-SNAPSHOT'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+buildscript {
+    ext.kotlinVersion = '1.0.5-2'
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+ext {
+    libraries = [
+        junit: "junit:junit:4.12",
+        kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+        kotlin_test: "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+    ]
+}
+
+dependencies {
+    compile libraries.kotlin_stdlib
+
+    testCompile libraries.junit
+    testCompile libraries.kotlin_test
+}
