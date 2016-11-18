@@ -47,11 +47,12 @@ dependencies {
 if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
     publishing {
         publications {
-            releasePublication(MavenPublication) {
-                from components.java
+            Release(MavenPublication) {
                 groupId project.group
-                artifactId 'ooverkommelig'
+                artifactId project.name
                 version project.version
+
+                from components.java
             }
         }
     }
@@ -59,11 +60,11 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
     bintray {
         user = bintrayUser
         key = bintrayKey
-        publications = ['releasePublication']
+        publications = ['Release']
         pkg {
-            repo = 'maven'
-            name = 'ooverkommelig'
             userOrg = 'squins'
+            repo = 'Squins'
+            name = project.name
             licenses = ['MIT']
             vcsUrl = 'https://github.com/squins/ooverkommelig.git'
             version {
@@ -72,4 +73,6 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
             }
         }
     }
+
+    bintrayUpload.dependsOn jar, 'generatePomFileForReleasePublication'
 }
