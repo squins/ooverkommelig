@@ -18,29 +18,36 @@ time, mark, audio, video {
   vertical-align: baseline;
   border: 0;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
   content: none;
 }
+
 table {
   border-spacing: 0;
   border-collapse: collapse;
 }
+
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
@@ -73,9 +80,11 @@ header h2 {
   color: #aaa;
   letter-spacing: -1px;
 }
+
 #downloads {
   display: none;
 }
+
 #main_content {
   padding-top: 20px;
 }
@@ -96,6 +105,7 @@ pre {
   overflow: auto;
   border: solid 1px #ddd;
 }
+
 pre code {
   padding: 0;
 }
@@ -103,7 +113,6 @@ pre code {
 ul, ol, dl {
   margin-bottom: 20px;
 }
-
 
 /* COMMON STYLES */
 
@@ -127,7 +136,6 @@ form {
   background: #f2f2f2;
 
 }
-
 
 /* GENERAL ELEMENT TYPE STYLES */
 
@@ -223,6 +231,14 @@ footer a {
   content: '.';
 }
 
-.clearfix {display: inline-block;}
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
+.clearfix {
+  display: inline-block;
+}
+
+* html .clearfix {
+  height: 1%;
+}
+
+.clearfix {
+  display: block;
+}
