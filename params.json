@@ -1,0 +1,6 @@
+{
+  "name": "OOverkommelig",
+  "tagline": "Manageable dependency injection for Kotlin",
+  "body": "### Welcome to OOverkommelig\r\n\r\nDependency injection that is easy to read and write. Written in and for Kotlin.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
