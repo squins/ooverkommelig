@@ -93,7 +93,7 @@ header h2 {
 }
 
 #vertical-logo-line {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: calc(100% - 136px);
   background-attachment: fixed;
@@ -103,7 +103,7 @@ header h2 {
 }
 
 #logo {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-attachment: fixed;
@@ -388,6 +388,25 @@ footer a:hover {
   header {
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+
+  #container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  #vertical-logo-line {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 136px);
+    background: none;
+  }
+
+  #logo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: none;
   }
 
   #downloads {
