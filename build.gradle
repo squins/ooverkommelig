@@ -74,5 +74,5 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
         }
     }
 
-    bintrayUpload.dependsOn jar, 'generatePomFileForReleasePublication'
+    bintrayUpload.dependsOn check, jar, 'generatePomFileForReleasePublication'
 }
