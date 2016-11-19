@@ -19,8 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="OOverkommelig_main" target="1.8" />
-      <module name="OOverkommelig_test" target="1.8" />
+      <module name="ooverkommelig_main" target="1.8" />
+      <module name="ooverkommelig_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
