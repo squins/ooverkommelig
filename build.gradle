@@ -65,8 +65,12 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
             userOrg = 'squins'
             repo = 'Squins'
             name = project.name
+            desc = 'Manageable dependency injection for Kotlin'
             licenses = ['MIT']
+            websiteUrl = 'http://ooverkommelig.org'
+            issueTrackerUrl = 'https://github.com/squins/ooverkommelig/issues'
             vcsUrl = 'https://github.com/squins/ooverkommelig.git'
+            githubRepo = 'squins/ooverkommelig'
             version {
                 name = project.version
                 vcsTag = "release-${project.version}"
