@@ -5,10 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github.css" media="screen">
   <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css">
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   <title>OOverkommelig by Squins IT Solutions</title>
 </head>
 
@@ -34,6 +35,20 @@
       <p>
         Current status: <strong>alpha</strong>. API is not stable. Documentation is needed.
       </p>
+
+      <p>
+        To use OOverkommelig in you projects, add the following to your Gradle scripts:
+      </p>
+
+      <pre class="prettyprint">repositories {
+    maven {
+        url 'https://dl.bintray.com/squins/Squins'
+    }
+}
+
+dependencies {
+    compile 'org.ooverkommelig:ooverkommelig:1alpha1'
+}</pre>
     </section>
 
     <hr>
