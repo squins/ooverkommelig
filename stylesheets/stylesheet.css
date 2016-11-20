@@ -100,6 +100,7 @@ header h2 {
   background-position: left 8px bottom;
   background-image: url(../images/ooverkommelig-logo-128-vertical-line.png);
   background-repeat: repeat-y;
+  z-index: -2;
 }
 
 #logo {
@@ -110,6 +111,7 @@ header h2 {
   background-position: left 8px bottom 8px;
   background-image: url(../images/ooverkommelig-logo-128.png);
   background-repeat: no-repeat;
+  z-index: -1;
 }
 
 #container {
