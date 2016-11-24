@@ -33,7 +33,8 @@
       </p>
 
       <p>
-        Current status: <strong>alpha</strong>. Unable to wire cycles. API is not stable, amongst others: Syntax for wiring can possibly be improved. Documentation is needed.
+        Current status: <strong>alpha</strong>. Unable to wire cycles. API is not stable, amongst others: Syntax for
+        wiring can possibly be improved. Documentation is needed.
       </p>
 
       <p>
@@ -49,6 +50,147 @@
 dependencies {
     compile 'org.ooverkommelig:ooverkommelig:1alpha1'
 }</pre>
+
+      <p>
+        Here is some (very simplistic) example code to give you a taste:
+      </p>
+
+      <pre class="prettyprint">// An object graph definition is a self-contained unit consisting of multiple
+// object definitions, i.e. it can be instantiated.
+//
+// Parameters allow external configuration of the object graph. Note that
+// specifying the object definitions that need to be provided in this way is
+// simply a convention, and is not enforced by OOverkommelig.
+class ApplicationOgd(provided: Provided : ObjectGraphDefinition() {
+    // Explicit declaration of the dependencies of an object graph, so clients
+    // of the graph quickly know what they need to provide to be able to use
+    // the graph.
+    //
+    // This inherits from all "Provided" interfaces of all sub graph
+    // definitions that make up this object graph definitions, so clients are
+    // aware of all dependencies of the object graph.
+    //
+    // This may look like tightly coupling the object graph client to the sub
+    // graph definitions, but the object graph can ensure the API remains
+    // backwards compatible when the dependencies of the sub graph definitions
+    // change by adding (unused) functions of its "Provided" interface.
+    interface Provided : ApplicationSgd.Provided {
+    }
+
+    // This is "public", which is not a requirement but reduces the amount of
+    // boilerplate. In this case all dependencies have to be provided by the
+    // client of "ApplicationOgd". But it is also possible that
+    // "ApplicationOgd" provides dependencies by using multiple sub graph
+    // definitions, and using an object definition from one for the dependency
+    // of another.
+    val appSgd = add(ApplicationSgd(provided))
+
+    // By creating an instance of this class and requesting one or more
+    // objects, the defined object will actually be created. Note that
+    // OOverkommelig also allows for specifying eagerly created objects that
+    // will be created once a graph instance is created.
+    //
+    // The graph instance implements "Closeable", which enables clean-up of
+    // objects in the graph. When you only need a graph for a single operation
+    // you can use the following code. This ensures that all objects are
+    // disposed of once the operation finished:
+    //     ApplicationOgd(object : ApplicationOgd.Provided { ... })
+    //             .Graph().use { graph ->
+    //                  graph.someService().doYourThing()
+    //             }
+    //
+    // In cases where you need the graph for multiple operations, you create
+    // and store it. When it is no longer needed, you dispose of it.
+    inner class Graph : DefinitionObjectGraph() {
+        fun someService() = req(appSgd.someService)
+    }
+}
+
+// A sub graph definition is not self-contained, i.e. it is intended to be
+// used in one or more object graphs. The object graph must provide the
+// dependencies for the sub graphs it uses, either by using object definitions
+// of other sub graphs or by requiring the object graph client to provide
+// them.
+//
+// Sub graph definitions are the reusable pieces of objects and wiring that
+// can be used in multiple contexts. For example:
+// - The object definitions that are the same for both Android and iOS apps.
+// - Infrastructure objects that are the same for all applications that you
+//   build.
+class ApplicationSgd(provided: Provided) : SubGraphDefinition() {
+    interface Provided {
+        // Functions instead of values are used to reduce the boilerplate in
+        // more complex situations.
+        fun logDirectory(): Definition&lt;File&gt;
+    }
+
+    // This is a very simple object definition as it only specifies the
+    // creation lambda. OOverkommelig also support wiring (allowing object
+    // cycles to be created), initialization and disposal.
+    //
+    // The creation lambda of this object will be invoked only once
+    // ("Singleton"), and its result will be returned to any other object
+    // needing the log file. OOverkommelig supports a range of object
+    // definitions: constant, singleton, factory, parameterized singleton,
+    // parameterized factory, aspect singleton and aspect factory.
+    //
+    // Again: The values are public to reduce the amount of boilerplate, but
+    // this is not a requirement.
+    //
+    // "req(...)" indicates that the dependency is required. OOverkommelig
+    // also supports optional dependencies using "opt(...)".
+    //
+    // The object definitions allow enormous flexibility: You can use all
+    // language constructs and all APIs to determine what should be
+    // constructed, how it should be configured, etc. You can do much more
+    // than shown in this simplistic example.
+    val logFile by Singleton { File(req(provided.logDirectory()), "log.txt") }
+
+    val log by Singleton { Log(req(logFile)) }
+
+    val someService by Singleton { SomeService(req(log))) }
+}</pre>
+
+      <p>
+        Some of the big advantages of OOverkommelig compared to other dependency injection containers are:
+      </p>
+
+      <ul>
+        <li>
+          <p>
+            The ability to quickly navigate to the definition of a dependency.
+          </p>
+        </li>
+        <li>
+          <p>
+            The ability to quickly navigate from a dependency to its usages.
+          </p>
+        </li>
+        <li>
+          <p>
+            Compile-time check for graph completeness, i.e. compile errors if you reference a dependency that is not
+            defined.
+          </p>
+        </li>
+        <li>
+          <p>
+            Compile-time check of type correctness, i.e. you cannot use an object definition for another type for a
+            dependency.
+          </p>
+        </li>
+        <li>
+          <p>
+            Compile-time check of required dependencies, i.e. you cannot use an optional object definition for a
+            required dependency.
+          </p>
+        </li>
+        <li>
+          <p>
+            Compile-time check of unused dependencies, i.e. your IDE will mark object definitions that are not used by
+            other object definitions.
+          </p>
+        </li>
+      </ul>
     </section>
 
     <hr>
