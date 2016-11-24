@@ -61,7 +61,7 @@ dependencies {
 // Parameters allow external configuration of the object graph. Note that
 // specifying the object definitions that need to be provided in this way is
 // simply a convention, and is not enforced by OOverkommelig.
-class ApplicationOgd(provided: Provided : ObjectGraphDefinition() {
+class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
     // Explicit declaration of the dependencies of an object graph, so clients
     // of the graph quickly know what they need to provide to be able to use
     // the graph.
