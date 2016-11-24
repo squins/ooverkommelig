@@ -73,7 +73,7 @@ class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
     // This may look like tightly coupling the object graph client to the sub
     // graph definitions, but the object graph can ensure the API remains
     // backwards compatible when the dependencies of the sub graph definitions
-    // change by adding (unused) functions of its "Provided" interface.
+    // change by adding (unused) functions to its "Provided" interface.
     interface Provided : ApplicationSgd.Provided {
     }
 
