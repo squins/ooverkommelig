@@ -5,9 +5,16 @@ import org.ooverkommelig.opt
 import java.util.Stack
 
 internal class InitializedObjectGraphState : FollowingObjectGraphState {
+    private val ROOT_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = {
+        wireObjectInWiringContext()
+        initializeObjectsInInitializationContext()
+    }
+    private val WIRING_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = { wireObjects() }
+    private val INITIALIZATION_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = { wireObjectInWiringContext() }
+
     private lateinit var graph: ObjectGraphImpl
     private val definitionsOfObjectsBeingCreatedStack = Stack<DefinitionAndArgument<*>>()
-
+    private var contextObjectSetupFunctionStack = mutableListOf(ROOT_OBJECT_SETUP_FUNCTION)
     private val objectsToBeWired = mutableListOf<ArgumentBoundDefinitionAndObject<*>>()
 
 
@@ -46,11 +53,8 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) {
         addObjectIfCreated(definition, argument, createdObject)
-        // The set-up has to be done before the definition is popped to prevent the set-up from being run again when
-        // new objects are created during the set-up of the current objects. The set-up of newly created objects will be
-        // handled by the current set-up.
-        runSetUpOfCreatedObjectsIfRootCreation()
         definitionsOfObjectsBeingCreatedStack.pop()
+        runSetUpOfCreatedObjectsIfRootCreation()
     }
 
     private fun <TObject> addObjectIfCreated(definition: ObjectCreatingDefinition<TObject>, argument: Any?, obj: TObject?) {
@@ -64,33 +68,40 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
     }
 
     private fun runSetUpOfCreatedObjectsIfRootCreation() {
-        if (isRootCreation()) {
+        if (wasRootCreation()) {
             runSetUpOfCreatedObjects()
         }
     }
 
     private fun runSetUpOfCreatedObjects() {
-        while (hasNotFinishedSetUpOfAllObjects()) {
-            wireObjects()
-            setUpObjects(graph.objectsToBeInitialized, ArgumentBoundDefinitionAndObject<*>::init)
-        }
+        contextObjectSetupFunctionStack.last().invoke(this)
     }
 
-    private fun hasNotFinishedSetUpOfAllObjects() = !graph.objectsToBeInitialized.isEmpty()
+    private fun wireObjectInWiringContext() {
+        runInContext(WIRING_OBJECT_SETUP_FUNCTION) { wireObjects() }
+    }
 
     private fun wireObjects() {
-        while (!objectsToBeWired.isEmpty()) {
+        while (objectsToBeWired.isNotEmpty()) {
             objectsToBeWired.removeAt(0).wire()
         }
     }
 
-    private fun setUpObjects(objectsToSetUp: MutableList<ArgumentBoundDefinitionAndObject<*>>, setUpFunction: (ArgumentBoundDefinitionAndObject<*>) -> Unit) {
-        while (haveNoObjectsBeenCreatedDuringSetUpAfterWiring() && !objectsToSetUp.isEmpty()) {
-            setUpFunction(objectsToSetUp.removeAt(0))
+    private fun initializeObjectsInInitializationContext() {
+        runInContext(INITIALIZATION_OBJECT_SETUP_FUNCTION) { initializeObjects() }
+    }
+
+    private fun initializeObjects() {
+        while (graph.objectsToBeInitialized.isNotEmpty()) {
+            graph.objectsToBeInitialized.removeAt(0).init()
         }
     }
 
-    private fun haveNoObjectsBeenCreatedDuringSetUpAfterWiring() = objectsToBeWired.isEmpty()
+    private fun runInContext(objectSetupFunction: InitializedObjectGraphState.() -> Unit, block: () -> Unit) {
+        contextObjectSetupFunctionStack.add(objectSetupFunction)
+        block()
+        contextObjectSetupFunctionStack.removeAt(contextObjectSetupFunctionStack.size - 1)
+    }
 
     override fun creationFailed() {
         definitionsOfObjectsBeingCreatedStack.pop()
@@ -99,8 +110,6 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
             graph.transition(DisposingObjectGraphState())
         }
     }
-
-    private fun isRootCreation() = definitionsOfObjectsBeingCreatedStack.size == 1
 
     private fun wasRootCreation() = definitionsOfObjectsBeingCreatedStack.isEmpty()
 

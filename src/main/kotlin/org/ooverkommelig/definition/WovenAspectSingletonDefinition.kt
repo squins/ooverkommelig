@@ -13,7 +13,7 @@ internal class WovenAspectSingletonDefinition<TInterface>(
 
     override val type = "singleton"
 
-    private val value by lazy { handleCreation { createProxyIfWrappedAvailable() } }
+    private val valueCreator = SingletonCreator(this, { createProxyIfWrappedAvailable() })
 
-    override fun get() = value
+    override fun get() = valueCreator.getOrCreate()
 }

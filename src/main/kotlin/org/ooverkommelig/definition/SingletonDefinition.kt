@@ -11,9 +11,9 @@ internal class SingletonDefinition<TObject>(
         Definition<TObject>(),
         ObjectCreatingDefinition<TObject> {
 
-    private val value by lazy { handleCreation { delegate.create() } }
+    private val valueCreator = SingletonCreator(this, { delegate.create() })
 
-    override fun get() = value
+    override fun get() = valueCreator.getOrCreate()
 
     override fun toString() = "Singleton definition $name"
 }

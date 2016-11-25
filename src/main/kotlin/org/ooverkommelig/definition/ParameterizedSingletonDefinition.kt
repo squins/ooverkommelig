@@ -9,17 +9,17 @@ internal class ParameterizedSingletonDefinition<TObject, in TParameter>(
         override val delegate: ParameterizedSingleton<TObject, TParameter>) :
         ParameterizedDefinition<TObject, TParameter>(),
         ObjectCreatingDefinition<TObject> {
-    private val values = mutableMapOf<TParameter, Lazy<TObject>>()
+    private val valueCreators = mutableMapOf<TParameter, SingletonCreator<TObject>>()
 
     override val type = "singleton"
 
     override fun create(argument: TParameter): TObject {
-        return (values[argument] ?: createLazy(argument)).value
+        return (valueCreators[argument] ?: createCreator(argument)).getOrCreate()
     }
 
-    private fun createLazy(argument: TParameter): Lazy<TObject> {
-        val result = lazy { handleCreation(argument) { delegate.create(argument) } }
-        values[argument] = result
+    private fun createCreator(argument: TParameter): SingletonCreator<TObject> {
+        val result = SingletonCreator(this, { delegate.create(argument) })
+        valueCreators[argument] = result
         return result
     }
 }
