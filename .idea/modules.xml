@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OOverkommelig.iml" filepath="$PROJECT_DIR$/.idea/modules/OOverkommelig.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OOverkommelig_main.iml" filepath="$PROJECT_DIR$/.idea/modules/OOverkommelig_main.iml" group="ooverkommelig" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OOverkommelig_test.iml" filepath="$PROJECT_DIR$/.idea/modules/OOverkommelig_test.iml" group="ooverkommelig" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ooverkommelig.iml" filepath="$PROJECT_DIR$/.idea/modules/ooverkommelig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ooverkommelig_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ooverkommelig_main.iml" group="ooverkommelig" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ooverkommelig_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ooverkommelig_test.iml" group="ooverkommelig" />
     </modules>
   </component>
 </project>
