@@ -10,7 +10,7 @@ internal interface ObjectCreatingDefinition<TObject> {
     fun handleCreation(argument: Any? = null, creator: () -> TObject) = owner.handleCreation(this, argument, creator)
 
     fun wire(obj: TObject) {
-        delegate.wiringFunction(WiringContextImpl(obj))
+        delegate.wiringFunction(obj)
     }
 
     fun init(obj: TObject) {

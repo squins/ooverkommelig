@@ -1,11 +1,11 @@
 package org.ooverkommelig.definition
 
 abstract class ObjectCreatingDefinitionDelegate<out TDefinition, TObject> : DefinitionDelegate<TDefinition>() {
-    internal var wiringFunction: WiringContext<TObject>.() -> Unit = {}
+    internal var wiringFunction: (TObject) -> Unit = {}
     internal var initializationFunction: (TObject) -> Unit = {}
     internal var disposalFunction: (TObject) -> Unit = {}
 
-    fun wire(wire: WiringContext<TObject>.() -> Unit): ObjectCreatingDefinitionDelegate<TDefinition, TObject> {
+    fun wire(wire: (TObject) -> Unit): ObjectCreatingDefinitionDelegate<TDefinition, TObject> {
         wiringFunction = wire
         return this
     }
