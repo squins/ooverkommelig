@@ -4,21 +4,13 @@ import org.ooverkommelig.Definition
 
 abstract class AspectDelegate<TInterface> : ObjectCreatingDefinitionDelegate<AspectDefinition<TInterface>, TInterface>() {
     internal abstract val create: (Class<TInterface>, Definition<TInterface>) -> TInterface
-    internal var beforeInvocationFunction: (Any) -> Boolean = { true }
+    internal var validateInvocationFunction: (Any) -> Unit = { }
     internal var afterSuccessFunction: (Any) -> Unit = { }
     internal var afterExceptionFunction: (Any) -> Unit = { }
     internal var afterInvocationFunction: (Any) -> Unit = { }
 
-    fun before(before: (Any) -> Unit): AspectDelegate<TInterface> {
-        beforeInvocationFunction = { wrapped ->
-            before(wrapped)
-            true
-        }
-        return this
-    }
-
-    fun beforeGate(beforeGate: (Any) -> Boolean): AspectDelegate<TInterface> {
-        beforeInvocationFunction = beforeGate
+    fun before(validate: (Any) -> Unit): AspectDelegate<TInterface> {
+        validateInvocationFunction = validate
         return this
     }
 

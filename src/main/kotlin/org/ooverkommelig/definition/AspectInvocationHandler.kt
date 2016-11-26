@@ -38,15 +38,9 @@ internal class AspectInvocationHandler<TInterface>(
     }
 
     private fun invokeInterfaceFunctionIfAspectApproves(method: Method, arguments: Array<out Any?>): Any? {
-        val result: Any?
+        delegate.validateInvocationFunction(wrapped)
 
-        if (delegate.beforeInvocationFunction(wrapped)) {
-            result = invoke(method, arguments)
-        } else {
-            result = null
-        }
-
-        return result
+        return invoke(method, arguments)
     }
 
     private fun invoke(method: Method, arguments: Array<out Any?>): Any? {
