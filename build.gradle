@@ -44,6 +44,15 @@ dependencies {
     testCompile libraries.kotlin_test
 }
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.kotlin.srcDirs
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
     publishing {
         publications {
@@ -61,6 +70,7 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
         user = bintrayUser
         key = bintrayKey
         publications = ['Release']
+        configurations = ['archives']
         pkg {
             userOrg = 'squins'
             repo = 'Squins'
@@ -78,5 +88,5 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
         }
     }
 
-    bintrayUpload.dependsOn check, jar, 'generatePomFileForReleasePublication'
+    bintrayUpload.dependsOn check, jar, sourcesJar, 'generatePomFileForReleasePublication'
 }
