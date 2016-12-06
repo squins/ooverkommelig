@@ -27,7 +27,7 @@ internal class DisposingObjectGraphState : FollowingObjectGraphState {
     private fun cleanUp(operation: String,
                         cleanUpFunction: (ArgumentBoundDefinitionAndObject<*>) -> Unit,
                         objectsForWhichCorrespondingSetUpStepWasNotRun: Collection<ArgumentBoundDefinitionAndObject<*>>) {
-        val objectsToCleanUp = graph.objectsInCreationOrder.toMutableList()
+        val objectsToCleanUp = graph.objectsInCreationOrder
         objectsToCleanUp.removeAll(objectsForWhichCorrespondingSetUpStepWasNotRun)
         objectsToCleanUp.reversed().forEach { objectToCleanUp: ArgumentBoundDefinitionAndObject<*> ->
             try {

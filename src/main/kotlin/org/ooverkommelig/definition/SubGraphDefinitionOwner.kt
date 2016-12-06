@@ -26,7 +26,7 @@ abstract class SubGraphDefinitionOwner {
         subGraphs.forEach(SubGraphDefinitionOwner::lockDefinition)
     }
 
-    internal open fun allObjectlessLifecycles(): List<ObjectlessLifecycle> = subGraphs.flatMap<SubGraphDefinition, ObjectlessLifecycle>(SubGraphDefinition::allObjectlessLifecycles)
+    internal open fun allObjectlessLifecycles(): List<ObjectlessLifecycle> = subGraphs.flatMap(SubGraphDefinition::allObjectlessLifecycles)
 
-    internal open fun allObjectsToCreateEagerly(): List<Definition<*>> = subGraphs.flatMap<SubGraphDefinition, Definition<*>>(SubGraphDefinition::allObjectsToCreateEagerly)
+    internal open fun allObjectsToCreateEagerly(): List<Definition<*>> = subGraphs.flatMap(SubGraphDefinition::allObjectsToCreateEagerly)
 }
