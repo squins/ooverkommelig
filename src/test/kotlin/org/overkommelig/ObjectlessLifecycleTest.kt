@@ -302,7 +302,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun errorIsLoggedIfDisposeFails() {
-        class DisposeFailureSpy : ObjectGraphLogger {
+        class DisposeFailureWasErrorLoggedSpy : ObjectGraphLogger {
             var wasErrorLogged = false
 
             override fun errorDuringCleanUp(sourceObject: Any, operation: String, exception: Exception) {
@@ -310,7 +310,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        val disposeFailureSpy = DisposeFailureSpy()
+        val disposeFailureSpy = DisposeFailureWasErrorLoggedSpy()
 
         class ErrorIsLoggedIfDisposeFailsTestSgd : SubGraphDefinition() {
             init {
@@ -332,7 +332,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun sourceObjectIsObjectlessLifecycleIfDisposeFails() {
-        class DisposeFailureSpy : ObjectGraphLogger {
+        class DisposeFailureSourceSpy : ObjectGraphLogger {
             var sourceObject: Any? = null
 
             override fun errorDuringCleanUp(sourceObject: Any, operation: String, exception: Exception) {
@@ -340,21 +340,21 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        val disposeFailureSpy = DisposeFailureSpy()
+        val disposeFailureSpy = DisposeFailureSourceSpy()
 
-        class ErrorIsLoggedIfDisposeFailsTestSgd : SubGraphDefinition() {
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
-        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
-            val sgd = add(ErrorIsLoggedIfDisposeFailsTestSgd())
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+            val sgd = add(SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
         }
 
-        val ogd = ErrorIsLoggedIfDisposeFailsTestOgd()
+        val ogd = SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd()
         ogd.Graph().use {}
 
         Assert.assertEquals(ObjectlessLifecycle::class.java, disposeFailureSpy.sourceObject?.javaClass)
@@ -362,7 +362,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun operationIsDisposeIfDisposeFails() {
-        class DisposeFailureSpy : ObjectGraphLogger {
+        class DisposeFailureOperationSpy : ObjectGraphLogger {
             var operation: String? = null
 
             override fun errorDuringCleanUp(sourceObject: Any, operation: String, exception: Exception) {
@@ -370,21 +370,21 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        val disposeFailureSpy = DisposeFailureSpy()
+        val disposeFailureSpy = DisposeFailureOperationSpy()
 
-        class ErrorIsLoggedIfDisposeFailsTestSgd : SubGraphDefinition() {
+        class OperationIsDisposeIfDisposeFailsestSgd : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
-        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
-            val sgd = add(ErrorIsLoggedIfDisposeFailsTestSgd())
+        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+            val sgd = add(OperationIsDisposeIfDisposeFailsestSgd())
 
             inner class Graph : DefinitionObjectGraph()
         }
 
-        val ogd = ErrorIsLoggedIfDisposeFailsTestOgd()
+        val ogd = OperationIsDisposeIfDisposeFailsTestOgd()
         ogd.Graph().use {}
 
         assertEquals("dispose", disposeFailureSpy.operation)
@@ -392,7 +392,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun exceptionIsNullIfDisposeFails() {
-        class DisposeFailureSpy : ObjectGraphLogger {
+        class DisposeFailureExceptionSpy : ObjectGraphLogger {
             var exception: Exception? = null
 
             override fun errorDuringCleanUp(sourceObject: Any, operation: String, exception: Exception) {
@@ -400,24 +400,24 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        val disposeFailureSpy = DisposeFailureSpy()
+        val disposeFailureSpy = DisposeFailureExceptionSpy()
         val exception = Exception()
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ErrorIsLoggedIfDisposeFailsTestSgd(private val exception: Exception) : SubGraphDefinition() {
+        class ExceptionIsNullIfDisposeFailsTestSgd(private val exception: Exception) : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw this.exception })
             }
         }
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ErrorIsLoggedIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
-            val sgd = add(ErrorIsLoggedIfDisposeFailsTestSgd(exception))
+        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+            val sgd = add(ExceptionIsNullIfDisposeFailsTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()
         }
 
-        val ogd = ErrorIsLoggedIfDisposeFailsTestOgd(exception)
+        val ogd = ExceptionIsNullIfDisposeFailsTestOgd(exception)
         ogd.Graph().use {}
 
         assertSame(exception, disposeFailureSpy.exception)
