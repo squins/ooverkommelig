@@ -12,7 +12,10 @@ internal class DisposedObjectGraphState : FollowingObjectGraphState {
 
     override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) = throw UnsupportedOperationException("Cannot create objects while disposed.")
 
-    override fun creationFailed() = throw UnsupportedOperationException("Cannot create objects while disposed.")
+    override fun creationFailed() {
+        // No action needed. This can happen when requesting an object fails
+        // in a lifecycle method other than the creation method.
+    }
 
     override fun logCleanUpError(sourceObject: Any, operation: String, exception: Exception) = throw UnsupportedOperationException("Cannot clean up sub graphs and objects while disposed.")
 
