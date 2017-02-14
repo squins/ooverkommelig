@@ -47,7 +47,7 @@
 }
 
 dependencies {
-    compile 'org.ooverkommelig:ooverkommelig:1alpha6'
+    compile 'org.ooverkommelig:ooverkommelig:1alpha8'
 }</pre>
 
       <p>
@@ -57,10 +57,8 @@ dependencies {
       <pre class="prettyprint">// An object graph definition is a self-contained unit consisting of multiple
 // object definitions, i.e. it can be instantiated.
 //
-// Parameters allow external configuration of the object graph. Note that
-// specifying the object definitions that need to be provided in this way is
-// simply a convention, and is not enforced by OOverkommelig.
-class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
+// Parameters allow external configuration of the object graph.
+class ApplicationOgd(provided: Provided) : ObjectGraphDefinition(provided) {
     // Explicit declaration of the dependencies of an object graph, so clients
     // of the graph quickly know what they need to provide to be able to use
     // the graph.
@@ -93,7 +91,7 @@ class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
     // objects in the graph. When you only need a graph for a single operation
     // you can use the following code. This ensures that all objects are
     // disposed of once the operation finished:
-    //     ApplicationOgd(object : ApplicationOgd.Provided { ... })
+    //     ApplicationOgd(object : ApplicationOgd.Provided, ProvidedAdministration { ... })
     //             .Graph().use { graph ->
     //                  graph.someService().doYourThing()
     //             }
@@ -116,8 +114,8 @@ class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
 // - The object definitions that are the same for both Android and iOS apps.
 // - Infrastructure objects that are the same for all applications that you
 //   build.
-class ApplicationSgd(provided: Provided) : SubGraphDefinition() {
-    interface Provided {
+class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
+    interface Provided : ProvidedBase {
         // Functions instead of values are used to reduce the boilerplate in
         // more complex situations.
         fun logDirectory(): Definition&lt;File&gt;
@@ -147,7 +145,7 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition() {
 
     val log by Singleton { Log(req(logFile)) }
 
-    val someService by Singleton { SomeService(req(log))) }
+    val someService by Singleton { SomeService(req(log)) }
 }</pre>
 
       <p>
