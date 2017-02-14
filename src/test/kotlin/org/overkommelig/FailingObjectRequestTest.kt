@@ -2,6 +2,7 @@ package org.overkommelig
 
 import org.junit.Assert.assertSame
 import org.junit.Test
+import org.ooverkommelig.NothingProvidedAdministration
 import org.ooverkommelig.ObjectGraphDefinition
 import org.ooverkommelig.Singleton
 import org.ooverkommelig.SubGraphDefinition
@@ -11,7 +12,7 @@ class FailingObjectRequestTest {
     @Test
     fun objectRequestFailureInWireResultsInOriginalExceptionBeingThrown() {
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) : SubGraphDefinition() {
+        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) : SubGraphDefinition(NothingProvidedAdministration) {
             val definitionRequestingFailingDefinitionInWire by Singleton { SOME_OBJECT }
                     .wire { req(failingDefinition) }
 
@@ -22,7 +23,7 @@ class FailingObjectRequestTest {
             override fun objectsToCreateEagerly() = listOf(definitionRequestingFailingDefinitionInWire)
         }
 
-        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestOgd(exception: Exception) : ObjectGraphDefinition() {
+        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestOgd(exception: Exception) : ObjectGraphDefinition(NothingProvidedAdministration) {
             val main: ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd = add(ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()

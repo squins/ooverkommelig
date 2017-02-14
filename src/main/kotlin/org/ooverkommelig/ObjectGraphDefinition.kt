@@ -4,7 +4,7 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.SubGraphDefinitionOwner
 import org.ooverkommelig.graph.ObjectGraphImpl
 
-abstract class ObjectGraphDefinition(provided: ProvidedBase = NothingProvidedAdministration, private val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : SubGraphDefinitionOwner() {
+abstract class ObjectGraphDefinition(provided: ProvidedBase, private val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : SubGraphDefinitionOwner() {
     private var objectGraphImplementation: ObjectGraphImpl? = null
 
     init {

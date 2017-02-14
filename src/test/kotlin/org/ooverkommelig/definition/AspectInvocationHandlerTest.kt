@@ -3,7 +3,12 @@ package org.ooverkommelig.definition
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.ooverkommelig.*
+import org.ooverkommelig.AspectSingleton
+import org.ooverkommelig.NothingProvidedAdministration
+import org.ooverkommelig.ObjectGraphDefinition
+import org.ooverkommelig.Singleton
+import org.ooverkommelig.SubGraphDefinition
+import org.ooverkommelig.req
 import java.io.Closeable
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
@@ -87,7 +92,7 @@ class AspectInvocationHandlerTest {
             Proxy.newProxyInstance(interfaceClass.classLoader, arrayOf(interfaceClass), invocationHandler) as TInterface
 }
 
-private class AspectInvocationHandlerTestSgd : SubGraphDefinition() {
+private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
     val runnable by Singleton { Runnable { } }
 
     val anotherRunnable by Singleton { Runnable { } }
@@ -99,7 +104,7 @@ private class AspectInvocationHandlerTestSgd : SubGraphDefinition() {
     val aspectWrappedAnotherRunnable by Singleton { req(aspect.weave(anotherRunnable)) }
 }
 
-private class AspectInvocationHandlerTestOgd : ObjectGraphDefinition() {
+private class AspectInvocationHandlerTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
     val aspectInvocationHandlerTestSgd = add(AspectInvocationHandlerTestSgd())
 
     inner class Graph : DefinitionObjectGraph() {

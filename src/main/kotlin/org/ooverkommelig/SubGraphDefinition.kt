@@ -4,7 +4,7 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.ObjectlessLifecycle
 import org.ooverkommelig.definition.SubGraphDefinitionOwner
 
-abstract class SubGraphDefinition(provided: ProvidedBase = NothingProvidedAdministration) : SubGraphDefinitionOwner() {
+abstract class SubGraphDefinition(provided: ProvidedBase) : SubGraphDefinitionOwner() {
     private val objectlessLifecycles = mutableListOf<ObjectlessLifecycle>()
 
     private var owner: SubGraphDefinitionOwner? = null
