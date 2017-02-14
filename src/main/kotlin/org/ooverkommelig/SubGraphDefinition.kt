@@ -4,10 +4,14 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.ObjectlessLifecycle
 import org.ooverkommelig.definition.SubGraphDefinitionOwner
 
-abstract class SubGraphDefinition : SubGraphDefinitionOwner() {
+abstract class SubGraphDefinition(provided: ProvidedBase = NothingProvidedAdministration) : SubGraphDefinitionOwner() {
     private val objectlessLifecycles = mutableListOf<ObjectlessLifecycle>()
 
     private var owner: SubGraphDefinitionOwner? = null
+
+    init {
+        provided.setOwner(this)
+    }
 
     internal fun setOwner(newOwner: SubGraphDefinitionOwner) {
         check(owner == null, { "Tried to set the owner multiple times." })

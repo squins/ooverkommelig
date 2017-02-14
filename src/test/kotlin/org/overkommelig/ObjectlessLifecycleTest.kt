@@ -3,6 +3,7 @@ package org.overkommelig
 import org.junit.Assert
 import org.junit.Assert.assertSame
 import org.junit.Test
+import org.ooverkommelig.NothingProvidedAdministration
 import org.ooverkommelig.ObjectGraphConfiguration
 import org.ooverkommelig.ObjectGraphDefinition
 import org.ooverkommelig.ObjectGraphLogger
@@ -318,7 +319,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(ErrorIsLoggedIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -348,7 +349,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -378,7 +379,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(OperationIsDisposeIfDisposeFailsestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -411,7 +412,7 @@ class ObjectlessLifecycleTest {
         }
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(ExceptionIsNullIfDisposeFailsTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()
