@@ -1,6 +1,6 @@
 package org.ooverkommelig
 
-abstract class SingleUseObjectFactory<out TObject : Any>(objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : ObjectGraphDefinition(NothingProvidedAdministration, objectGraphConfiguration) {
+abstract class SingleUseObjectFactory<out TObject : Any>(provided: ProvidedBase, objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : ObjectGraphDefinition(provided, objectGraphConfiguration) {
     fun <TResult> createAndUse(block: (TObject) -> TResult) {
         Graph().use { graph ->
             block(graph.getObject())
