@@ -19,14 +19,16 @@ Multiple implementations of `ReportSender` are created in `TypesSgd`. Note that 
 * `compoundReportSender`
 * `outgoingReportLoggingSender`
 
-Again, finding out which object definition is used where is easy. For example: Starting at the definition for `mainRunnable` you can easily navigate the chain of `ReportSender` implementations by first going to the declaration of `outgoingReportLoggingSender`, and then continuing from there. As graphs become more complex and define dozens or hundreds of object, the ability to go to the definition of a dependency (and the reverse: finding usages of an object definition) becomes very important for understanding the graph that will be constructed.
+The type of `notifyingReportSender` is `Definition<NotifyingReportSender`.
+
+Again, finding out which object definition is used where is easy. For example: Starting at the definition for `mainRunnable` you can easily navigate the chain of `ReportSender` implementations by first going to the declaration of `notifyingReportSender`, and then continuing from there. As graphs become more complex and define dozens or hundreds of objects, the ability to go to the definition of a dependency (and the reverse: finding usages of an object definition) becomes very important for quickly understanding the graph that will be constructed.
 
 ## Implicit Casts
 
-The definition of `notifyingReportSender` shows that only one definition is needed, no matter as what type the object is used. In the wiring of `outgoingReportLoggingSender`, `notifyingReportSender` is used as `NotifyingReportSender`, and in the creation of `mainRunnable` the same object definition is used as `ReportSender`.
+The definition of `notifyingReportSender` shows that only one definition is needed, even if the definition needs to be used for dependencies with different types. In the wiring of `outgoingReportLoggingSender`, `notifyingReportSender` is used as `NotifyingReportSender`, and in the creation of `mainRunnable` the same object definition is used as `ReportSender`.
 
 This may seem logical, but with some type-based containers you have to add a definition for each type as which an object is used. For example (pseudo code):
  
-     fun notifyingReportSneder() = NotifyingReportSender()
+     fun notifyingReportSender() = NotifyingReportSender()
       
      fun notifyingReportSenderAsReportSender(nrs: NotifyingReportSender): ReportSender = nrs
