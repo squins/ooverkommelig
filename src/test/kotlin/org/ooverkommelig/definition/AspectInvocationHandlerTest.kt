@@ -20,7 +20,7 @@ class AspectInvocationHandlerTest {
 
     private val RUNNABLE_CLASS = Runnable::class.java
 
-    private val NO_OPERATION_INVOCATION_HANDLER = InvocationHandler { proxy, method, arguments -> }
+    private val NO_OPERATION_INVOCATION_HANDLER = InvocationHandler { _, _, _ -> }
 
     private lateinit var graph: AspectInvocationHandlerTestOgd.Graph
 
@@ -97,7 +97,7 @@ private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvide
 
     val anotherRunnable by Singleton { Runnable { } }
 
-    val aspect by AspectSingleton<Any> { interfaceClass, definition -> req(definition) }
+    val aspect by AspectSingleton<Any> { _, definition -> req(definition) }
 
     val aspectWrappedRunnable by Singleton { req(aspect.weave(runnable)) }
 

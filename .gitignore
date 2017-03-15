@@ -6,6 +6,7 @@ gradle-app.setting
 .gradletasknamecache
 
 .idea/gradle.xml
+.idea/dictionaries/*.xml
 .idea/kannotator.xml
 .idea/libraries/Gradle_*.xml
 .idea/tasks.xml

@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = '1.0.6'
+    ext.kotlinVersion = '1.1.1'
     repositories {
         jcenter()
         mavenCentral()
@@ -20,7 +20,7 @@ group 'org.ooverkommelig'
 version '1-SNAPSHOT'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '3.4.1'
     distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
 }
 
@@ -32,16 +32,30 @@ repositories {
 ext {
     libraries = [
         junit: "junit:junit:4.12",
+        kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
         kotlin_test: "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
     ]
 }
 
 dependencies {
+    compile libraries.kotlin_reflect
     compile libraries.kotlin_stdlib
 
     testCompile libraries.junit
     testCompile libraries.kotlin_test
+}
+
+kotlin {
+    experimental {
+        coroutines 'error'
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.6'
+    }
 }
 
 task sourcesJar(type: Jar) {

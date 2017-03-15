@@ -10,6 +10,18 @@ dependencies {
     compile rootProject
 }
 
+kotlin {
+    experimental {
+        coroutines 'error'
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.6'
+    }
+}
+
 task runDaggerSimple(dependsOn: classes, type: JavaExec) {
     main = 'org.ooverkommelig.examples.dagger.simple.CoffeeApp'
     classpath = sourceSets.main.runtimeClasspath
