@@ -11,7 +11,7 @@ internal class SingletonDefinition<TObject>(
         Definition<TObject>(),
         ObjectCreatingDefinition<TObject> {
 
-    private val valueCreator = SingletonCreator(this, { delegate.create() })
+    private val valueCreator = SingletonCreator(this, null, { delegate.create() })
 
     override fun get() = valueCreator.getOrCreate()
 

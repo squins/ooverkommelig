@@ -18,7 +18,7 @@ internal class ParameterizedSingletonDefinition<TObject, in TParameter>(
     }
 
     private fun createCreator(argument: TParameter): SingletonCreator<TObject> {
-        val result = SingletonCreator(this, { delegate.create(argument) })
+        val result = SingletonCreator(this, argument, { delegate.create(argument) })
         valueCreators[argument] = result
         return result
     }
