@@ -1,3 +1,3 @@
 package org.ooverkommelig
 
-class DefinitionCriteria<TObject>(val objectType: TypeReference<TObject>, val mustReturnSameObjectForAllRetrievals: Boolean = false)
+class DefinitionCriteria<TObject>(val objectType: ObjectType<TObject>, val mustReturnSameObjectForAllRetrievals: Boolean = false)
