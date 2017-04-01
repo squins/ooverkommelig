@@ -1,8 +1,31 @@
 package org.ooverkommelig
 
-import kotlin.reflect.KProperty
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+import java.lang.reflect.WildcardType
+import kotlin.reflect.KType
+import kotlin.reflect.KTypeProjection
+import kotlin.reflect.KVariance
+import kotlin.reflect.full.createType
 
-object ObjectType {
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): Nothing =
-            throw IllegalStateException("Cannot get a value used to specify an object type for definition criteria.")
+// http://stackoverflow.com/questions/36253310/how-to-get-actual-type-arguments-of-a-reified-generic-parameter-in-kotlin
+inline fun <reified TType : Any> t() = object : TypeReference<TType>() {}
+
+abstract class TypeReference<TType> {
+    val kotlinType = toKotlinType((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0])
+
+    override fun toString() = kotlinType.toString()
+}
+
+private fun toKotlinType(javaType: Type, typeArguments: List<KType> = emptyList()): KType {
+    return when (javaType) {
+        is Class<*> ->
+            javaType.kotlin.createType(typeArguments.map { KTypeProjection(KVariance.INVARIANT, it) })
+        is ParameterizedType ->
+            toKotlinType(javaType.rawType, javaType.actualTypeArguments.map { toKotlinType(it) })
+        is WildcardType ->
+            toKotlinType(javaType.upperBounds[0], typeArguments)
+        else ->
+            throw IllegalArgumentException("Cannot convert Java type: $javaType")
+    }
 }
