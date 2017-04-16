@@ -33,13 +33,14 @@ internal class ObjectGraphImpl(
         state.creationStarted(definition, argument)
         try {
             result = creator()
-            state.creationEnded(definition, argument, result)
-
-            ranPostProcessorsIfObjectCreated(result, definition, argument)
         } catch (exception: Exception) {
             state.creationFailed()
             throw exception
         }
+
+        state.creationEnded(definition, argument, result)
+
+        ranPostProcessorsIfObjectCreated(result, definition, argument)
 
         return result
     }
