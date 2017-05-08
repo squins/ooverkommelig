@@ -48,7 +48,7 @@ abstract class SubGraphDefinition(provided: ProvidedBase) : SubGraphDefinitionOw
 
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
             super.transitiveRetrievableDefinitions(criteria) + definitionProperties.filter { candidateDefinitionProperty ->
-                candidateDefinitionProperty.type.isSubtypeOf(criteria.objectType.kotlinType)
+                candidateDefinitionProperty.type.isSubtypeOf(criteria.objectType.asKType())
                         && (!criteria.mustReturnSameObjectForAllRetrievals
                         || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
             }.map { definitionProperty ->

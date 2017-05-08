@@ -13,7 +13,7 @@ abstract class SubGraphDefinitionOwner {
     open fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>): Collection<Definition<TObject>> =
             subGraphs.flatMap { subGraph -> subGraph.transitiveRetrievableDefinitions(criteria) }
 
-    internal val name = javaClass.name
+    internal val name = this::class.qualifiedName ?: this::class.simpleName ?: "?"
 
     internal abstract val objectGraphDefinition: ObjectGraphDefinition
 

@@ -358,7 +358,7 @@ class ObjectlessLifecycleTest {
         val ogd = SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd()
         ogd.Graph().use {}
 
-        Assert.assertEquals(ObjectlessLifecycle::class.java, disposeFailureSpy.sourceObject?.javaClass)
+        Assert.assertEquals(ObjectlessLifecycle::class, disposeFailureSpy.sourceObject?.let { it::class })
     }
 
     @Test
