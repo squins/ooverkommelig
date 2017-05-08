@@ -2,7 +2,6 @@ package org.ooverkommelig.graph
 
 import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.opt
-import java.util.Stack
 
 internal class InitializedObjectGraphState : FollowingObjectGraphState {
     private val ROOT_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = {
@@ -13,7 +12,7 @@ internal class InitializedObjectGraphState : FollowingObjectGraphState {
     private val INITIALIZATION_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = { wireObjectInWiringContext() }
 
     private lateinit var graph: ObjectGraphImpl
-    private val definitionsOfObjectsBeingCreatedStack = Stack<DefinitionAndArgument<*>>()
+    private val definitionsOfObjectsBeingCreatedStack = mutableListOf<DefinitionAndArgument<*>>()
     private var contextObjectSetupFunctionStack = mutableListOf(ROOT_OBJECT_SETUP_FUNCTION)
     private val objectsToBeWired = mutableListOf<ArgumentBoundDefinitionAndObject<*>>()
 
@@ -33,7 +32,7 @@ internal class InitializedObjectGraphState : FollowingObjectGraphState {
     override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) {
         check(!wouldFormACycle(definition, argument), { getCycleDetectedMessage(definition, argument) })
 
-        definitionsOfObjectsBeingCreatedStack.push(DefinitionAndArgument(definition, argument))
+        definitionsOfObjectsBeingCreatedStack.add(DefinitionAndArgument(definition, argument))
     }
 
     private fun wouldFormACycle(definition: ObjectCreatingDefinition<*>, argument: Any?) =
@@ -53,7 +52,7 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) {
         addObjectIfCreated(definition, argument, createdObject)
-        definitionsOfObjectsBeingCreatedStack.pop()
+        definitionsOfObjectsBeingCreatedStack.removeLast()
         runSetUpOfCreatedObjectsIfRootCreation()
     }
 
@@ -100,11 +99,11 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
     private fun runInContext(objectSetupFunction: InitializedObjectGraphState.() -> Unit, block: () -> Unit) {
         contextObjectSetupFunctionStack.add(objectSetupFunction)
         block()
-        contextObjectSetupFunctionStack.removeAt(contextObjectSetupFunctionStack.size - 1)
+        contextObjectSetupFunctionStack.removeLast()
     }
 
     override fun creationFailed() {
-        definitionsOfObjectsBeingCreatedStack.pop()
+        definitionsOfObjectsBeingCreatedStack.removeLast()
         // TODO: Document why this needs to be done after popping
         if (wasRootCreation()) {
             graph.transition(DisposingObjectGraphState())
@@ -117,5 +116,11 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     override fun dispose() {
         graph.transition(DisposingObjectGraphState())
+    }
+
+    companion object {
+        private fun MutableList<*>.removeLast() {
+            removeAt(lastIndex)
+        }
     }
 }
