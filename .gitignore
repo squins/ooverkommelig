@@ -9,6 +9,7 @@ gradle-app.setting
 .idea/dictionaries/*.xml
 .idea/kannotator.xml
 .idea/libraries/Gradle_*.xml
+.idea/sonarlint/
 .idea/tasks.xml
 .idea/workspace.xml
 
