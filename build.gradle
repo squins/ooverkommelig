@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlinVersion = '1.1.2-4'
+    ext.kotlinPluginVersion = '1.1.2-2'
     repositories {
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinPluginVersion"
     }
 }
 
@@ -13,7 +13,7 @@ plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
 
-apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'maven-publish'
 
 group 'org.ooverkommelig'
@@ -30,6 +30,7 @@ repositories {
 }
 
 ext {
+    kotlinVersion = '1.1.2-4'
     libraries = [
         junit: "junit:junit:4.12",
         kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
