@@ -30,7 +30,6 @@ repositories {
 }
 
 ext {
-    kotlinVersion = '1.1.2-4'
     libraries = [
         junit: "junit:junit:4.12",
         kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
