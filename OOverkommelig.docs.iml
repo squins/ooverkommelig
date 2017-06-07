@@ -6,5 +6,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="run_prettify" level="application" />
+    <orderEntry type="library" name="run_prettify" level="application" />
   </component>
 </module>
