@@ -5,12 +5,7 @@ gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 
-.idea/gradle.xml
-.idea/dictionaries/*.xml
-.idea/kannotator.xml
-.idea/libraries/Gradle_*.xml
-.idea/sonarlint/
-.idea/tasks.xml
-.idea/workspace.xml
+.idea/
+*.iml
 
 annotations/
