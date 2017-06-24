@@ -33,13 +33,27 @@ internal class ObjectGraphImpl(
         state.creationStarted(definition, argument)
         try {
             result = creator()
-            state.creationEnded(definition, argument, result)
         } catch (exception: Exception) {
             state.creationFailed()
             throw exception
         }
 
+        state.creationEnded(definition, argument, result)
+
+        ranPostProcessorsIfObjectCreated(result, definition, argument)
+
         return result
+    }
+
+    private fun <TObject> ranPostProcessorsIfObjectCreated(optionalCreatedObject: TObject?, definition: ObjectCreatingDefinition<TObject>, argument: Any?) {
+        if (optionalCreatedObject != null) {
+            ranPostProcessors(optionalCreatedObject as Any, definition, argument)
+        }
+    }
+
+    private fun <TObject> ranPostProcessors(createdObject: Any, definition: ObjectCreatingDefinition<TObject>, argument: Any?) {
+        val name = DefinitionAndArgument(definition, argument).fullyQualifiedName()
+        configuration.objectPostProcessors.forEach { processor -> processor.process(name, createdObject) }
     }
 
     override fun dispose() {

@@ -1,13 +1,14 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.SubGraphDefinition
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class DefinitionDelegate<out TDefinition> {
+abstract class DefinitionDelegate<out TDefinition> : ReadOnlyProperty<SubGraphDefinition, TDefinition> {
     private var definition: TDefinition? = null
 
-    operator fun getValue(owner: SubGraphDefinition, property: KProperty<*>): TDefinition {
-        val currentDefinition = definition ?: createDefinition(owner, "${owner.name}#${property.name}")
+    override operator fun getValue(thisRef: SubGraphDefinition, property: KProperty<*>): TDefinition {
+        val currentDefinition = definition ?: createDefinition(thisRef, "${thisRef.name}#${property.name}")
         definition = currentDefinition
         return currentDefinition
     }

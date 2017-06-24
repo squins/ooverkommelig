@@ -1,12 +1,14 @@
 package org.ooverkommelig
 
+import kotlin.reflect.KClass
+
 interface ProvidedBase {
-    val owners: MutableMap<Class<*>, Any>
+    val owners: MutableMap<KClass<*>, Any>
 
     fun setOwner(owner: Any) {
-        owners[owner.javaClass] = owner
+        owners[owner::class] = owner
     }
 }
 
 inline fun <reified TOwner : Any> ProvidedBase.owner() =
-        owners[TOwner::class.java] as? TOwner ?: throw IllegalStateException("Owner has not been initialized.")
+        owners[TOwner::class] as? TOwner ?: throw IllegalStateException("Owner has not been initialized.")

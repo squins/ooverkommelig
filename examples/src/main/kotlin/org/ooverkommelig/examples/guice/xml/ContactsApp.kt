@@ -18,15 +18,12 @@ package org.ooverkommelig.examples.guice.xml
 
 import org.ooverkommelig.ProvidedAdministration
 
-object Main {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        PhoneFlashMemoryContactsOgd(object : PhoneFlashMemoryContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
-            println(graph.phone().contacts.findByName("John Doe"))
-        }
+fun main(args: Array<String>) {
+    PhoneFlashMemoryContactsOgd(object : PhoneFlashMemoryContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
+        println(graph.phone().contacts.findByName("John Doe"))
+    }
 
-        PhoneSimCardContactsOgd(object : PhoneSimCardContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
-            println(graph.phone().contacts.findByName("Jane Doe"))
-        }
+    PhoneSimCardContactsOgd(object : PhoneSimCardContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
+        println(graph.phone().contacts.findByName("Jane Doe"))
     }
 }

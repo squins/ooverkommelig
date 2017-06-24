@@ -1,6 +1,7 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.Definition
+import org.ooverkommelig.DefinitionCriteria
 import org.ooverkommelig.ObjectGraphDefinition
 import org.ooverkommelig.SubGraphDefinition
 
@@ -9,7 +10,10 @@ abstract class SubGraphDefinitionOwner {
 
     private var isLocked = false
 
-    internal val name = javaClass.name
+    open fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>): Collection<Definition<TObject>> =
+            subGraphs.flatMap { subGraph -> subGraph.transitiveRetrievableDefinitions(criteria) }
+
+    internal val name = this::class.qualifiedName ?: this::class.simpleName ?: "?"
 
     internal abstract val objectGraphDefinition: ObjectGraphDefinition
 

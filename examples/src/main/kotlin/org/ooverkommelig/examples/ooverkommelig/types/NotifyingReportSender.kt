@@ -6,9 +6,11 @@ class NotifyingReportSender : ReportSender {
     fun addListener(listener: ReportSender) {
         listeners += listener
     }
+
     override fun send(report: String) {
         listeners.forEach { listener ->
-            println("Notifying: ${listener.javaClass.name}")
-            listener.send(report) }
+            println("Notifying: ${listener::class}")
+            listener.send(report)
+        }
     }
 }
