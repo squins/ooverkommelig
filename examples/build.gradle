@@ -7,7 +7,7 @@ repositories {
 
 dependencies {
     compile libraries.kotlin_stdlib
-    compile rootProject
+    compile project(':jvm')
 }
 
 kotlin {

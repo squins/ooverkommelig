@@ -1,0 +1,12 @@
+apply plugin: 'kotlin-platform-common'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile libraries.kotlin_reflect
+    compile libraries.kotlin_stdlib_common
+    testCompile libraries.kotlin_test_common
+}
