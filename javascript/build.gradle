@@ -1,4 +1,11 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'kotlin-platform-js'
+apply plugin: 'maven-publish'
+
+archivesBaseName = 'ooverkommelig-javascript'
 
 repositories {
     jcenter()
@@ -10,3 +17,20 @@ dependencies {
     compile libraries.kotlin_stdlib_js
     testCompile libraries.kotlin_test_js
 }
+
+kotlin {
+    experimental {
+        coroutines 'error'
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.kotlin
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+apply from: rootProject.file('bintray-common.gradle')
