@@ -11,7 +11,8 @@ buildscript {
 
 allprojects {
     group 'org.ooverkommelig'
-version '1-SNAPSHOT'
+    version '1-SNAPSHOT'
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.0'
