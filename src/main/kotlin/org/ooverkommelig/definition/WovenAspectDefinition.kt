@@ -15,6 +15,7 @@ internal abstract class WovenAspectDefinition<TInterface> :
 
     internal abstract val wrappedDefinition: Definition<TInterface>
 
+    @Suppress("UNCHECKED_CAST")
     internal fun createProxyIfWrappedAvailable() = (delegate.create(interfaceClass, wrappedDefinition)?.let { wrapped -> createProxy(wrapped as Any) }) as TInterface
 
     @Suppress("UNCHECKED_CAST")
