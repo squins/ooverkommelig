@@ -61,6 +61,7 @@ task copyTestCompileLibrariesToQunitReportDir {
 
 task copyTestHtmlToQunitReportDir(type: Copy) {
     from file('src/test/html')
+    inputs.property("qunitVersion", qunitVersion)
     into "${buildDir}/reports/tests/qunit/html"
     filter(ReplaceTokens, tokens: [qunitVersion: qunitVersion])
 }
