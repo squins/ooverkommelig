@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
@@ -34,3 +36,33 @@ artifacts {
 }
 
 apply from: rootProject.file('bintray-common.gradle')
+
+task copyTestCompileLibrariesToQunitReportDir {
+    def outputDirectoryPath = "${buildDir}/reports/tests/qunit/lib"
+    inputs.files configurations.testCompile
+    outputs.files file(outputDirectoryPath)
+
+    doLast {
+        configurations.testCompile.each { File file ->
+            copy {
+                includeEmptyDirs = false
+
+                from zipTree(file.absolutePath)
+                into outputDirectoryPath
+                include { fileTreeElement ->
+                    def path = fileTreeElement.path
+                    path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+                }
+            }
+        }
+    }
+
+}
+
+task copyTestHtmlToQunitReportDir(type: Copy) {
+    from file('src/test/html')
+    into "${buildDir}/reports/tests/qunit/html"
+    filter(ReplaceTokens, tokens: [qunitVersion: qunitVersion])
+}
+
+test.dependsOn copyTestCompileLibrariesToQunitReportDir, copyTestHtmlToQunitReportDir

@@ -20,6 +20,7 @@ task wrapper(type: Wrapper) {
 }
 
 ext {
+    qunitVersion = '2.3.3'
     libraries = [
         junit: "junit:junit:4.12",
         kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
