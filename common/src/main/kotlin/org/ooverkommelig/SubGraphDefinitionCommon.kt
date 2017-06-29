@@ -1,6 +1,5 @@
 package org.ooverkommelig
 
-import org.ooverkommelig.definition.DefinitionProperty
 import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.ObjectlessLifecycle
 import org.ooverkommelig.definition.SubGraphDefinitionOwner
@@ -8,8 +7,6 @@ import org.ooverkommelig.definition.SubGraphDefinitionOwnerCommon
 import kotlin.reflect.KProperty
 
 abstract class SubGraphDefinitionCommon(provided: ProvidedBase) : SubGraphDefinitionOwner() {
-    internal val definitionProperties = mutableListOf<DefinitionProperty>()
-
     private val objectlessLifecycles = mutableListOf<ObjectlessLifecycle>()
 
     private var owner: SubGraphDefinitionOwnerCommon? = null
@@ -41,10 +38,7 @@ abstract class SubGraphDefinitionCommon(provided: ProvidedBase) : SubGraphDefini
 
     override fun allObjectsToCreateEagerly() = super.allObjectsToCreateEagerly() + objectsToCreateEagerly()
 
-    internal fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {
-        @Suppress("UNCHECKED_CAST")
-        definitionProperties += DefinitionProperty(property as KProperty<Definition<*>>, returnsSameObjectForAllRetrievals)
-    }
+    abstract internal fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean)
 
     internal fun <TObject> handleCreation(definition: ObjectCreatingDefinition<TObject>, argument: Any?, creator: () -> TObject) =
             objectGraphDefinition.handleCreation(definition, argument, creator)
