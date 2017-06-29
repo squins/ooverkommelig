@@ -23,13 +23,44 @@ compileKotlin {
 }
 
 task runDaggerSimple(dependsOn: classes, type: JavaExec) {
-    main = 'org.ooverkommelig.examples.dagger.simple.CoffeeApp'
+    group = 'Execution'
+    description = 'Runs the port of the "simple" example of Dagger.'
+    main = 'org.ooverkommelig.examples.dagger.simple.CoffeeAppKt'
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
 }
 
 task runGuicexml(dependsOn: classes, type: JavaExec) {
-    main = 'org.ooverkommelig.examples.guice.xml.Main'
+    group = 'Execution'
+    description = 'Runs the port of the XML example of Guice.'
+    main = 'org.ooverkommelig.examples.guice.xml.ContactsAppKt'
     classpath = sourceSets.main.runtimeClasspath
     ignoreExitValue(true)
+}
+
+task runOoverkommeligCycles {
+    group = 'Execution'
+    description = 'Runs cycles example.'
+    doLast {
+        println 'This example uses standard input, which is not available when running from Gradle. Please run the example from your IDE.'
+    }
+}
+
+task runOoverkommeligLifecycle(dependsOn: classes, type: JavaExec) {
+    group = 'Execution'
+    description = 'Runs lifecycle example.'
+    main = 'org.ooverkommelig.examples.ooverkommelig.lifecycle.LifecycleAppKt'
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
+}
+
+task runOoverkommeligTypes(dependsOn: classes, type: JavaExec) {
+    group = 'Execution'
+    description = 'Runs types example.'
+    main = 'org.ooverkommelig.examples.ooverkommelig.types.TypesAppKt'
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
+    doFirst {
+        println 'NOTE: This will (try to) open a dialog window. Gradle will hang until this dialog is closed.'
+    }
 }
