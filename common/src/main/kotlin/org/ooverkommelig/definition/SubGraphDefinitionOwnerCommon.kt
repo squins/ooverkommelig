@@ -9,7 +9,7 @@ abstract class SubGraphDefinitionOwnerCommon {
 
     private var isLocked = false
 
-    internal val name = fullyQualifiedName ?: this::class.simpleName ?: "?"
+    val name = fullyQualifiedName ?: this::class.simpleName ?: "?"
     
     internal abstract val fullyQualifiedName: String?
 
