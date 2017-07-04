@@ -1,12 +1,7 @@
-package org.overkommelig
+package org.ooverkommelig
 
 import org.junit.Assert.assertSame
 import org.junit.Test
-import org.ooverkommelig.NothingProvidedAdministration
-import org.ooverkommelig.ObjectGraphDefinition
-import org.ooverkommelig.Singleton
-import org.ooverkommelig.SubGraphDefinition
-import org.ooverkommelig.req
 
 class FailingObjectRequestTest {
     @Test

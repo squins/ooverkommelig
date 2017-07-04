@@ -1,4 +1,4 @@
-package org.overkommelig
+package org.ooverkommelig
 
 import org.junit.Assert
 import org.junit.Assert.assertSame
