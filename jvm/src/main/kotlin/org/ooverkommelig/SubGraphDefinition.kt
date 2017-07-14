@@ -1,24 +1,23 @@
 package org.ooverkommelig
 
-import org.ooverkommelig.definition.DefinitionProperty
 import kotlin.reflect.KProperty
-import kotlin.reflect.full.isSubtypeOf
 
-impl abstract class SubGraphDefinition(provided: ProvidedBase) : SubGraphDefinitionCommon(provided) {
-    private val definitionProperties = mutableListOf<DefinitionProperty>()
+impl abstract class SubGraphDefinition(
+        provided: ProvidedBase,
+        val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration())
+    : SubGraphDefinitionCommon(provided) {
+    private val retrievableDefintions: RetrievableDefinitions
+
+    constructor(provided: ProvidedBase) : this(provided, ObjectGraphConfiguration())
+
+    init {
+        retrievableDefintions = objectGraphConfiguration.retrievableDefinitionsFactory.create()
+    }
 
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
-            super.transitiveRetrievableDefinitions(criteria) + definitionProperties.filter { candidateDefinitionProperty ->
-                candidateDefinitionProperty.type.isSubtypeOf(criteria.objectType.asKType())
-                        && (!criteria.mustReturnSameObjectForAllRetrievals
-                        || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
-            }.map { definitionProperty ->
-                @Suppress("UNCHECKED_CAST")
-                definitionProperty.property.getter.call(this) as Definition<TObject>
-            }
+            super.transitiveRetrievableDefinitions(criteria) + retrievableDefintions.transitiveRetrievableDefinitions(criteria)
 
     override fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {
-        @Suppress("UNCHECKED_CAST")
-        definitionProperties += DefinitionProperty(property as KProperty<Definition<*>>, returnsSameObjectForAllRetrievals)
+        retrievableDefintions.addDefinitionProperty(property, returnsSameObjectForAllRetrievals)
     }
 }
