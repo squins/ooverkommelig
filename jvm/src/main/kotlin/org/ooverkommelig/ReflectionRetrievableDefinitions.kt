@@ -4,7 +4,7 @@ import org.ooverkommelig.definition.DefinitionProperty
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.isSubtypeOf
 
-class ReflectionRetrievableDefinitions : RetrievableDefinitions {
+class ReflectionRetrievableDefinitions(private val owner: SubGraphDefinition) : RetrievableDefinitions {
     private val definitionProperties = mutableListOf<DefinitionProperty>()
 
     override fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {
@@ -19,6 +19,6 @@ class ReflectionRetrievableDefinitions : RetrievableDefinitions {
                         || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
             }.map { definitionProperty ->
                 @Suppress("UNCHECKED_CAST")
-                definitionProperty.property.getter.call(this) as Definition<TObject>
+                definitionProperty.property.getter.call(owner) as Definition<TObject>
             }
 }

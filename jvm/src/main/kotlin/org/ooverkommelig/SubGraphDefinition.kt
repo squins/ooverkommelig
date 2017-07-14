@@ -11,7 +11,7 @@ impl abstract class SubGraphDefinition(
     constructor(provided: ProvidedBase) : this(provided, ObjectGraphConfiguration())
 
     init {
-        retrievableDefintions = objectGraphConfiguration.retrievableDefinitionsFactory.create()
+        retrievableDefintions = objectGraphConfiguration.retrievableDefinitionsFactory.create(this)
     }
 
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =

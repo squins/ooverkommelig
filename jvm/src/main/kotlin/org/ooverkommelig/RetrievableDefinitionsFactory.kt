@@ -1,5 +1,5 @@
 package org.ooverkommelig
 
 interface RetrievableDefinitionsFactory {
-    fun create(): RetrievableDefinitions
+    fun create(owner: SubGraphDefinition): RetrievableDefinitions
 }
