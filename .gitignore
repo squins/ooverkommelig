@@ -9,3 +9,6 @@ gradle-app.setting
 *.iml
 
 annotations/
+
+javascript/node_modules
+javascript/npm-debug.log

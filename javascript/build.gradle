@@ -1,11 +1,10 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
 
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'maven-publish'
+apply plugin: 'com.moowork.node'
 
 archivesBaseName = 'ooverkommelig-javascript'
 
@@ -20,11 +19,48 @@ dependencies {
     testCompile libraries.kotlin_test_js
 }
 
+[compileKotlin2Js, compileTestKotlin2Js]*.configure {
+    kotlinOptions.moduleKind = "umd"
+}
+
+compileKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+}
+
 kotlin {
     experimental {
         coroutines 'error'
     }
 }
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+    from compileKotlin2Js.destinationDir
+
+    configurations.testCompile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+
+    into "${buildDir}/node_modules"
+}
+
+node {
+    download = true
+}
+
+task installQunit(type: NpmTask) {
+    inputs.property('qunitjsVersion', qunitjsVersion)
+    outputs.dir file('node_modules/qunitjs')
+    
+    args = ['install', "qunitjs@${qunitjsVersion}"]
+}
+
+task runQunit(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installQunit]) {
+    script = file('node_modules/qunitjs/bin/qunit')
+    args = [projectDir.toPath().relativize(file(compileTestKotlin2Js.outputFile).toPath())]
+}
+
+test.dependsOn runQunit
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.kotlin
@@ -36,34 +72,3 @@ artifacts {
 }
 
 apply from: rootProject.file('bintray-common.gradle')
-
-task copyTestCompileLibrariesToQunitReportDir {
-    def outputDirectoryPath = "${buildDir}/reports/tests/qunit/lib"
-    inputs.files configurations.testCompile
-    outputs.files file(outputDirectoryPath)
-
-    doLast {
-        configurations.testCompile.each { File file ->
-            copy {
-                includeEmptyDirs = false
-
-                from zipTree(file.absolutePath)
-                into outputDirectoryPath
-                include { fileTreeElement ->
-                    def path = fileTreeElement.path
-                    path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
-                }
-            }
-        }
-    }
-
-}
-
-task copyTestHtmlToQunitReportDir(type: Copy) {
-    from file('src/test/html')
-    inputs.property("qunitVersion", qunitVersion)
-    into "${buildDir}/reports/tests/qunit/html"
-    filter(ReplaceTokens, tokens: [qunitVersion: qunitVersion])
-}
-
-test.dependsOn copyTestCompileLibrariesToQunitReportDir, copyTestHtmlToQunitReportDir
