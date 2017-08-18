@@ -14,7 +14,7 @@ class ReflectionRetrievableDefinitions(private val owner: SubGraphDefinition) : 
 
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
             definitionProperties.filter { candidateDefinitionProperty ->
-                candidateDefinitionProperty.type.isSubtypeOf(criteria.objectType.asKType())
+                candidateDefinitionProperty.type.isSubtypeOf(criteria.getType())
                         && (!criteria.mustReturnSameObjectForAllRetrievals
                         || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
             }.map { definitionProperty ->

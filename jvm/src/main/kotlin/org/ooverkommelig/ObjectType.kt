@@ -1,7 +1,9 @@
 package org.ooverkommelig
 
-interface ObjectType<TType> {
-    fun asKType() = this::class.supertypes[0].arguments[0].type ?: throw IllegalStateException("Unable to determine the type.")
-}
+import kotlin.reflect.jvm.reflect
 
-typealias t<TType> = ObjectType<TType>
+@Suppress("CAST_NEVER_SUCCEEDS", "UNCHECKED_CAST")
+fun <T> t() = null as T
+
+fun <T> (() -> T).asKType() =
+    reflect()?.returnType ?: throw IllegalStateException()
