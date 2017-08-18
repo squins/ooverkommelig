@@ -19,7 +19,7 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
         pkg {
             userOrg = 'squins'
             repo = 'Squins'
-            name = project.archivesBaseName
+            name = 'ooverkommelig'
             desc = 'Manageable dependency injection for Kotlin'
             licenses = ['MIT']
             websiteUrl = 'http://ooverkommelig.org'
