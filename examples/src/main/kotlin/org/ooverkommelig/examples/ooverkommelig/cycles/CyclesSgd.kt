@@ -1,6 +1,6 @@
 package org.ooverkommelig.examples.ooverkommelig.cycles
 
-import org.ooverkommelig.Definition
+import org.ooverkommelig.D
 import org.ooverkommelig.Once
 import org.ooverkommelig.ProvidedBase
 import org.ooverkommelig.SubGraphDefinition
@@ -9,7 +9,7 @@ import org.ooverkommelig.req
 class CyclesSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase
 
-    val mainMenu: Definition<MainMenu> by Once { MainMenu() }
+    val mainMenu: D<MainMenu> by Once { MainMenu() }
             .wire {
                 it.eatStep = req(eatMenu)
                 it.drinkStep = req(drinkMenu)
