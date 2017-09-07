@@ -3,10 +3,10 @@ package org.ooverkommelig.definition
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.ooverkommelig.AspectSingleton
+import org.ooverkommelig.AspectOnce
 import org.ooverkommelig.NothingProvidedAdministration
 import org.ooverkommelig.ObjectGraphDefinition
-import org.ooverkommelig.Singleton
+import org.ooverkommelig.Once
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 import java.io.Closeable
@@ -93,15 +93,15 @@ class AspectInvocationHandlerTest {
 }
 
 private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
-    val runnable by Singleton { Runnable { } }
+    val runnable by Once { Runnable { } }
 
-    val anotherRunnable by Singleton { Runnable { } }
+    val anotherRunnable by Once { Runnable { } }
 
-    val aspect by AspectSingleton<Any> { _, definition -> req(definition) }
+    val aspect by AspectOnce<Any> { _, definition -> req(definition) }
 
-    val aspectWrappedRunnable by Singleton { req(aspect.weave(runnable)) }
+    val aspectWrappedRunnable by Once { req(aspect.weave(runnable)) }
 
-    val aspectWrappedAnotherRunnable by Singleton { req(aspect.weave(anotherRunnable)) }
+    val aspectWrappedAnotherRunnable by Once { req(aspect.weave(anotherRunnable)) }
 }
 
 private class AspectInvocationHandlerTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {

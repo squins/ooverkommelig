@@ -1,10 +1,6 @@
 package org.ooverkommelig
 
-import org.ooverkommelig.definition.ObjectCreatingDefinitionDelegate
-import org.ooverkommelig.definition.ParameterizedDefinition
-import org.ooverkommelig.definition.ParameterizedFactoryDefinition
-
-class ParameterizedFactory<TObject, in TParameter>(internal val create: (TParameter) -> TObject) :
-        ObjectCreatingDefinitionDelegate<ParameterizedDefinition<TObject, TParameter>, TObject>() {
-    override fun createDefinition(owner: SubGraphDefinition, name: String): ParameterizedDefinition<TObject, TParameter> = ParameterizedFactoryDefinition(owner, name, this)
-}
+@Deprecated(message = "Confusing term as this definition type could also result in singletons.",
+        replaceWith = ReplaceWith("ParameterizedAlways", "org.ooverkommelig.ParameterizedAlways"))
+class ParameterizedFactory<TObject, in TParameter>(create: (TParameter) -> TObject) :
+        ParameterizedAlways<TObject, TParameter>(create)

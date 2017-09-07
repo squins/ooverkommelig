@@ -1,19 +1,19 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.Definition
-import org.ooverkommelig.Singleton
+import org.ooverkommelig.Once
 import org.ooverkommelig.SubGraphDefinition
 
-internal class SingletonDefinition<TObject>(
+internal class OnceDefinition<TObject>(
         override val owner: SubGraphDefinition,
         override val name: String,
-        override val delegate: Singleton<TObject>) :
+        override val delegate: Once<TObject>) :
         Definition<TObject>(),
         ObjectCreatingDefinition<TObject> {
 
-    private val valueCreator = SingletonCreator(this, null, { delegate.create() })
+    private val valueCreator = OnceCreator(this, null, { delegate.create() })
 
     override fun get() = valueCreator.getOrCreate()
 
-    override fun toString() = "Singleton definition $name"
+    override fun toString() = "Once definition $name"
 }
