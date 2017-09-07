@@ -1,6 +1,6 @@
 package org.ooverkommelig.definition
 
-internal class SingletonCreator<out TObject>(
+internal class OnceCreator<out TObject>(
         private val definition: ObjectCreatingDefinition<TObject>,
         private val argument: Any?,
         creator: () -> TObject) {

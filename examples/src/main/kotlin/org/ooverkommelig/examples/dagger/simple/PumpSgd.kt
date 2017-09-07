@@ -1,8 +1,8 @@
 package org.ooverkommelig.examples.dagger.simple
 
 import org.ooverkommelig.Definition
+import org.ooverkommelig.Once
 import org.ooverkommelig.ProvidedBase
-import org.ooverkommelig.Singleton
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 
@@ -11,5 +11,5 @@ class PumpSgd(provided: Provided) : SubGraphDefinition(provided) {
         fun heater(): Definition<Heater>
     }
 
-    val pump by Singleton { Thermosiphon(req(provided.heater())) }
+    val pump by Once { Thermosiphon(req(provided.heater())) }
 }
