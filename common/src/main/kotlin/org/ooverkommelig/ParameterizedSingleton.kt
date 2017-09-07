@@ -1,10 +1,6 @@
 package org.ooverkommelig
 
-import org.ooverkommelig.definition.ObjectCreatingDefinitionDelegate
-import org.ooverkommelig.definition.ParameterizedDefinition
-import org.ooverkommelig.definition.ParameterizedSingletonDefinition
-
-class ParameterizedSingleton<TObject, in TParameter>(internal val create: (TParameter) -> TObject) :
-        ObjectCreatingDefinitionDelegate<ParameterizedDefinition<TObject, TParameter>, TObject>() {
-    override fun createDefinition(owner: SubGraphDefinition, name: String): ParameterizedDefinition<TObject, TParameter> = ParameterizedSingletonDefinition(owner, name, this)
-}
+@Deprecated(message = "Confusing term as singletons can also be created using other definition types.",
+        replaceWith = ReplaceWith("ParameterizedOnce", "org.ooverkommelig.ParameterizedOnce"))
+class ParameterizedSingleton<TObject, in TParameter>(create: (TParameter) -> TObject) :
+        ParameterizedOnce<TObject, TParameter>(create)

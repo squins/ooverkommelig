@@ -1,7 +1,7 @@
 package org.ooverkommelig.examples.ooverkommelig.types
 
+import org.ooverkommelig.Once
 import org.ooverkommelig.ProvidedBase
-import org.ooverkommelig.Singleton
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 import javax.swing.JOptionPane
@@ -9,13 +9,13 @@ import javax.swing.JOptionPane
 class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase
 
-    val javaVendor by Singleton { System.getProperty("java.vendor") }
+    val javaVendor by Once { System.getProperty("java.vendor") }
 
-    val javaVersion by Singleton { System.getProperty("java.version") }
+    val javaVersion by Once { System.getProperty("java.version") }
 
-    val jvmReport by Singleton { "${req(javaVendor)} ${req(javaVersion)}" }
+    val jvmReport by Once { "${req(javaVendor)} ${req(javaVersion)}" }
 
-    val reportToStandardOutSender by Singleton<ReportSender> {
+    val reportToStandardOutSender by Once<ReportSender> {
         object : ReportSender {
             override fun send(report: String) {
                 println(report)
@@ -23,7 +23,7 @@ class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
         }
     }
 
-    val reportToMessageDialogSender by Singleton<ReportSender> {
+    val reportToMessageDialogSender by Once<ReportSender> {
         object : ReportSender {
             override fun send(report: String) {
                 JOptionPane.showMessageDialog(null, report)
@@ -31,7 +31,7 @@ class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
         }
     }
 
-    val compoundReportSender by Singleton<ReportSender> {
+    val compoundReportSender by Once<ReportSender> {
         object : ReportSender {
             override fun send(report: String) {
                 req(reportToStandardOutSender).send(report)
@@ -40,7 +40,7 @@ class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
         }
     }
 
-    val outgoingReportLoggingSender by Singleton<ReportSender> {
+    val outgoingReportLoggingSender by Once<ReportSender> {
         object : ReportSender {
             override fun send(report: String) {
                 println("LOG: Outgoing report: $report")
@@ -51,9 +51,9 @@ class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
         req(notifyingReportSender).addListener(it)
     }
 
-    val notifyingReportSender by Singleton { NotifyingReportSender() }
+    val notifyingReportSender by Once { NotifyingReportSender() }
 
-    val mainRunnable by Singleton { MainRunnable(req(notifyingReportSender), req(jvmReport)) }
+    val mainRunnable by Once { MainRunnable(req(notifyingReportSender), req(jvmReport)) }
 
     override fun objectsToCreateEagerly() = listOf(outgoingReportLoggingSender)
 }

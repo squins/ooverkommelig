@@ -3,7 +3,7 @@ package org.ooverkommelig.definition
 import org.ooverkommelig.Definition
 import org.ooverkommelig.SubGraphDefinition
 
-internal class WovenAspectSingletonDefinition<TInterface>(
+internal class WovenAspectAlwaysDefinition<TInterface>(
         override val owner: SubGraphDefinition,
         override val name: String,
         override val interfaceClass: Class<TInterface>,
@@ -11,9 +11,7 @@ internal class WovenAspectSingletonDefinition<TInterface>(
         override val delegate: AspectDelegate<TInterface>) :
         WovenAspectDefinition<TInterface>() {
 
-    override val type = "singleton"
+    override val type = "always"
 
-    private val valueCreator = SingletonCreator(this, null, { createProxyIfWrappedAvailable() })
-
-    override fun get() = valueCreator.getOrCreate()
+    override fun get() = handleCreation { createProxyIfWrappedAvailable() }
 }
