@@ -8,10 +8,10 @@ class FailingObjectRequestTest {
     fun objectRequestFailureInWireResultsInOriginalExceptionBeingThrown() {
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
         class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) : SubGraphDefinition(NothingProvidedAdministration) {
-            val definitionRequestingFailingDefinitionInWire by Singleton { SOME_OBJECT }
+            val definitionRequestingFailingDefinitionInWire by Once { SOME_OBJECT }
                     .wire { req(failingDefinition) }
 
-            val failingDefinition by Singleton {
+            val failingDefinition by Once {
                 throw exception
             }
 
@@ -30,7 +30,7 @@ class FailingObjectRequestTest {
         try {
             objectGraphDefinition.Graph()
             throw IllegalStateException("Expected exception to be thrown.")
-        } catch(graphCreationException: Exception) {
+        } catch (graphCreationException: Exception) {
             assertSame(exception, graphCreationException)
         }
     }
