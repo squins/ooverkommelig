@@ -47,7 +47,7 @@
 }
 
 dependencies {
-    compile 'org.ooverkommelig:ooverkommelig:1alpha13'
+    compile 'org.ooverkommelig:ooverkommelig:1alpha14'
 }</pre>
 
       <p>
@@ -58,12 +58,12 @@ dependencies {
       <ul>
         <li>
           <p>
-            <code>org.ooverkommelig:ooverkommelig-javascript:1.multiplatform-alpha4</code>
+            <code>org.ooverkommelig:ooverkommelig-javascript:1.multiplatform-alpha5</code>
           </p>
         </li>
         <li>
           <p>
-            <code>org.ooverkommelig:ooverkommelig-jvm:1.multiplatform-alpha4</code>
+            <code>org.ooverkommelig:ooverkommelig-jvm:1.multiplatform-alpha5</code>
           </p>
         </li>
       </ul>
@@ -153,6 +153,10 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase {
         // Functions instead of values are used to reduce the boilerplate in
         // more complex situations.
+        //
+        // "Definition" can occur quite a number of times in sub graph
+        // definitions. Its type alias "D" can be used to reduce the amount of
+        // boilerplate.
         fun logDirectory(): Definition&lt;File&gt;
     }
 
@@ -160,11 +164,11 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     // creation lambda. OOverkommelig also support wiring (allowing object
     // cycles to be created), initialization and disposal.
     //
-    // The creation lambda of this object will be invoked only once
-    // ("Singleton"), and its result will be returned to any other object
-    // needing the log file. OOverkommelig supports a range of object
-    // definitions: constant, singleton, factory, parameterized singleton,
-    // parameterized factory, aspect singleton and aspect factory.
+    // The creation lambda of this object will be invoked only once, and its
+    // result will be returned to any other object needing the log file.
+    // OOverkommelig supports a range of object definitions: constant, once,
+    // always, parameterized once, parameterized always, aspect once (JVM
+    // only) and aspect always (JVM only).
     //
     // Again: The values are public to reduce the amount of boilerplate, but
     // this is not a requirement.
@@ -176,11 +180,11 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     // language constructs and all APIs to determine what should be
     // constructed, how it should be configured, etc. You can do much more
     // than shown in this simplistic example.
-    val logFile by Singleton { File(req(provided.logDirectory()), "log.txt") }
+    val logFile by Once { File(req(provided.logDirectory()), "log.txt") }
 
-    val log by Singleton { Log(req(logFile)) }
+    val log by Once { Log(req(logFile)) }
 
-    val someService by Singleton { SomeService(req(log)) }
+    val someService by Once { SomeService(req(log)) }
 }</pre>
       
       <p>
