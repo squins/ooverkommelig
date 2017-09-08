@@ -2,7 +2,7 @@ package org.ooverkommelig.definition
 
 import org.ooverkommelig.Definition
 
-abstract class AspectDelegate<TInterface> : ObjectCreatingDefinitionDelegate<AspectDefinition<TInterface>, TInterface>() {
+abstract class AspectDelegate<TInterface> : ObjectCreatingDefinitionSelfProvidingDelegate<AspectDefinition<TInterface>, TInterface>() {
     internal abstract val create: (Class<TInterface>, Definition<TInterface>) -> TInterface
     internal var beforeFunction: (Any) -> Unit = { }
     internal var afterSuccessFunction: (Any) -> Unit = { }

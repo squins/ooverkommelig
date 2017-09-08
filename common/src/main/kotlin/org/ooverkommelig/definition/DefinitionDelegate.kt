@@ -7,8 +7,11 @@ import kotlin.reflect.KProperty
 abstract class DefinitionDelegate<out TDefinition> : ReadOnlyProperty<SubGraphDefinition, TDefinition> {
     private var definition: TDefinition? = null
 
-    override operator fun getValue(thisRef: SubGraphDefinition, property: KProperty<*>): TDefinition {
-        val currentDefinition = definition ?: createDefinition(thisRef, "${thisRef.name}#${property.name}")
+    override operator fun getValue(thisRef: SubGraphDefinition, property: KProperty<*>) =
+            getValue(thisRef, property.name)
+
+    internal fun getValue(owner: SubGraphDefinition, propertyName: String): TDefinition {
+        val currentDefinition = definition ?: createDefinition(owner, "${owner.name}#$propertyName")
         definition = currentDefinition
         return currentDefinition
     }

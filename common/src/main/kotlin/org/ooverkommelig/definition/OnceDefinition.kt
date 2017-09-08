@@ -1,13 +1,12 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.Definition
-import org.ooverkommelig.Once
 import org.ooverkommelig.SubGraphDefinition
 
 internal class OnceDefinition<TObject>(
         override val owner: SubGraphDefinition,
         override val name: String,
-        override val delegate: Once<TObject>) :
+        override val delegate: OnceDelegate<TObject>) :
         Definition<TObject>(),
         ObjectCreatingDefinition<TObject> {
 

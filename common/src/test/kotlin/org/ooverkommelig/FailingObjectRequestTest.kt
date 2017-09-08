@@ -9,13 +9,12 @@ class FailingObjectRequestTest {
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
         class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) : SubGraphDefinition(NothingProvidedAdministration) {
             val definitionRequestingFailingDefinitionInWire by Once { SOME_OBJECT }
+                    .eager()
                     .wire { req(failingDefinition) }
 
             val failingDefinition by Once {
                 throw exception
             }
-
-            override fun objectsToCreateEagerly() = listOf(definitionRequestingFailingDefinitionInWire)
         }
 
         class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestOgd(exception: Exception) : ObjectGraphDefinition(NothingProvidedAdministration) {

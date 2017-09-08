@@ -1,7 +1,6 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.SubGraphDefinition
-import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 abstract class ObjectCreatingDefinitionDelegate<out TDefinition, TObject> : DefinitionDelegate<TDefinition>() {
@@ -24,12 +23,7 @@ abstract class ObjectCreatingDefinitionDelegate<out TDefinition, TObject> : Defi
         return this
     }
 
-    operator fun provideDelegate(owner: SubGraphDefinition, property: KProperty<*>): ReadOnlyProperty<SubGraphDefinition, TDefinition> {
-        registerPropertyIfNeeded(owner, property)
-        return this
-    }
-
-    protected open fun registerPropertyIfNeeded(owner: SubGraphDefinition, property: KProperty<*>) {
+    internal open fun registerPropertyIfNeeded(owner: SubGraphDefinition, property: KProperty<*>) {
         // No action needed. By default the property is not registered.
     }
 }

@@ -1,10 +1,10 @@
 package org.ooverkommelig
 
 import org.ooverkommelig.definition.AlwaysDefinition
-import org.ooverkommelig.definition.ObjectCreatingDefinitionDelegate
+import org.ooverkommelig.definition.ObjectCreatingDefinitionSelfProvidingDelegate
 import kotlin.reflect.KProperty
 
-open class Always<TObject>(internal val create: () -> TObject) : ObjectCreatingDefinitionDelegate<Definition<TObject>, TObject>() {
+open class Always<TObject>(internal val create: () -> TObject) : ObjectCreatingDefinitionSelfProvidingDelegate<Definition<TObject>, TObject>() {
     override fun registerPropertyIfNeeded(owner: SubGraphDefinition, property: KProperty<*>) {
         owner.addDefinitionProperty(property, false)
     }
