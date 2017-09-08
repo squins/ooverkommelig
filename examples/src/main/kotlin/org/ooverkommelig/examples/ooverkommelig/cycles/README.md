@@ -6,4 +6,4 @@ To be able to create cycles the creation of objects is split in 2 stages: creati
 
 See the three object definitions in `TypeSgd` to see how they are wired in a cycle.
 
-The type of each least one object definition in a cycle must be declared, because the type inference of Kotlin cannot determine types when cycles without type declarations exist. See the definition of `mainMenu` in `TypesSgd`.  
+The type of at least one object definition in a cycle must be declared, because the type inference of Kotlin cannot determine types when cycles without type declarations exist. See the definition of `mainMenu` in `TypesSgd`.  
