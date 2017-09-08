@@ -47,13 +47,11 @@ class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
                 req(compoundReportSender).send(report)
             }
         }
-    }.wire {
+    }.eager().wire {
         req(notifyingReportSender).addListener(it)
     }
 
     val notifyingReportSender by Once { NotifyingReportSender() }
 
     val mainRunnable by Once { MainRunnable(req(notifyingReportSender), req(jvmReport)) }
-
-    override fun objectsToCreateEagerly() = listOf(outgoingReportLoggingSender)
 }

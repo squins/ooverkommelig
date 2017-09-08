@@ -1,0 +1,75 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+apply plugin: 'kotlin-platform-js'
+apply plugin: 'maven-publish'
+apply plugin: 'com.moowork.node'
+
+archivesBaseName = 'ooverkommelig-javascript'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implement project(':common')
+    compile libraries.kotlin_stdlib_js
+    testCompile libraries.kotlin_test_js
+}
+
+[compileKotlin2Js, compileTestKotlin2Js]*.configure {
+    kotlinOptions.moduleKind = "umd"
+}
+
+compileKotlin2Js {
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+}
+
+kotlin {
+    experimental {
+        coroutines 'error'
+    }
+}
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
+    from compileKotlin2Js.destinationDir
+
+    configurations.testCompile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+
+    into "${buildDir}/node_modules"
+}
+
+node {
+    version = nodeVersion
+    download = true
+}
+
+task installQunit(type: NpmTask) {
+    inputs.property('qunitjsVersion', qunitjsVersion)
+    outputs.dir file('node_modules/qunitjs')
+    
+    args = ['install', "qunitjs@${qunitjsVersion}"]
+}
+
+task runQunit(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installQunit]) {
+    script = file('node_modules/qunitjs/bin/qunit')
+    args = [projectDir.toPath().relativize(file(compileTestKotlin2Js.outputFile).toPath())]
+}
+
+test.dependsOn runQunit
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.kotlin
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+apply from: rootProject.file('bintray-common.gradle')

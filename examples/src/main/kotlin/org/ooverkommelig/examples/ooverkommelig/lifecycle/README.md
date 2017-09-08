@@ -9,8 +9,8 @@ The lifecycle of object definitions is very simple. Object lifecycle steps are d
 * Graph disposal
     * `dispose`: Used to tell objects that they need to release resources. Note that other services having a dependency on a disposed-of object, may invoke the object after it released the resources it needs for its operation. Objects are disposed of in reverse order of creation/initialization.
 
-OOverkommelig does not impose any requirements (method names, implemented interfaces, annotations, etc.) on objects to be able to initialize or dispose of them. This means that lifecycles can be made to work, but also means that lifecycle steps must be invoked explicitly, i.e. methods marked as initialization or disposal methods (e.g. using annotations) will never be invoked by OOverkommelig.
+OOverkommelig does not impose any requirements (method names, implemented interfaces, annotations, etc.) on objects to be able to initialize or dispose of them. This means that all lifecycles can be made to work, but also means that lifecycle steps must be invoked explicitly, i.e. methods marked as initialization or disposal methods (e.g. using annotations) will never be invoked by OOverkommelig.
 
 This example shows how an object can be initialized and disposed of. It also illustrates the order in which lifecycle methods of objects depending on each other are invoked.
 
-The other lifecycle methods are already used in other examples: All examples show how to create object, and the cycles example shows how to wire objects.
+The other lifecycle methods are already used in other examples: All examples show how to create objects, and the cycles example shows how to wire objects.

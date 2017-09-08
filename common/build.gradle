@@ -1,0 +1,36 @@
+plugins {
+    id 'com.jfrog.bintray' version '1.7.3'
+}
+
+apply plugin: 'kotlin-platform-common'
+apply plugin: 'maven-publish'
+
+archivesBaseName = 'ooverkommelig-common'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile libraries.kotlin_reflect
+    compile libraries.kotlin_stdlib_common
+    testCompile libraries.kotlin_test_common
+}
+
+kotlin {
+    experimental {
+        coroutines 'error'
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.kotlin
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+apply from: rootProject.file('bintray-common.gradle')

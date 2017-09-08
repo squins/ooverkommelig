@@ -3,104 +3,35 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+allprojects {
+    group 'org.ooverkommelig'
+    version '1-SNAPSHOT'
 }
-
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
-
-group 'org.ooverkommelig'
-version '1-SNAPSHOT'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
     distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
 }
 
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
 ext {
+    nodeVersion = '6.11.2'
+    qunitjsVersion = '2.4.0'
     libraries = [
         junit: "junit:junit:4.12",
         kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+        kotlin_stdlib_common: "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+        kotlin_stdlib_js: "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion",
         kotlin_test: "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+        kotlin_test_common: "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion",
+        kotlin_test_js: "org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion"
     ]
-}
-
-dependencies {
-    compile libraries.kotlin_reflect
-    compile libraries.kotlin_stdlib
-
-    testCompile libraries.junit
-    testCompile libraries.kotlin_test
-}
-
-kotlin {
-    experimental {
-        coroutines 'error'
-    }
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.6'
-    }
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.kotlin.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
-    publishing {
-        publications {
-            Release(MavenPublication) {
-                groupId project.group
-                artifactId project.name
-                version project.version
-
-                from components.java
-            }
-        }
-    }
-
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-        publications = ['Release']
-        configurations = ['archives']
-        pkg {
-            userOrg = 'squins'
-            repo = 'Squins'
-            name = project.name
-            desc = 'Manageable dependency injection for Kotlin'
-            licenses = ['MIT']
-            websiteUrl = 'http://ooverkommelig.org'
-            issueTrackerUrl = 'https://github.com/squins/ooverkommelig/issues'
-            vcsUrl = 'https://github.com/squins/ooverkommelig.git'
-            githubRepo = 'squins/ooverkommelig'
-            version {
-                name = project.version
-                vcsTag = "release-${project.version}"
-            }
-        }
-    }
-
-    bintrayUpload.dependsOn check, jar, sourcesJar, 'generatePomFileForReleasePublication'
 }
