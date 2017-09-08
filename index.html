@@ -47,26 +47,11 @@
 }
 
 dependencies {
-    compile 'org.ooverkommelig:ooverkommelig:1alpha14'
+    // For JavaScript (which does not support all features):
+    compile 'org.ooverkommelig:ooverkommelig-javascript:1alpha15'
+    // For the JVM:
+    compile 'org.ooverkommelig:ooverkommelig-jvm:1alpha15'
 }</pre>
-
-      <p>
-        If you are feeling adventurous, you can try the multi-platform variant instead. Replace the dependency above
-        with one of these 2 dependencies. Note that the JavaScript version does not support all features:
-      </p>
-      
-      <ul>
-        <li>
-          <p>
-            <code>org.ooverkommelig:ooverkommelig-javascript:1.multiplatform-alpha5</code>
-          </p>
-        </li>
-        <li>
-          <p>
-            <code>org.ooverkommelig:ooverkommelig-jvm:1.multiplatform-alpha5</code>
-          </p>
-        </li>
-      </ul>
 
       <p>
         Get notified of new releases:
