@@ -8,7 +8,7 @@ impl abstract class SubGraphDefinition(
     : SubGraphDefinitionCommon(provided) {
     private val retrievableDefintions: RetrievableDefinitions
 
-    constructor(provided: ProvidedBase) : this(provided, ObjectGraphConfiguration())
+    impl constructor(provided: ProvidedBase) : this(provided, ObjectGraphConfiguration())
 
     init {
         retrievableDefintions = objectGraphConfiguration.retrievableDefinitionsFactory.create(this)
