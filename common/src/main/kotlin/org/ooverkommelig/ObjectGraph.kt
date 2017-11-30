@@ -1,5 +1,5 @@
 package org.ooverkommelig
 
-header interface ObjectGraph {
+expect interface ObjectGraph {
     fun close()
 }

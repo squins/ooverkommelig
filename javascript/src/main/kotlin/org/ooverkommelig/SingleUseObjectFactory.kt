@@ -1,9 +1,9 @@
 package org.ooverkommelig
 
-impl abstract class SingleUseObjectFactory<out TObject : Any> impl constructor(provided: ProvidedBase, objectGraphConfiguration: ObjectGraphConfiguration) : SingleUseObjectFactoryCommon<TObject>(provided, objectGraphConfiguration) {
+actual abstract class SingleUseObjectFactory<out TObject : Any> actual constructor(provided: ProvidedBase, objectGraphConfiguration: ObjectGraphConfiguration) : SingleUseObjectFactoryCommon<TObject>(provided, objectGraphConfiguration) {
     constructor (provided: ProvidedBase) : this(provided, ObjectGraphConfiguration())
 
-    impl fun <TResult> createAndUse(block: (TObject) -> TResult) =
+    actual fun <TResult> createAndUse(block: (TObject) -> TResult) =
             Graph().run {
                 try {
                     block(getObject())

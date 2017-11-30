@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implement project(':common')
+    expectedBy project(':common')
     compile libraries.kotlin_stdlib_js
     testCompile libraries.kotlin_test_js
 }
@@ -50,14 +50,14 @@ node {
 }
 
 task installQunit(type: NpmTask) {
-    inputs.property('qunitjsVersion', qunitjsVersion)
-    outputs.dir file('node_modules/qunitjs')
+    inputs.property('qunitVersion', qunitVersion)
+    outputs.dir file('node_modules/qunit')
     
-    args = ['install', "qunitjs@${qunitjsVersion}"]
+    args = ['install', "qunit@${qunitVersion}"]
 }
 
 task runQunit(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installQunit]) {
-    script = file('node_modules/qunitjs/bin/qunit')
+    script = file('node_modules/qunit/bin/qunit')
     args = [projectDir.toPath().relativize(file(compileTestKotlin2Js.outputFile).toPath())]
 }
 

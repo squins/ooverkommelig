@@ -1,7 +1,7 @@
 package org.ooverkommelig
 
-import org.junit.Test
 import kotlin.test.assertTrue
+import kotlin.test.Test
 
 class FailingObjectRequestTest {
     @Test

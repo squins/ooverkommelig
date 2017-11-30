@@ -1,5 +1,5 @@
 package org.ooverkommelig
 
-impl interface ObjectGraph {
-    impl fun close()
+actual interface ObjectGraph {
+    actual fun close()
 }

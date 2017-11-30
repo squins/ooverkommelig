@@ -1,5 +1,5 @@
 package org.ooverkommelig.definition
 
-header abstract class SubGraphDefinitionOwner : SubGraphDefinitionOwnerCommon {
+expect abstract class SubGraphDefinitionOwner() : SubGraphDefinitionOwnerCommon {
     override val fullyQualifiedName: String?
 }

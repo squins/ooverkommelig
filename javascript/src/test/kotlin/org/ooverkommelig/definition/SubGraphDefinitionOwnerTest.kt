@@ -1,7 +1,7 @@
 package org.ooverkommelig.definition
 
-import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.Test
 
 class SubGraphDefinitionOwnerTest {
     @Test

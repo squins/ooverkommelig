@@ -1,6 +1,6 @@
 package org.ooverkommelig.definition
 
-impl abstract class SubGraphDefinitionOwner : SubGraphDefinitionOwnerCommon() {
-    impl override val fullyQualifiedName: String?
+actual abstract class SubGraphDefinitionOwner : SubGraphDefinitionOwnerCommon() {
+    actual override val fullyQualifiedName: String?
         get() = null
 }

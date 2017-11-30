@@ -1,6 +1,6 @@
 package org.ooverkommelig
 
-header class ObjectGraphConfiguration(
+expect class ObjectGraphConfiguration(
         logger: ObjectGraphLogger = NoOperationObjectGraphLogger,
         objectPostProcessors: Collection<ObjectPostProcessor> = emptyList()) {
     internal val logger: ObjectGraphLogger
