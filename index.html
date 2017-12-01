@@ -47,8 +47,24 @@
 }
 
 dependencies {
-    compile 'org.ooverkommelig:ooverkommelig:1alpha11'
+    // For JavaScript (which does not support all features):
+    compile 'org.ooverkommelig:ooverkommelig-javascript:1alpha15'
+    // For the JVM:
+    compile 'org.ooverkommelig:ooverkommelig-jvm:1alpha15'
 }</pre>
+
+      <p>
+        Get notified of new releases:
+      </p>
+      
+      <p>
+        <a href='https://bintray.com/squins/Squins/ooverkommelig?source=watch'
+           alt='Get automatic notifications about new "ooverkommelig" versions'><img
+              src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
+      </p>
+
+      <h3><a id="example" class="anchor" href="#example" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
 
       <p>
         Here is some (very simplistic) example code to give you a taste. For more complex object graphs see <a
@@ -122,6 +138,10 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase {
         // Functions instead of values are used to reduce the boilerplate in
         // more complex situations.
+        //
+        // "Definition" can occur quite a number of times in sub graph
+        // definitions. Its type alias "D" can be used to reduce the amount of
+        // boilerplate.
         fun logDirectory(): Definition&lt;File&gt;
     }
 
@@ -129,11 +149,11 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     // creation lambda. OOverkommelig also support wiring (allowing object
     // cycles to be created), initialization and disposal.
     //
-    // The creation lambda of this object will be invoked only once
-    // ("Singleton"), and its result will be returned to any other object
-    // needing the log file. OOverkommelig supports a range of object
-    // definitions: constant, singleton, factory, parameterized singleton,
-    // parameterized factory, aspect singleton and aspect factory.
+    // The creation lambda of this object will be invoked only once, and its
+    // result will be returned to any other object needing the log file.
+    // OOverkommelig supports a range of object definitions: constant, once,
+    // always, parameterized once, parameterized always, aspect once (JVM
+    // only) and aspect always (JVM only).
     //
     // Again: The values are public to reduce the amount of boilerplate, but
     // this is not a requirement.
@@ -145,12 +165,20 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition(provided) {
     // language constructs and all APIs to determine what should be
     // constructed, how it should be configured, etc. You can do much more
     // than shown in this simplistic example.
-    val logFile by Singleton { File(req(provided.logDirectory()), "log.txt") }
+    val logFile by Once { File(req(provided.logDirectory()), "log.txt") }
 
-    val log by Singleton { Log(req(logFile)) }
+    val log by Once { Log(req(logFile)) }
 
-    val someService by Singleton { SomeService(req(log)) }
+    val someService by Once { SomeService(req(log)) }
 }</pre>
+      
+      <p>
+        <a href="https://github.com/squins/ooverkommelig/tree/master/examples/src/main/kotlin/org/ooverkommelig/examples">More
+          examples</a> can be found in the repository.
+      </p>
+
+      <h3><a id="advantages" class="anchor" href="#advantages" aria-hidden="true"><span
+            aria-hidden="true" class="octicon octicon-link"></span></a>Advantages</h3>
 
       <p>
         Some of the big advantages of OOverkommelig compared to other dependency injection containers are:
