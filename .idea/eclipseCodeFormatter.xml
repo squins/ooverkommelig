@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EclipseCodeFormatterProjectSettings">
+    <option name="selectedGlobalProfile">
+      <Settings>
+        <option name="formatSeletedTextInAllFileTypes" value="false" />
+        <option name="id" value="1417164760193" />
+        <option name="name" value="default" />
+        <option name="optimizeImports" value="false" />
+        <option name="pathToConfigFileJava" value="D:/JST/WPS/E/b/tooling/Eclipse/rd_pf_unity_config.xml" />
+        <option name="selectedJavaProfile" value="rd_pf_unity_coding" />
+      </Settings>
+    </option>
+  </component>
+</project>
