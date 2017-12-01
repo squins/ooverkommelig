@@ -11,7 +11,7 @@ internal class UninitializedObjectGraphState : FollowingObjectGraphState {
         try {
             runSetUpOfObjectlessLifecycles()
             graph.transition(InitializedObjectGraphState())
-        } catch(exception: Exception) {
+        } catch (exception: Exception) {
             graph.transition(DisposingObjectGraphState())
             throw exception
         }

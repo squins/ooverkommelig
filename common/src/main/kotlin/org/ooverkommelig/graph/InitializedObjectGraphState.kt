@@ -4,16 +4,16 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.opt
 
 internal class InitializedObjectGraphState : FollowingObjectGraphState {
-    private val ROOT_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = {
+    private val rootObjectSetupFunction: InitializedObjectGraphState.() -> Unit = {
         wireObjectInWiringContext()
         initializeObjectsInInitializationContext()
     }
-    private val WIRING_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = { wireObjects() }
-    private val INITIALIZATION_OBJECT_SETUP_FUNCTION: InitializedObjectGraphState.() -> Unit = { wireObjectInWiringContext() }
+    private val wiringObjectSetupFunction: InitializedObjectGraphState.() -> Unit = { wireObjects() }
+    private val initializationObjectSetupFunction: InitializedObjectGraphState.() -> Unit = { wireObjectInWiringContext() }
 
     private lateinit var graph: ObjectGraphImpl
     private val definitionsOfObjectsBeingCreatedStack = mutableListOf<DefinitionAndArgument<*>>()
-    private var contextObjectSetupFunctionStack = mutableListOf(ROOT_OBJECT_SETUP_FUNCTION)
+    private var contextObjectSetupFunctionStack = mutableListOf(rootObjectSetupFunction)
     private val objectsToBeWired = mutableListOf<ArgumentBoundDefinitionAndObject<*>>()
 
 
@@ -46,9 +46,7 @@ ${getPreviousDefinitionFullyQualifiedNames()}
 ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     private fun getPreviousDefinitionFullyQualifiedNames() =
-            definitionsOfObjectsBeingCreatedStack
-                    .map(DefinitionAndArgument<*>::fullyQualifiedName)
-                    .joinToString("\n")
+            definitionsOfObjectsBeingCreatedStack.joinToString("\n", transform = DefinitionAndArgument<*>::fullyQualifiedName)
 
     override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) {
         addObjectIfCreated(definition, argument, createdObject)
@@ -77,7 +75,7 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
     }
 
     private fun wireObjectInWiringContext() {
-        runInContext(WIRING_OBJECT_SETUP_FUNCTION) { wireObjects() }
+        runInContext(wiringObjectSetupFunction) { wireObjects() }
     }
 
     private fun wireObjects() {
@@ -87,7 +85,7 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
     }
 
     private fun initializeObjectsInInitializationContext() {
-        runInContext(INITIALIZATION_OBJECT_SETUP_FUNCTION) { initializeObjects() }
+        runInContext(initializationObjectSetupFunction) { initializeObjects() }
     }
 
     private fun initializeObjects() {

@@ -18,7 +18,7 @@ internal class DisposingObjectGraphState : FollowingObjectGraphState {
         graph.objectlessLifecyclesOfWhichSetUpHasRun.reversed().forEach { lifecycle ->
             try {
                 lifecycle.dispose()
-            } catch(exception: Exception) {
+            } catch (exception: Exception) {
                 graph.logCleanUpError(lifecycle, "dispose", exception)
             }
         }
@@ -32,7 +32,7 @@ internal class DisposingObjectGraphState : FollowingObjectGraphState {
         objectsToCleanUp.reversed().forEach { objectToCleanUp: ArgumentBoundDefinitionAndObject<*> ->
             try {
                 cleanUpFunction(objectToCleanUp)
-            } catch(exception: Exception) {
+            } catch (exception: Exception) {
                 logCleanUpError(objectToCleanUp.fullyQualifiedName(), operation, exception)
             }
         }

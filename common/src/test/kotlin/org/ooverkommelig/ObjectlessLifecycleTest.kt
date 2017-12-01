@@ -1,10 +1,10 @@
 package org.ooverkommelig
 
 import org.ooverkommelig.definition.ObjectlessLifecycle
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.test.Test
 
 class ObjectlessLifecycleTest {
     @Test
@@ -106,7 +106,7 @@ class ObjectlessLifecycleTest {
         val ogd = InitInvokedWhenGraphCreatedTestOgd()
         try {
             ogd.Graph()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             // This is expected to happen: The first init fails.
         }
 
@@ -233,7 +233,7 @@ class ObjectlessLifecycleTest {
         val ogd = DisposeNotInvokedIfInitFailedTestOgd()
         try {
             ogd.Graph().close()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             // This is expected to happen: The first init fails.
         }
 
@@ -260,7 +260,7 @@ class ObjectlessLifecycleTest {
         val ogd = DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestOgd()
         try {
             ogd.Graph().close()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             // This is expected to happen: The second init fails.
         }
 
@@ -287,7 +287,7 @@ class ObjectlessLifecycleTest {
         val ogd = DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestOgd()
         try {
             ogd.Graph().close()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             // This is expected to happen: The second init fails.
         }
 

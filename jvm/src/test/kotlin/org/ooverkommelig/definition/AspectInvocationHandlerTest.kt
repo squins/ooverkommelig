@@ -16,12 +16,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class AspectInvocationHandlerTest {
-    private val CLOSEABLE_CLASS = Closeable::class.java
-
-    private val RUNNABLE_CLASS = Runnable::class.java
-
-    private val NO_OPERATION_INVOCATION_HANDLER = InvocationHandler { _, _, _ -> }
-
     private lateinit var graph: AspectInvocationHandlerTestOgd.Graph
 
     @Before
@@ -90,6 +84,14 @@ class AspectInvocationHandlerTest {
     @Suppress("UNCHECKED_CAST")
     private fun <TInterface> newProxyInstance(interfaceClass: Class<TInterface>, invocationHandler: InvocationHandler): TInterface =
             Proxy.newProxyInstance(interfaceClass.classLoader, arrayOf(interfaceClass), invocationHandler) as TInterface
+
+    companion object {
+        private val CLOSEABLE_CLASS = Closeable::class.java
+
+        private val RUNNABLE_CLASS = Runnable::class.java
+
+        private val NO_OPERATION_INVOCATION_HANDLER = InvocationHandler { _, _, _ -> }
+    }
 }
 
 private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvidedAdministration) {

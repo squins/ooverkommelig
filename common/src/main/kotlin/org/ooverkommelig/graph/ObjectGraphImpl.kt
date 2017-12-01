@@ -16,7 +16,7 @@ internal class ObjectGraphImpl(
 
     internal val objectsInCreationOrder = mutableListOf<ArgumentBoundDefinitionAndObject<*>>()
 
-    internal var state: ObjectGraphState = CreatedObjectGraphState()
+    private var state: ObjectGraphState = CreatedObjectGraphState()
 
     internal fun init() {
         transition(UninitializedObjectGraphState())

@@ -6,4 +6,4 @@ import kotlin.reflect.jvm.reflect
 fun <T> t() = null as T
 
 fun <T> (() -> T).asKType() =
-    reflect()?.returnType ?: throw IllegalStateException()
+        reflect()?.returnType ?: throw IllegalStateException()

@@ -3,28 +3,19 @@ package org.ooverkommelig.definition
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
-
-private val NO_ARGUMENTS = emptyArray<Any>()
-
-private val ANY_JAVA_CLASS = Any::class.java
-
-private val EQUALS_METHOD = ANY_JAVA_CLASS.getMethod("equals", ANY_JAVA_CLASS)
+import kotlin.reflect.jvm.javaMethod
 
 internal class AspectInvocationHandler<TInterface>(
         private val wrapped: Any,
         private val delegate: AspectDelegate<TInterface>) : InvocationHandler {
     override fun invoke(proxy: Any, method: Method, optionalArguments: Array<out Any?>?): Any? {
-        val result: Any?
-
         val actualArguments = optionalArguments ?: NO_ARGUMENTS
 
-        if (method == EQUALS_METHOD) {
-            result = isNotNullAndAreProxyHandlerAndWrappedEqual(proxy, actualArguments[0])
+        return if (method == EQUALS_METHOD) {
+            isNotNullAndAreProxyHandlerAndWrappedEqual(proxy, actualArguments[0])
         } else {
-            result = invokeInterfaceFunctionIfAspectApproves(method, actualArguments)
+            invokeInterfaceFunctionIfAspectApproves(method, actualArguments)
         }
-
-        return result
     }
 
     private fun isNotNullAndAreProxyHandlerAndWrappedEqual(invokedProxy: Any, other: Any?) = other != null && areProxyHandlerAndWrappedEqual(invokedProxy, other)
@@ -61,4 +52,10 @@ internal class AspectInvocationHandler<TInterface>(
 
     private fun tryToInvoke(wrapped: Any, method: Method, arguments: Array<out Any?>) =
             method.invoke(wrapped, *arguments)
+
+    companion object {
+        private val NO_ARGUMENTS = emptyArray<Any>()
+
+        private val EQUALS_METHOD = Any::equals.javaMethod ?: throw IllegalStateException()
+    }
 }
