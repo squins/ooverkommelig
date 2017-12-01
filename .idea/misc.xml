@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="EclipseCodeFormatter">
-    <option name="defaultSettings" value="true" />
-    <option name="formatSeletedTextInAllFileTypes" value="false" />
-    <option name="id" value="1417164760193" />
-    <option name="name" value="default" />
-    <option name="optimizeImports" value="false" />
-    <option name="pathToConfigFileJava" value="D:/JST/WPS/E/b/tooling/Eclipse/rd_pf_unity_config.xml" />
-    <option name="selectedJavaProfile" value="rd_pf_unity_coding" />
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="true">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
