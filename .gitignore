@@ -12,3 +12,4 @@ annotations/
 
 javascript/node_modules
 javascript/npm-debug.log
+javascript/package-lock.json
