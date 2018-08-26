@@ -7,7 +7,7 @@ abstract class AspectDefinition<TInterface> {
     internal abstract val delegate: AspectDelegate<TInterface>
 
     inline fun <reified TActualInterface : TInterface> weave(wrappedDefinition: Definition<TActualInterface>): Definition<TActualInterface> {
-        check(TActualInterface::class != Any::class, { "'Any' passed as the interface class, creation functions in aspect definitions must use 'weave(Class<...>, Definition<...>)'." })
+        check(TActualInterface::class != Any::class) { "'Any' passed as the interface class, creation functions in aspect definitions must use 'weave(Class<...>, Definition<...>)'." }
         @Suppress("UNCHECKED_CAST")
         val actualInterfaceClassAsAnyClass = TActualInterface::class as KClass<Any>
         @Suppress("UNCHECKED_CAST")

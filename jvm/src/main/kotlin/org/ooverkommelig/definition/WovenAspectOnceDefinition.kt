@@ -13,7 +13,7 @@ internal class WovenAspectOnceDefinition<TInterface>(
 
     override val type = "once"
 
-    private val valueCreator = OnceCreator(this, null, { createProxyIfWrappedAvailable() })
+    private val valueCreator = OnceCreator(this, null) { createProxyIfWrappedAvailable() }
 
     override fun get() = valueCreator.getOrCreate()
 }

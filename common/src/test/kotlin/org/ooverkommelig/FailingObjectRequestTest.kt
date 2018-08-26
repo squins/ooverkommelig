@@ -35,6 +35,6 @@ class FailingObjectRequestTest {
     }
 
     companion object {
-        private val SOME_OBJECT = ""
+        private const val SOME_OBJECT = ""
     }
 }

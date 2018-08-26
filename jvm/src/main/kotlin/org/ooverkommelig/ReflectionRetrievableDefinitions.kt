@@ -17,8 +17,8 @@ class ReflectionRetrievableDefinitions(private val owner: SubGraphDefinition) : 
                 candidateDefinitionProperty.type.isSubtypeOf(criteria.getType())
                         && (!criteria.mustReturnSameObjectForAllRetrievals
                         || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
-            }.map { definitionProperty ->
+            }.map { (definitionProperty) ->
                 @Suppress("UNCHECKED_CAST")
-                definitionProperty.property.getter.call(owner) as Definition<TObject>
+                definitionProperty.getter.call(owner) as Definition<TObject>
             }
 }

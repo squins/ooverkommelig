@@ -7,7 +7,7 @@ internal abstract class WovenAspectDefinition<TInterface> :
         Definition<TInterface>(),
         ObjectCreatingDefinition<TInterface> {
 
-    override abstract val delegate: AspectDelegate<TInterface>
+    abstract override val delegate: AspectDelegate<TInterface>
 
     internal abstract val type: String
 

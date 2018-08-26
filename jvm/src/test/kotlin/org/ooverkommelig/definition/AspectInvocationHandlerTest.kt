@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 
 class AspectInvocationHandlerTest {
     private lateinit var graph: AspectInvocationHandlerTestOgd.Graph
@@ -33,7 +34,7 @@ class AspectInvocationHandlerTest {
         val proxy = graph.aspectWrappedRunnable()
 
         @Suppress("ReplaceCallWithComparison")
-        assertFalse(proxy.equals(null))
+        assertNotNull(proxy)
     }
 
     @Test

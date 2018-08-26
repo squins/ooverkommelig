@@ -30,7 +30,7 @@ internal class InitializedObjectGraphState : FollowingObjectGraphState {
     }
 
     override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) {
-        check(!wouldFormACycle(definition, argument), { getCycleDetectedMessage(definition, argument) })
+        check(!wouldFormACycle(definition, argument)) { getCycleDetectedMessage(definition, argument) }
 
         definitionsOfObjectsBeingCreatedStack.add(DefinitionAndArgument(definition, argument))
     }
@@ -54,8 +54,8 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
         runSetUpOfCreatedObjectsIfRootCreation()
     }
 
-    private fun <TObject> addObjectIfCreated(definition: ObjectCreatingDefinition<TObject>, argument: Any?, obj: TObject?) {
-        obj?.let { obj -> addObject(definition, argument, obj) }
+    private fun <TObject> addObjectIfCreated(definition: ObjectCreatingDefinition<TObject>, argument: Any?, optionalObj: TObject?) {
+        optionalObj?.let { obj -> addObject(definition, argument, obj) }
     }
 
     private fun <TObject> addObject(definition: ObjectCreatingDefinition<TObject>, argument: Any?, obj: TObject) {

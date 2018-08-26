@@ -10,7 +10,7 @@ internal class OnceDefinition<TObject>(
         Definition<TObject>(),
         ObjectCreatingDefinition<TObject> {
 
-    private val valueCreator = OnceCreator(this, null, { delegate.create() })
+    private val valueCreator = OnceCreator(this, null) { delegate.create() }
 
     override fun get() = valueCreator.getOrCreate()
 

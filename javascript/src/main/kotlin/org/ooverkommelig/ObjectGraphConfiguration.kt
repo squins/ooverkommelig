@@ -1,5 +1,5 @@
 package org.ooverkommelig
 
 actual class ObjectGraphConfiguration actual constructor(
-        actual internal val logger: ObjectGraphLogger,
-        actual internal val objectPostProcessors: Collection<ObjectPostProcessor>)
+        internal actual val logger: ObjectGraphLogger,
+        internal actual val objectPostProcessors: Collection<ObjectPostProcessor>)

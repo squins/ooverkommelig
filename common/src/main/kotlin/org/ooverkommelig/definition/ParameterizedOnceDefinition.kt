@@ -18,7 +18,7 @@ internal class ParameterizedOnceDefinition<TObject, in TParameter>(
     }
 
     private fun createCreator(argument: TParameter): OnceCreator<TObject> {
-        val result = OnceCreator(this, argument, { delegate.create(argument) })
+        val result = OnceCreator(this, argument) { delegate.create(argument) }
         valueCreators[argument] = result
         return result
     }
