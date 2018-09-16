@@ -12,6 +12,7 @@ class ReflectionRetrievableDefinitions(private val owner: SubGraphDefinition) : 
         definitionProperties += DefinitionProperty(property as KProperty<Definition<*>>, returnsSameObjectForAllRetrievals)
     }
 
+    @Suppress("ConvertCallChainIntoSequence")
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
             definitionProperties.filter { candidateDefinitionProperty ->
                 candidateDefinitionProperty.type.isSubtypeOf(criteria.getType())

@@ -13,7 +13,7 @@ import java.io.Closeable
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 class AspectInvocationHandlerTest {
@@ -41,14 +41,14 @@ class AspectInvocationHandlerTest {
     fun proxyDoesNotEqualProxyForDifferentInterface() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertFalse(proxy == newProxyInstance(CLOSEABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
+        assertNotEquals<Any>(proxy, newProxyInstance(CLOSEABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
     }
 
     @Test
     fun proxyDoesNotEqualProxyWithDifferentInvocationHandler() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertFalse(proxy == newProxyInstance(RUNNABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
+        assertNotEquals(proxy, newProxyInstance(RUNNABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
     }
 
     @Test
@@ -56,7 +56,7 @@ class AspectInvocationHandlerTest {
         val proxy = graph.aspectWrappedRunnable()
         val proxyForAnotherRunnable = graph.aspectWrappedAnotherRunnable()
 
-        assertFalse(proxy == proxyForAnotherRunnable)
+        assertNotEquals(proxy, proxyForAnotherRunnable)
     }
 
     @Test

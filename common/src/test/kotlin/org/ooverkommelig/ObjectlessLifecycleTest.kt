@@ -4,6 +4,7 @@ import org.ooverkommelig.definition.ObjectlessLifecycle
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class ObjectlessLifecycleTest {
@@ -366,14 +367,14 @@ class ObjectlessLifecycleTest {
 
         val disposeFailureSpy = DisposeFailureOperationSpy()
 
-        class OperationIsDisposeIfDisposeFailsestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class OperationIsDisposeIfDisposeFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
         class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
-            val sgd = add(OperationIsDisposeIfDisposeFailsestSgd())
+            val sgd = add(OperationIsDisposeIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
         }
@@ -414,6 +415,6 @@ class ObjectlessLifecycleTest {
         val ogd = ExceptionIsNullIfDisposeFailsTestOgd(exception)
         ogd.Graph().close()
 
-        assertTrue(exception === disposeFailureSpy.exception)
+        assertSame(exception, disposeFailureSpy.exception)
     }
 }

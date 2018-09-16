@@ -1,7 +1,7 @@
 package org.ooverkommelig
 
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.assertSame
 
 class FailingObjectRequestTest {
     @Test
@@ -30,7 +30,7 @@ class FailingObjectRequestTest {
             objectGraphDefinition.Graph()
             throw IllegalStateException("Expected exception to be thrown.")
         } catch (graphCreationException: Exception) {
-            assertTrue(exception === graphCreationException)
+            assertSame(exception, graphCreationException)
         }
     }
 
