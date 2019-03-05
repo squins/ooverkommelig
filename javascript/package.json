@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "randomatic": ">=3.0.0",
+    "merge": ">=1.2.1"
+  },
+  "dependencies": {
+    "qunit": "^2.9.2"
+  }
+}
