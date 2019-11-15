@@ -4,7 +4,7 @@ plugins {
 
 apply plugin: 'kotlin-platform-js'
 apply plugin: 'maven-publish'
-apply plugin: 'com.moowork.node'
+apply plugin: 'com.github.node-gradle.node'
 
 archivesBaseName = 'ooverkommelig-javascript'
 
@@ -26,12 +26,6 @@ dependencies {
 compileKotlin2Js {
     kotlinOptions.sourceMap = true
     kotlinOptions.sourceMapEmbedSources = "always"
-}
-
-kotlin {
-    experimental {
-        coroutines 'error'
-    }
 }
 
 task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
@@ -57,7 +51,7 @@ task installQunit(type: NpmTask) {
 }
 
 task runQunit(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installQunit]) {
-    script = file('node_modules/qunit/bin/qunit')
+    script = file('node_modules/qunit/bin/qunit.js')
     args = [projectDir.toPath().relativize(file(compileTestKotlin2Js.outputFile).toPath())]
 }
 

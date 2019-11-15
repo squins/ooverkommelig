@@ -21,12 +21,6 @@ dependencies {
     testCompile libraries.kotlin_test_junit
 }
 
-kotlin {
-    experimental {
-        coroutines 'error'
-    }
-}
-
 compileKotlin {
     kotlinOptions {
         jvmTarget = '1.6'

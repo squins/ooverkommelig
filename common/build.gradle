@@ -19,12 +19,6 @@ dependencies {
     testCompile libraries.kotlin_test_common
 }
 
-kotlin {
-    experimental {
-        coroutines 'error'
-    }
-}
-
 task sourcesJar(type: Jar) {
     from sourceSets.main.kotlin
     classifier = 'sources'
