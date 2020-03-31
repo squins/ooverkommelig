@@ -10,6 +10,7 @@ abstract class AspectDefinition<TInterface> {
         check(TActualInterface::class != Any::class) { "'Any' passed as the interface class, creation functions in aspect definitions must use 'weave(Class<...>, Definition<...>)'." }
         @Suppress("UNCHECKED_CAST")
         val actualInterfaceClassAsAnyClass = TActualInterface::class as KClass<Any>
+
         @Suppress("UNCHECKED_CAST")
         val actualInterfaceJavaClass = actualInterfaceClassAsAnyClass.java as Class<TActualInterface>
         return weave(actualInterfaceJavaClass, wrappedDefinition)

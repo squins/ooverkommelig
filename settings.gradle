@@ -1,6 +1,4 @@
 rootProject.name = 'ooverkommelig'
 
-include ':common'
 include ':examples'
-include ':javascript'
-include ':jvm'
+include ':main'

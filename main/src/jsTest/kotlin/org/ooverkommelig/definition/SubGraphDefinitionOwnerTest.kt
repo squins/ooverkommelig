@@ -1,5 +1,6 @@
 package org.ooverkommelig.definition
 
+import org.ooverkommelig.ObjectGraphDefinition
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -25,7 +26,7 @@ class SubGraphDefinitionOwnerTest {
     @Test
     fun nameEqualsQuestionMarkForAnonymousObject() {
         val owner = object : SubGraphDefinitionOwner() {
-            override val objectGraphDefinition by lazy { throw UnsupportedOperationException() }
+            override val objectGraphDefinition by lazy<ObjectGraphDefinition> { throw UnsupportedOperationException() }
         }
 
         val name = owner.name
@@ -35,9 +36,9 @@ class SubGraphDefinitionOwnerTest {
 }
 
 private class ClassOwner : SubGraphDefinitionOwner() {
-    override val objectGraphDefinition by lazy { throw UnsupportedOperationException() }
+    override val objectGraphDefinition by lazy<ObjectGraphDefinition> { throw UnsupportedOperationException() }
 }
 
 private object NamedObjectOwner : SubGraphDefinitionOwner() {
-    override val objectGraphDefinition by lazy { throw UnsupportedOperationException() }
+    override val objectGraphDefinition by lazy<ObjectGraphDefinition> { throw UnsupportedOperationException() }
 }

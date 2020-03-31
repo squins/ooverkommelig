@@ -1,4 +1,7 @@
-apply plugin: 'kotlin'
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+//apply plugin: 'kotlin'
 
 repositories {
     jcenter()
@@ -6,13 +9,13 @@ repositories {
 }
 
 dependencies {
-    compile libraries.kotlin_stdlib
-    compile project(':jvm')
+    implementation libraries.kotlin_stdlib
+    implementation project(':main')
 }
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '1.6'
+        jvmTarget = '1.8'
     }
 }
 

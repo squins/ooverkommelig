@@ -10,6 +10,6 @@ gradle-app.setting
 
 annotations/
 
-javascript/node_modules
-javascript/npm-debug.log
-javascript/package-lock.json
+main/node_modules
+main/npm-debug.log
+main/package-lock.json

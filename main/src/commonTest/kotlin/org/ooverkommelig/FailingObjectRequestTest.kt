@@ -12,7 +12,7 @@ class FailingObjectRequestTest {
                     .eager()
                     .wire { req(failingDefinition) }
 
-            val failingDefinition by Once {
+            val failingDefinition: Definition<Any> by Once {
                 throw exception
             }
         }

@@ -1,0 +1,145 @@
+plugins {
+    id "com.jfrog.bintray" version "1.8.4"
+    id 'org.jetbrains.kotlin.multiplatform'
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.node-gradle.node'
+
+archivesBaseName = 'ooverkommelig'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+kotlin {
+    js {
+        compilations.main.kotlinOptions {
+            moduleKind = "umd"
+            sourceMap = true
+            sourceMapEmbedSources = "always"
+        }
+        compilations.test.kotlinOptions {
+            moduleKind = "umd"
+        }
+    }
+    jvm('jvm8')
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation kotlin('test-annotations-common')
+                implementation kotlin('test-common')
+            }
+        }
+
+        jsMain {
+            dependencies {
+                implementation kotlin('stdlib-js')
+            }
+        }
+
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+            }
+        }
+
+        jvm8Main {
+            dependencies {
+                implementation kotlin('reflect')
+                implementation kotlin('stdlib-jdk8')
+            }
+        }
+
+        jvm8Test {
+            dependencies {
+                implementation kotlin('test-junit')
+                implementation libraries.junit
+            }
+        }
+    }
+}
+
+task populateNodeModules(type: Copy) {
+    from(kotlin.targets.js.compilations.main.output.allOutputs)
+
+    def jsTestRuntimeClasspathConfiguration = configurations.jsTestRuntimeClasspath
+    from(files {
+        jsTestRuntimeClasspathConfiguration.collect { File file ->
+            file.name.endsWith(".jar") ?
+                    zipTree(file.absolutePath).matching {
+                        include '*.js'
+                        include '*.js.map'
+                    } : files()
+        }
+    }.builtBy(jsTestRuntimeClasspathConfiguration))
+
+    into "${buildDir}/node_modules"
+}
+
+node {
+    version = nodeVersion
+    download = true
+}
+
+task installQunit(type: NpmTask) {
+    inputs.property('qunitVersion', qunitVersion)
+    outputs.dir file('node_modules/qunit')
+    
+    args = ['install', "qunit@${qunitVersion}"]
+}
+
+task runQunit(type: NodeTask, dependsOn: [compileTestKotlinJs, populateNodeModules, installQunit]) {
+    script = file('node_modules/qunit/bin/qunit.js')
+    args = [projectDir.toPath().relativize(file(compileTestKotlinJs.outputFile).toPath())]
+}
+
+jsTest.dependsOn runQunit
+
+if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
+    publishing {
+        publications {
+            all {
+                groupId project.group
+                artifactId "$archivesBaseName-$name"
+            }
+        }
+    }
+
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+        publications = publishing.publications.collect { it.name }
+        pkg {
+            userOrg = 'squins'
+            repo = 'Squins'
+            name = 'ooverkommelig'
+            desc = 'Manageable dependency injection for Kotlin'
+            licenses = ['MIT']
+            websiteUrl = 'http://ooverkommelig.org'
+            issueTrackerUrl = 'https://github.com/squins/ooverkommelig/issues'
+            vcsUrl = 'https://github.com/squins/ooverkommelig.git'
+            githubRepo = 'squins/ooverkommelig'
+            version {
+                name = project.version
+                vcsTag = "release-${project.version}"
+            }
+        }
+    }
+
+    bintrayUpload.doFirst {
+        if (version.endsWith('-SNAPSHOT')) {
+            throw new IllegalStateException("Cannot release a snapshot version: " + version)
+        }
+    }
+
+    bintrayUpload.dependsOn build, publishToMavenLocal
+}

@@ -15,7 +15,7 @@ To add OOverkommelig to your Gradle project, add the following to your build scr
     }
     
     dependencies {
-        compile 'org.ooverkommelig:ooverkommelig:1alpha11'
+        implementation 'org.ooverkommelig:ooverkommelig:1alpha11'
     }
 
 ## License
