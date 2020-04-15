@@ -6,7 +6,7 @@ Or take a look at [the examples](https://github.com/squins/ooverkommelig/tree/ma
 
 ## Download
 
-To add OOverkommelig to your Gradle project, add the following to your build script:
+To add OOverkommelig to your Gradle project, add the following to your build script written in Groovy:
 
     repositories {
         maven {
@@ -16,6 +16,21 @@ To add OOverkommelig to your Gradle project, add the following to your build scr
     
     dependencies {
         implementation 'org.ooverkommelig:ooverkommelig:1alpha11'
+    }
+
+And the following to your build script written in Kotlin:
+
+    repositories {
+        maven {
+            url = uri("https://dl.bintray.com/squins/Squins")
+        }
+    }
+    
+    dependencies {
+        // For JavaScript (which does not support all features):
+        implementation("org.ooverkommelig:ooverkommelig-js:1beta1")
+        // For the JVM:
+        implementation("org.ooverkommelig:ooverkommelig-jvm8:1beta1")
     }
 
 ## License
