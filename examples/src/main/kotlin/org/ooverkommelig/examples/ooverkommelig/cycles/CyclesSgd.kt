@@ -6,6 +6,7 @@ import org.ooverkommelig.ProvidedBase
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 
+@Suppress("MemberVisibilityCanBePrivate")
 class CyclesSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase
 

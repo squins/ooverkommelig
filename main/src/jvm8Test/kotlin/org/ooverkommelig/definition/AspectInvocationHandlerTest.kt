@@ -41,7 +41,7 @@ class AspectInvocationHandlerTest {
     fun proxyDoesNotEqualProxyForDifferentInterface() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertNotEquals<Any>(proxy, newProxyInstance(CLOSEABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
+        assertNotEquals(proxy, newProxyInstance(CLOSEABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
     }
 
     @Test

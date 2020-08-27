@@ -6,6 +6,7 @@ import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 import javax.swing.JOptionPane
 
+@Suppress("MemberVisibilityCanBePrivate")
 class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
     interface Provided : ProvidedBase
 

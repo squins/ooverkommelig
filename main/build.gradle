@@ -17,6 +17,9 @@ repositories {
 
 kotlin {
     js {
+        browser()
+        nodejs()
+
         compilations.main.kotlinOptions {
             moduleKind = "umd"
             sourceMap = true
