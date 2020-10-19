@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = '1.4.0'
+    ext.kotlinVersion = '1.4.10'
     repositories {
         jcenter()
         mavenCentral()
@@ -17,15 +17,15 @@ allprojects {
 }
 
 wrapper {
-    gradleVersion = '6.6'
+    gradleVersion = '6.7'
     distributionType = Wrapper.DistributionType.ALL
 }
 
 ext {
-    nodeVersion = '12.18.3'
-    qunitVersion = '2.11.1'
+    nodeVersion = '12.19.0'
+    qunitVersion = '2.11.3'
     libraries = [
-        junit: "junit:junit:4.13",
+        junit: "junit:junit:4.13.1",
         kotlin_reflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
         kotlin_stdlib_common: "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
