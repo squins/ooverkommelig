@@ -4,12 +4,8 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.SubGraphDefinitionOwner
 import org.ooverkommelig.graph.ObjectGraphImpl
 
-abstract class ObjectGraphDefinition(provided: ProvidedBase, private val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : SubGraphDefinitionOwner() {
+abstract class ObjectGraphDefinition(private val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration()) : SubGraphDefinitionOwner() {
     private var objectGraphImplementation: ObjectGraphImpl? = null
-
-    init {
-        provided.setOwner(this)
-    }
 
     override val objectGraphDefinition: ObjectGraphDefinition
         get() = this

@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 class ObjectlessLifecycleTest {
     @Test
     fun initIsNotInvokedWhenSubGraphDefinitionIsCreated() {
-        class InitNotInvokedWhenSubGraphDefinitionCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class InitNotInvokedWhenSubGraphDefinitionCreatedTestSgd : SubGraphDefinition() {
             var wasInitOfLifecycleInvoked = false
 
             init {
@@ -25,7 +25,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun initIsNotInvokedWhenObjectGraphDefinitionIsCreated() {
-        class InitNotInvokedWhenObjectGraphDefinitionCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class InitNotInvokedWhenObjectGraphDefinitionCreatedTestSgd : SubGraphDefinition() {
             var wasInitOfLifecycleInvoked = false
 
             init {
@@ -33,7 +33,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class InitNotInvokedWhenObjectGraphDefinitionCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class InitNotInvokedWhenObjectGraphDefinitionCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(InitNotInvokedWhenObjectGraphDefinitionCreatedTestSgd())
         }
 
@@ -44,7 +44,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun initIsInvokedWhenGraphIsCreated() {
-        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition() {
             var wasInitOfLifecycleInvoked = false
 
             init {
@@ -52,7 +52,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(InitInvokedWhenGraphCreatedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -66,7 +66,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun initsAreInvokedInDefinitionOrder() {
-        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition() {
             val initInvocationOrderBuilder = StringBuilder()
 
             init {
@@ -75,7 +75,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(InitInvokedWhenGraphCreatedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -89,7 +89,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun followingInitNotInvokedIfPrecedingFailed() {
-        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestSgd : SubGraphDefinition() {
             var wasSecondInitInvoked = false
 
             init {
@@ -98,7 +98,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class InitInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(InitInvokedWhenGraphCreatedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -116,7 +116,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeNotInvokedWhenSubGraphDefinitionIsCreated() {
-        class DisposeNotInvokedWhenSubGraphDefinitionCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedWhenSubGraphDefinitionCreatedTestSgd : SubGraphDefinition() {
             var wasDisposeInvoked = false
 
             init {
@@ -131,7 +131,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeNotInvokedWhenObjectGraphDefinitionIsCreated() {
-        class DisposeNotInvokedWhenObjectGraphDefinitionCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedWhenObjectGraphDefinitionCreatedTestSgd : SubGraphDefinition() {
             var wasDisposeInvoked = false
 
             init {
@@ -139,7 +139,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeNotInvokedWhenObjectGraphDefinitionCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedWhenObjectGraphDefinitionCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeNotInvokedWhenObjectGraphDefinitionCreatedTestSgd())
         }
 
@@ -150,7 +150,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeNotInvokedWhenGraphIsCreated() {
-        class DisposeNotInvokedWhenGraphCreatedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedWhenGraphCreatedTestSgd : SubGraphDefinition() {
             var wasDisposeInvoked = false
 
             init {
@@ -158,7 +158,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeNotInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedWhenGraphCreatedTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeNotInvokedWhenGraphCreatedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -172,7 +172,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeInvokedWhenGraphIsClosed() {
-        class DisposeInvokedWhenGraphClosedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeInvokedWhenGraphClosedTestSgd : SubGraphDefinition() {
             var wasDisposeInvoked = false
 
             init {
@@ -180,7 +180,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeInvokedWhenGraphClosedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeInvokedWhenGraphClosedTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeInvokedWhenGraphClosedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -194,7 +194,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposesAreInvokedInReverseDefinitionOrder() {
-        class DisposesInvokedInReverseDefinitionOrderTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposesInvokedInReverseDefinitionOrderTestSgd : SubGraphDefinition() {
             val disposeInvocationOrderBuilder = StringBuilder()
 
             init {
@@ -203,7 +203,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposesInvokedInReverseDefinitionOrderTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposesInvokedInReverseDefinitionOrderTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposesInvokedInReverseDefinitionOrderTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -217,7 +217,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeIsNotInvokedIfInitFailed() {
-        class DisposeNotInvokedIfInitFailedTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedIfInitFailedTestSgd : SubGraphDefinition() {
             var wasDisposeInvoked = false
 
             init {
@@ -225,7 +225,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeNotInvokedIfInitFailedTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeNotInvokedIfInitFailedTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeNotInvokedIfInitFailedTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -243,7 +243,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeOfPrecedingInitIsInvokedIfFollowingInitFails() {
-        class DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestSgd : SubGraphDefinition() {
             var wasDisposeOfFirstInitInvoked = false
 
             init {
@@ -252,7 +252,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeOfPrecedingInitInvokedIfFollowingInitFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -270,7 +270,7 @@ class ObjectlessLifecycleTest {
 
     @Test
     fun disposeOfPrecedingLifecycleIsInvokedIfDisposeOfFollowingFails() {
-        class DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestSgd : SubGraphDefinition() {
             var wasDisposeOfFirstInitInvoked = false
 
             init {
@@ -279,7 +279,7 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
+        class DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestOgd : ObjectGraphDefinition() {
             val sgd = add(DisposeOfPrecedingLifecycleInvokedIfDisposeOfFollowingFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -307,13 +307,13 @@ class ObjectlessLifecycleTest {
 
         val disposeFailureSpy = DisposeFailureWasErrorLoggedSpy()
 
-        class ErrorIsLoggedIfDisposeFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class ErrorIsLoggedIfDisposeFailsTestSgd : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
-        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
+        class ErrorIsLoggedIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(ErrorIsLoggedIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -337,13 +337,13 @@ class ObjectlessLifecycleTest {
 
         val disposeFailureSpy = DisposeFailureSourceSpy()
 
-        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
-        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -367,13 +367,13 @@ class ObjectlessLifecycleTest {
 
         val disposeFailureSpy = DisposeFailureOperationSpy()
 
-        class OperationIsDisposeIfDisposeFailsTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+        class OperationIsDisposeIfDisposeFailsTestSgd : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw Exception() })
             }
         }
 
-        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
+        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(OperationIsDisposeIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -399,14 +399,14 @@ class ObjectlessLifecycleTest {
         val exception = Exception()
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ExceptionIsNullIfDisposeFailsTestSgd(private val exception: Exception) : SubGraphDefinition(NothingProvidedAdministration) {
+        class ExceptionIsNullIfDisposeFailsTestSgd(private val exception: Exception) : SubGraphDefinition() {
             init {
                 lifecycle("Dispose fails", {}, { throw this.exception })
             }
         }
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(NothingProvidedAdministration, ObjectGraphConfiguration(disposeFailureSpy)) {
+        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(ExceptionIsNullIfDisposeFailsTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()

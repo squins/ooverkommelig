@@ -7,16 +7,12 @@ import org.ooverkommelig.definition.SubGraphDefinitionOwner
 import org.ooverkommelig.definition.SubGraphDefinitionOwnerCommon
 import kotlin.reflect.KProperty
 
-abstract class SubGraphDefinitionCommon(provided: ProvidedBase) : SubGraphDefinitionOwner() {
+abstract class SubGraphDefinitionCommon : SubGraphDefinitionOwner() {
     private val objectlessLifecycles = mutableListOf<ObjectlessLifecycle>()
 
     internal val delegatesOfObjectsToCreateEagerly = mutableListOf<DelegateOfObjectToCreateEagerly<*>>()
 
     private var owner: SubGraphDefinitionOwnerCommon? = null
-
-    init {
-        provided.setOwner(this)
-    }
 
     internal fun setOwner(newOwner: SubGraphDefinitionOwnerCommon) {
         check(owner == null) { "Tried to set the owner multiple times." }

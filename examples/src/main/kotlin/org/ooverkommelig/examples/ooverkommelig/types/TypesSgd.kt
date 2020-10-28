@@ -1,14 +1,12 @@
 package org.ooverkommelig.examples.ooverkommelig.types
 
 import org.ooverkommelig.Once
-import org.ooverkommelig.ProvidedBase
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 import javax.swing.JOptionPane
 
 @Suppress("MemberVisibilityCanBePrivate")
-class TypesSgd(provided: Provided) : SubGraphDefinition(provided) {
-    interface Provided : ProvidedBase
+class TypesSgd : SubGraphDefinition() {
 
     val javaVendor by Once { System.getProperty("java.vendor") }
 

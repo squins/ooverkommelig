@@ -90,7 +90,7 @@ class JvmReflectAspectInvocationHandlerTest {
     }
 }
 
-private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration: ObjectGraphConfiguration) : SubGraphDefinition(NothingProvidedAdministration, objectGraphConfiguration) {
+private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration: ObjectGraphConfiguration) : SubGraphDefinition(objectGraphConfiguration) {
     val runnable by Once { Runnable { } }
 
     val anotherRunnable by Once { Runnable { } }
@@ -104,7 +104,7 @@ private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration:
 
 private val objectGraphConfiguration = ObjectGraphConfiguration(aspectInvocationHandlerFactory = JvmReflectAspectInvocationHandlerFactory)
 
-private class JvmReflectAspectInvocationHandlerTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, objectGraphConfiguration) {
+private class JvmReflectAspectInvocationHandlerTestOgd : ObjectGraphDefinition(objectGraphConfiguration) {
     val jvmReflectAspectInvocationHandlerTestSgd = add(JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration))
 
     inner class Graph : DefinitionObjectGraph() {

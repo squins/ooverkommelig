@@ -2,14 +2,11 @@ package org.ooverkommelig.examples.ooverkommelig.cycles
 
 import org.ooverkommelig.D
 import org.ooverkommelig.Once
-import org.ooverkommelig.ProvidedBase
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 
 @Suppress("MemberVisibilityCanBePrivate")
-class CyclesSgd(provided: Provided) : SubGraphDefinition(provided) {
-    interface Provided : ProvidedBase
-
+class CyclesSgd : SubGraphDefinition() {
     val mainMenu: D<MainMenu> by Once { MainMenu() }
             .wire {
                 it.eatStep = req(eatMenu)

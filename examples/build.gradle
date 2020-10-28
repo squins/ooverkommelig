@@ -26,7 +26,7 @@ task runDaggerSimple(dependsOn: classes, type: JavaExec) {
     ignoreExitValue(true)
 }
 
-task runGuicexml(dependsOn: classes, type: JavaExec) {
+task runGuiceXml(dependsOn: classes, type: JavaExec) {
     group = 'Execution'
     description = 'Runs the port of the XML example of Guice.'
     main = 'org.ooverkommelig.examples.guice.xml.ContactsAppKt'

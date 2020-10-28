@@ -16,14 +16,12 @@
 
 package org.ooverkommelig.examples.guice.xml
 
-import org.ooverkommelig.ProvidedAdministration
-
 fun main() {
-    PhoneFlashMemoryContactsOgd(object : PhoneFlashMemoryContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
+    PhoneFlashMemoryContactsOgd().Graph().use { graph ->
         println(graph.phone().contacts.findByName("John Doe"))
     }
 
-    PhoneSimCardContactsOgd(object : PhoneSimCardContactsOgd.Provided, ProvidedAdministration() {}).Graph().use { graph ->
+    PhoneSimCardContactsOgd().Graph().use { graph ->
         println(graph.phone().contacts.findByName("Jane Doe"))
     }
 }

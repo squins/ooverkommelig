@@ -1,13 +1,11 @@
 package org.ooverkommelig.examples.ooverkommelig.lifecycle
 
 import org.ooverkommelig.Once
-import org.ooverkommelig.ProvidedBase
 import org.ooverkommelig.SubGraphDefinition
 import org.ooverkommelig.req
 
 @Suppress("MemberVisibilityCanBePrivate")
-class LifecycleSgd(provided: Provided) : SubGraphDefinition(provided) {
-    interface Provided : ProvidedBase
+class LifecycleSgd : SubGraphDefinition() {
 
     val service by Once {
         // The secondary service is considered to be created before this service because this service
