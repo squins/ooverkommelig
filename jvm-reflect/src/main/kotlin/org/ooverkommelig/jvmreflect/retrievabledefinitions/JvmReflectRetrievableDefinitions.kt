@@ -1,10 +1,13 @@
-package org.ooverkommelig
+package org.ooverkommelig.jvmreflect.retrievabledefinitions
 
-import org.ooverkommelig.definition.DefinitionProperty
+import org.ooverkommelig.Definition
+import org.ooverkommelig.DefinitionCriteria
+import org.ooverkommelig.RetrievableDefinitions
+import org.ooverkommelig.SubGraphDefinition
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.isSubtypeOf
 
-class ReflectionRetrievableDefinitions(private val owner: SubGraphDefinition) : RetrievableDefinitions {
+internal class JvmReflectRetrievableDefinitions(private val owner: SubGraphDefinition) : RetrievableDefinitions {
     private val definitionProperties = mutableListOf<DefinitionProperty>()
 
     override fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {

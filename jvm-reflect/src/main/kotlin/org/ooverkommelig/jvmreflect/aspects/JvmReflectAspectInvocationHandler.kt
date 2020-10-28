@@ -1,13 +1,14 @@
-package org.ooverkommelig.definition
+package org.ooverkommelig.jvmreflect.aspects
 
+import org.ooverkommelig.definition.AspectFunctions
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import kotlin.reflect.jvm.javaMethod
 
-internal class AspectInvocationHandler<TInterface>(
-        private val wrapped: Any,
-        private val delegate: AspectDelegate<TInterface>) : InvocationHandler {
+internal class JvmReflectAspectInvocationHandler<TInterface: Any>(
+        private val wrapped: TInterface,
+        private val aspectFunctions: AspectFunctions<TInterface>) : InvocationHandler {
     override fun invoke(proxy: Any, method: Method, optionalArguments: Array<out Any?>?): Any? {
         val actualArguments = optionalArguments ?: NO_ARGUMENTS
 
@@ -25,11 +26,11 @@ internal class AspectInvocationHandler<TInterface>(
 
     private fun areHandlerAndWrappedEqual(other: Any): Boolean {
         val handler = Proxy.getInvocationHandler(other)
-        return handler is AspectInvocationHandler<*> && handler.wrapped == wrapped
+        return handler is JvmReflectAspectInvocationHandler<*> && handler.wrapped == wrapped
     }
 
     private fun invokeInterfaceFunctionIfAspectApproves(method: Method, arguments: Array<out Any?>): Any? {
-        delegate.beforeFunction(wrapped)
+        aspectFunctions.beforeFunction(wrapped)
 
         return invoke(method, arguments)
     }
@@ -39,12 +40,12 @@ internal class AspectInvocationHandler<TInterface>(
 
         try {
             result = tryToInvoke(wrapped, method, arguments)
-            delegate.afterSuccessFunction(wrapped)
+            aspectFunctions.afterSuccessFunction(wrapped)
         } catch (exception: Exception) {
-            delegate.afterExceptionFunction(wrapped)
+            aspectFunctions.afterExceptionFunction(wrapped)
             throw exception
         } finally {
-            delegate.afterInvocationFunction(wrapped)
+            aspectFunctions.afterInvocationFunction(wrapped)
         }
 
         return result

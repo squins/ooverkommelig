@@ -1,14 +1,9 @@
-package org.ooverkommelig.definition
+package org.ooverkommelig.jvmreflect.aspects
 
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.ooverkommelig.AspectOnce
-import org.ooverkommelig.NothingProvidedAdministration
-import org.ooverkommelig.ObjectGraphDefinition
-import org.ooverkommelig.Once
-import org.ooverkommelig.SubGraphDefinition
-import org.ooverkommelig.req
+import org.ooverkommelig.*
 import java.io.Closeable
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
@@ -16,12 +11,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
-class AspectInvocationHandlerTest {
-    private lateinit var graph: AspectInvocationHandlerTestOgd.Graph
+class JvmReflectAspectInvocationHandlerTest {
+    private lateinit var graph: JvmReflectAspectInvocationHandlerTestOgd.Graph
 
     @Before
     fun createGraph() {
-        graph = AspectInvocationHandlerTestOgd().Graph()
+        graph = JvmReflectAspectInvocationHandlerTestOgd().Graph()
     }
 
     @After
@@ -41,14 +36,14 @@ class AspectInvocationHandlerTest {
     fun proxyDoesNotEqualProxyForDifferentInterface() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertNotEquals(proxy, newProxyInstance(CLOSEABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
+        assertNotEquals(proxy, newNoOperationProxyInstance(CLOSEABLE_CLASS))
     }
 
     @Test
     fun proxyDoesNotEqualProxyWithDifferentInvocationHandler() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertNotEquals(proxy, newProxyInstance(RUNNABLE_CLASS, NO_OPERATION_INVOCATION_HANDLER))
+        assertNotEquals(proxy, newNoOperationProxyInstance(RUNNABLE_CLASS))
     }
 
     @Test
@@ -83,8 +78,8 @@ class AspectInvocationHandlerTest {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <TInterface> newProxyInstance(interfaceClass: Class<TInterface>, invocationHandler: InvocationHandler): TInterface =
-            Proxy.newProxyInstance(interfaceClass.classLoader, arrayOf(interfaceClass), invocationHandler) as TInterface
+    private fun <TInterface> newNoOperationProxyInstance(interfaceClass: Class<TInterface>): TInterface =
+            Proxy.newProxyInstance(interfaceClass.classLoader, arrayOf(interfaceClass), NO_OPERATION_INVOCATION_HANDLER) as TInterface
 
     companion object {
         private val CLOSEABLE_CLASS = Closeable::class.java
@@ -95,7 +90,7 @@ class AspectInvocationHandlerTest {
     }
 }
 
-private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvidedAdministration) {
+private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration: ObjectGraphConfiguration) : SubGraphDefinition(NothingProvidedAdministration, objectGraphConfiguration) {
     val runnable by Once { Runnable { } }
 
     val anotherRunnable by Once { Runnable { } }
@@ -107,12 +102,14 @@ private class AspectInvocationHandlerTestSgd : SubGraphDefinition(NothingProvide
     val aspectWrappedAnotherRunnable by Once { req(aspect.weave(anotherRunnable)) }
 }
 
-private class AspectInvocationHandlerTestOgd : ObjectGraphDefinition(NothingProvidedAdministration) {
-    val aspectInvocationHandlerTestSgd = add(AspectInvocationHandlerTestSgd())
+private val objectGraphConfiguration = ObjectGraphConfiguration(aspectInvocationHandlerFactory = JvmReflectAspectInvocationHandlerFactory)
+
+private class JvmReflectAspectInvocationHandlerTestOgd : ObjectGraphDefinition(NothingProvidedAdministration, objectGraphConfiguration) {
+    val jvmReflectAspectInvocationHandlerTestSgd = add(JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration))
 
     inner class Graph : DefinitionObjectGraph() {
-        fun runnable() = req(aspectInvocationHandlerTestSgd.runnable)
-        fun aspectWrappedRunnable() = req(aspectInvocationHandlerTestSgd.aspectWrappedRunnable)
-        fun aspectWrappedAnotherRunnable() = req(aspectInvocationHandlerTestSgd.aspectWrappedAnotherRunnable)
+        fun runnable() = req(jvmReflectAspectInvocationHandlerTestSgd.runnable)
+        fun aspectWrappedRunnable() = req(jvmReflectAspectInvocationHandlerTestSgd.aspectWrappedRunnable)
+        fun aspectWrappedAnotherRunnable() = req(jvmReflectAspectInvocationHandlerTestSgd.aspectWrappedAnotherRunnable)
     }
 }

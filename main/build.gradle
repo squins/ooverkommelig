@@ -1,12 +1,11 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id "com.jfrog.bintray"
+    id 'com.github.node-gradle.node'
+    id 'com.jfrog.bintray'
+    id 'maven-publish'
     id 'org.jetbrains.kotlin.multiplatform'
 }
-
-apply plugin: 'maven-publish'
-apply plugin: 'com.github.node-gradle.node'
 
 archivesBaseName = 'ooverkommelig'
 
@@ -17,16 +16,22 @@ repositories {
 
 kotlin {
     js {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    usePhantomJS()
+                }
+            }
+        }
         nodejs()
 
         compilations.main.kotlinOptions {
-            moduleKind = "umd"
+            moduleKind = 'umd'
             sourceMap = true
-            sourceMapEmbedSources = "always"
+            sourceMapEmbedSources = 'always'
         }
         compilations.test.kotlinOptions {
-            moduleKind = "umd"
+            moduleKind = 'umd'
         }
     }
     jvm('jvm8')
@@ -59,7 +64,6 @@ kotlin {
 
         jvm8Main {
             dependencies {
-                implementation kotlin('reflect')
                 implementation kotlin('stdlib-jdk8')
             }
         }
@@ -79,7 +83,7 @@ task populateNodeModules(type: Copy) {
     def jsTestRuntimeClasspathConfiguration = configurations.jsTestRuntimeClasspath
     from(files {
         jsTestRuntimeClasspathConfiguration.collect { File file ->
-            file.name.endsWith(".jar") ?
+            file.name.endsWith('.jar') ?
                     zipTree(file.absolutePath).matching {
                         include '*.js'
                         include '*.js.map'
@@ -116,7 +120,7 @@ task copyJsTestRuntimeLibrariesToQunitReportDir {
 
     doLast {
         configurations.jsTestRuntimeClasspath.each { File file ->
-            if (file.name.endsWith(".jar")) {
+            if (file.name.endsWith('.jar')) {
                 copy {
                     includeEmptyDirs = false
 
@@ -124,13 +128,12 @@ task copyJsTestRuntimeLibrariesToQunitReportDir {
                     into outputDirectoryPath
                     include { fileTreeElement ->
                         def path = fileTreeElement.path
-                        path.endsWith(".js") && !path.endsWith("-meta.js")
+                        path.endsWith('.js') && !path.endsWith('-meta.js')
                     }
                 }
             }
         }
     }
-
 }
 
 task copyTestHtmlToQunitReportDir(type: Copy) {
@@ -141,15 +144,16 @@ task copyTestHtmlToQunitReportDir(type: Copy) {
 
 jsTest.dependsOn copyJsTestRuntimeLibrariesToQunitReportDir, copyTestHtmlToQunitReportDir
 
-if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
-    publishing {
-        publications {
-            all {
-                groupId project.group
-                artifactId "$archivesBaseName-$name"
-            }
+publishing {
+    publications {
+        all {
+            groupId project.group
+            artifactId "$archivesBaseName-$name"
         }
     }
+}
+
+if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
 
     bintray {
         user = bintrayUser
@@ -174,7 +178,7 @@ if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
 
     bintrayUpload.doFirst {
         if (version.endsWith('-SNAPSHOT')) {
-            throw new IllegalStateException("Cannot release a snapshot version: " + version)
+            throw new IllegalStateException("Cannot release a snapshot version: $version")
         }
     }
 

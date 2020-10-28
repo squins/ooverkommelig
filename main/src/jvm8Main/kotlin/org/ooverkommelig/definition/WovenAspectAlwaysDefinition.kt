@@ -3,7 +3,7 @@ package org.ooverkommelig.definition
 import org.ooverkommelig.Definition
 import org.ooverkommelig.SubGraphDefinition
 
-internal class WovenAspectAlwaysDefinition<TInterface>(
+internal class WovenAspectAlwaysDefinition<TInterface: Any>(
         override val owner: SubGraphDefinition,
         override val name: String,
         override val interfaceClass: Class<TInterface>,
@@ -13,5 +13,5 @@ internal class WovenAspectAlwaysDefinition<TInterface>(
 
     override val type = "always"
 
-    override fun get() = handleCreation { createProxyIfWrappedAvailable() }
+    override fun get() = handleCreation { createProxyIfWrappedAvailable(owner.getAspectInvocationHandlerFactory()) }
 }

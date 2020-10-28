@@ -3,7 +3,7 @@ package org.ooverkommelig.definition
 import org.ooverkommelig.Definition
 import org.ooverkommelig.SubGraphDefinition
 
-class AspectOnceDefinition<TInterface> internal constructor(
+internal class AspectOnceDefinition<TInterface: Any> internal constructor(
         private val owner: SubGraphDefinition,
         private val name: String,
         override val delegate: AspectDelegate<TInterface>) :

@@ -1,0 +1,68 @@
+plugins {
+    id 'com.jfrog.bintray'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+archivesBaseName = 'ooverkommelig'
+
+group 'org.ooverkommelig'
+version '1-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    api project(':main')
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+
+    testCompile 'org.jetbrains.kotlin:kotlin-test-junit'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+
+        all {
+            groupId project.group
+            artifactId "$archivesBaseName-$project.name"
+        }
+    }
+}
+
+if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+        publications = publishing.publications.collect { it.name }
+        pkg {
+            userOrg = 'squins'
+            repo = 'Squins'
+            name = 'ooverkommelig'
+            desc = 'Manageable dependency injection for Kotlin'
+            licenses = ['MIT']
+            websiteUrl = 'http://ooverkommelig.org'
+            issueTrackerUrl = 'https://github.com/squins/ooverkommelig/issues'
+            vcsUrl = 'https://github.com/squins/ooverkommelig.git'
+            githubRepo = 'squins/ooverkommelig'
+            version {
+                name = project.version
+                vcsTag = "release-${project.version}"
+            }
+        }
+    }
+
+    bintrayUpload.doFirst {
+        if (version.endsWith('-SNAPSHOT')) {
+            throw new IllegalStateException("Cannot release a snapshot version: $version")
+        }
+    }
+
+    bintrayUpload.dependsOn build, publishToMavenLocal
+}

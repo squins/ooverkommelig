@@ -1,7 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
-//apply plugin: 'kotlin'
 
 repositories {
     jcenter()

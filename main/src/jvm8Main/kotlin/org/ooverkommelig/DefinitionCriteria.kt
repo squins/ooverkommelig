@@ -1,5 +1,9 @@
 package org.ooverkommelig
 
-class DefinitionCriteria<TObject>(private val functionWithTypeDefiningResult: () -> TObject, val mustReturnSameObjectForAllRetrievals: Boolean = false) {
-    fun getType() = functionWithTypeDefiningResult.asKType()
+import kotlin.reflect.KType
+
+interface DefinitionCriteria<TObject> {
+    val functionWithTypeDefiningResult: () -> TObject
+    val mustReturnSameObjectForAllRetrievals: Boolean
+    fun getType(): KType
 }

@@ -4,7 +4,7 @@ import kotlin.reflect.KProperty
 
 actual abstract class SubGraphDefinition(
         provided: ProvidedBase,
-        objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration())
+        private val objectGraphConfiguration: ObjectGraphConfiguration = ObjectGraphConfiguration())
     : SubGraphDefinitionCommon(provided) {
     private val retrievableDefinitions = objectGraphConfiguration.retrievableDefinitionsFactory.create(this)
 
@@ -16,4 +16,9 @@ actual abstract class SubGraphDefinition(
     actual override fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {
         retrievableDefinitions.addDefinitionProperty(property, returnsSameObjectForAllRetrievals)
     }
+
+    internal fun supportsAspects() = objectGraphConfiguration.aspectInvocationHandlerFactory != null
+
+    internal fun getAspectInvocationHandlerFactory() =
+            objectGraphConfiguration.aspectInvocationHandlerFactory ?: throw IllegalStateException()
 }
