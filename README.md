@@ -16,9 +16,9 @@ To add OOverkommelig to your Gradle project, add the following to your build scr
     
     dependencies {
         // For JavaScript (which does not support all features):
-        implementation 'org.ooverkommelig:ooverkommelig-js:1beta1'
+        implementation 'org.ooverkommelig:ooverkommelig-js:1beta2'
         // For the JVM:
-        implementation 'org.ooverkommelig:ooverkommelig-jvm8:1beta1'
+        implementation 'org.ooverkommelig:ooverkommelig-jvm8:1beta2'
     }
 
 And the following to your build script written in Kotlin:
@@ -31,9 +31,9 @@ And the following to your build script written in Kotlin:
     
     dependencies {
         // For JavaScript (which does not support all features):
-        implementation("org.ooverkommelig:ooverkommelig-js:1beta1")
+        implementation("org.ooverkommelig:ooverkommelig-js:1beta2")
         // For the JVM:
-        implementation("org.ooverkommelig:ooverkommelig-jvm8:1beta1")
+        implementation("org.ooverkommelig:ooverkommelig-jvm8:1beta2")
     }
 
 ## License
