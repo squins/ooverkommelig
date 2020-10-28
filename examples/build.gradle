@@ -50,6 +50,14 @@ task runOoverkommeligLifecycle(dependsOn: classes, type: JavaExec) {
     ignoreExitValue(true)
 }
 
+task runOoverkommeligHomePage(dependsOn: classes, type: JavaExec) {
+    group = 'Execution'
+    description = 'Runs home page example.'
+    main = 'org.ooverkommelig.examples.ooverkommelig.homepage.HomePageAppKt'
+    classpath = sourceSets.main.runtimeClasspath
+    ignoreExitValue(true)
+}
+
 task runOoverkommeligTypes(dependsOn: classes, type: JavaExec) {
     group = 'Execution'
     description = 'Runs types example.'
