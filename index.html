@@ -101,8 +101,11 @@ class ApplicationOgd(provided: Provided) : ObjectGraphDefinition() {
     // of the graph quickly know what they need to provide to be able to use
     // the graph.
     //
-    // Functions instead of values are used to reduce the boilerplate in more
-    // complex situations.
+    // Functions instead of values are used, to reduce the boilerplate in
+    // certain situations. For example, when using a definition of one sub
+    // graph for the dependency of another sub graph of the same parent graph.
+    // See `org.ooverkommelig.examples.dagger.simple.CoffeeAppOgd` in the
+    // examples.
     //
     // "Definition" can occur quite a number of times in (sub) graph
     // definitions. Its type alias "D" can be used to reduce the amount of
