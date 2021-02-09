@@ -36,7 +36,7 @@ class JvmReflectAspectInvocationHandlerTest {
     fun proxyDoesNotEqualProxyForDifferentInterface() {
         val proxy = graph.aspectWrappedRunnable()
 
-        assertNotEquals(proxy, newNoOperationProxyInstance(CLOSEABLE_CLASS))
+        assertNotEquals(proxy as Any, newNoOperationProxyInstance(CLOSEABLE_CLASS))
     }
 
     @Test
