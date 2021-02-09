@@ -1,15 +1,7 @@
-.gradle
-build/
-gradle.properties
-gradle-app.setting
-!gradle-wrapper.jar
-.gradletasknamecache
+/.gradle/
+/build/
+/gradle.properties
 
-.idea/
-*.iml
+/.idea/
 
-annotations/
-
-main/node_modules
-main/npm-debug.log
-main/package-lock.json
+/annotations/
