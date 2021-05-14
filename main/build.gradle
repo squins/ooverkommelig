@@ -10,7 +10,6 @@ plugins {
 archivesBaseName = 'ooverkommelig'
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
