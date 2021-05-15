@@ -7,9 +7,6 @@ plugins {
 
 archivesBaseName = 'ooverkommelig'
 
-group 'org.ooverkommelig'
-version '1-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
