@@ -2,9 +2,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id 'com.github.node-gradle.node'
-    id 'com.jfrog.bintray'
     id 'maven-publish'
     id 'org.jetbrains.kotlin.multiplatform'
+    id 'signing'
 }
 
 archivesBaseName = 'ooverkommelig'
@@ -33,7 +33,7 @@ kotlin {
             moduleKind = 'umd'
         }
     }
-    jvm('jvm8')
+    jvm()
 
     sourceSets {
         commonMain {
@@ -61,13 +61,13 @@ kotlin {
             }
         }
 
-        jvm8Main {
+        jvmMain {
             dependencies {
                 implementation kotlin('stdlib-jdk8')
             }
         }
 
-        jvm8Test {
+        jvmTest {
             dependencies {
                 implementation kotlin('test-junit')
                 implementation libraries.junit
@@ -143,43 +143,64 @@ task copyTestHtmlToQunitReportDir(type: Copy) {
 
 jsTest.dependsOn copyJsTestRuntimeLibrariesToQunitReportDir, copyTestHtmlToQunitReportDir
 
-publishing {
-    publications {
-        all {
-            groupId project.group
-            artifactId "$archivesBaseName-$name"
+// Put your GPG and Sonatype credentials in "gradle.properties".
+//
+// Documentation for GPG:
+//     https://docs.gradle.org/current/userguide/signing_plugin.html#sec:signatory_credentials
+if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile') && project.hasProperty('sonatype.username') && project.hasProperty('sonatype.password')) {
+    publishing {
+        publications {
+            kotlinMultiplatform(MavenPublication) {
+                artifactId "$archivesBaseName"
+            }
+
+            js {
+                artifactId "$archivesBaseName-$name"
+            }
+
+            jvm {
+                artifactId "$archivesBaseName-$name"
+            }
+
+            metadata {
+                artifactId "$archivesBaseName-$name"
+            }
+
+            all {
+                pom {
+                    name = "OOverkommelig"
+                    description = "Manageable dependency injection for Kotlin."
+                    url = "https://ooverkommelig.org/"
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://mit-license.org/'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git@github.com:squins/ooverkommelig.git'
+                        developerConnection = 'scm:git:scm:git:git@github.com:squins/ooverkommelig.git'
+                        url = 'scm:git:git@github.com:squins/ooverkommelig.git'
+                    }
+                }
+            }
         }
-    }
-}
 
-if (project.hasProperty('bintrayUser') && project.hasProperty('bintrayKey')) {
-
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-        publications = publishing.publications.collect { it.name }
-        pkg {
-            userOrg = 'squins'
-            repo = 'Squins'
-            name = 'ooverkommelig'
-            desc = 'Manageable dependency injection for Kotlin'
-            licenses = ['MIT']
-            websiteUrl = 'http://ooverkommelig.org'
-            issueTrackerUrl = 'https://github.com/squins/ooverkommelig/issues'
-            vcsUrl = 'https://github.com/squins/ooverkommelig.git'
-            githubRepo = 'squins/ooverkommelig'
-            version {
-                name = project.version
-                vcsTag = "release-${project.version}"
+        repositories {
+            maven {
+                name = "ossSonatype"
+                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots'
+                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = project.property("sonatype.username")
+                    password = project.property("sonatype.password")
+                }
             }
         }
     }
 
-    bintrayUpload.doFirst {
-        if (version.endsWith('-SNAPSHOT')) {
-            throw new IllegalStateException("Cannot release a snapshot version: $version")
-        }
+    signing {
+        sign publishing.publications
     }
-
-    bintrayUpload.dependsOn build, publishToMavenLocal
 }
