@@ -182,6 +182,18 @@ if (project.hasProperty('signing.keyId') && project.hasProperty('signing.passwor
                         developerConnection = 'scm:git:scm:git:git@github.com:squins/ooverkommelig.git'
                         url = 'scm:git:git@github.com:squins/ooverkommelig.git'
                     }
+                    developers {
+                        developer {
+                            id = "jstuyts"
+                            name = "Johan Stuyts"
+                            email = "j.stuyts@javathinker.com"
+                        }
+                        developer {
+                            id = "keesvandieren"
+                            name = "Kees van Dieren"
+                            email = "keesvandieren@squins.com"
+                        }
+                    }
                 }
             }
         }
