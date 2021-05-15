@@ -42,16 +42,14 @@
       </p>
 
       <pre class="prettyprint">repositories {
-    maven {
-        url 'https://dl.bintray.com/squins/Squins'
-    }
+    mavenCentral()
 }
 
 dependencies {
     // For JavaScript (which does not support all features):
-    implementation 'org.ooverkommelig:ooverkommelig-js:1beta2'
+    implementation 'org.ooverkommelig:ooverkommelig-js:1beta3'
     // For the JVM:
-    implementation 'org.ooverkommelig:ooverkommelig-jvm8:1beta2'
+    implementation 'org.ooverkommelig:ooverkommelig-jvm:1beta3'
 }</pre>
 
       <p>
@@ -59,26 +57,18 @@ dependencies {
       </p>
 
       <pre class="prettyprint">repositories {
-    maven {
-        url = uri("https://dl.bintray.com/squins/Squins")
-    }
+    mavenCentral()
 }
 
 dependencies {
     // For JavaScript (which does not support all features):
-    implementation("org.ooverkommelig:ooverkommelig-js:1beta2")
+    implementation("org.ooverkommelig:ooverkommelig-js:1beta3")
     // For the JVM:
-    implementation("org.ooverkommelig:ooverkommelig-jvm8:1beta2")
+    implementation("org.ooverkommelig:ooverkommelig-jvm:1beta3")
 }</pre>
 
       <p>
         Get notified of new releases:
-      </p>
-      
-      <p>
-        <a href='https://bintray.com/squins/Squins/ooverkommelig?source=watch'><img
-              src='https://www.bintray.com/docs/images/bintray_badge_color.png'
-              alt='Get automatic notifications about new "ooverkommelig" versions'></a>
       </p>
 
       <h3><a id="example" class="anchor" href="#example" aria-hidden="true"><span
@@ -232,7 +222,7 @@ class ApplicationSgd(provided: Provided) : SubGraphDefinition() {
         </li>
         <li>
           <p>
-            Compile-time check of unused dependencies, i.e. your IDE will mark object definitions that are not used by
+            Compile-time check of unused dependencies, i.e. your IDE will mark object definitions that are not used by
             other object definitions.
           </p>
         </li>
