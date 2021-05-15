@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'org.jetbrains.dokka'
     id 'org.jetbrains.kotlin.jvm'
     id 'signing'
 }
@@ -17,6 +18,17 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+}
+
+java {
+    toolchain {
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
+tasks.getByName("javadocJar") {
+    from(dokkaJavadoc)
 }
 
 // Put your GPG and Sonatype credentials in "gradle.properties".
