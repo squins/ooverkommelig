@@ -22,7 +22,7 @@ abstract class SubGraphDefinitionCommon : SubGraphDefinitionOwner() {
 
     override val objectGraphDefinition: ObjectGraphDefinition
         get() = owner?.objectGraphDefinition
-                ?: throw IllegalStateException("Owner of: $name, has not been initialized. Use 'add(...)' to add the sub graph to its owner when you create it.")
+            ?: throw IllegalStateException("Owner of: $name, has not been initialized. Use 'add(...)' to add the sub graph to its owner when you create it.")
 
     protected fun lifecycle(description: String, init: () -> Unit, dispose: () -> Unit) {
         objectlessLifecycles += ObjectlessLifecycle(name, description, init, dispose)
@@ -30,10 +30,15 @@ abstract class SubGraphDefinitionCommon : SubGraphDefinitionOwner() {
 
     override fun allObjectlessLifecycles() = super.allObjectlessLifecycles() + objectlessLifecycles
 
-    override fun allObjectsToCreateEagerly() = super.allObjectsToCreateEagerly() + delegatesOfObjectsToCreateEagerly.map { delegate -> delegate.getValue() }
+    override fun allObjectsToCreateEagerly() =
+        super.allObjectsToCreateEagerly() + delegatesOfObjectsToCreateEagerly.map { delegate -> delegate.getValue() }
 
     internal abstract fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean)
 
-    internal fun <TObject> handleCreation(definition: ObjectCreatingDefinition<TObject>, argument: Any?, creator: () -> TObject) =
-            objectGraphDefinition.handleCreation(definition, argument, creator)
+    internal fun <TObject> handleCreation(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        creator: () -> TObject
+    ) =
+        objectGraphDefinition.handleCreation(definition, argument, creator)
 }

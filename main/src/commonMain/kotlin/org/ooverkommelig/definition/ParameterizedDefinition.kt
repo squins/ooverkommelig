@@ -7,7 +7,8 @@ abstract class ParameterizedDefinition<out TObject, in TParameter> {
 
     internal abstract val name: String
 
-    operator fun invoke(argument: TParameter): Definition<TObject> = ArgumentBoundParameterizedDefinition(this, argument)
+    operator fun invoke(argument: TParameter): Definition<TObject> =
+        ArgumentBoundParameterizedDefinition(this, argument)
 
     internal abstract fun create(argument: TParameter): TObject
 

@@ -7,5 +7,13 @@ import org.ooverkommelig.ObjectPostProcessor
 import org.ooverkommelig.jvmreflect.aspects.JvmReflectAspectInvocationHandlerFactory
 import org.ooverkommelig.jvmreflect.retrievabledefinitions.JvmReflectRetrievableDefinitionsFactory
 
-fun jvmReflectObjectGraphConfiguration(logger: ObjectGraphLogger = NoOperationObjectGraphLogger, objectPostProcessors: Collection<ObjectPostProcessor> = emptyList()) =
-        ObjectGraphConfiguration(logger, objectPostProcessors, JvmReflectAspectInvocationHandlerFactory, JvmReflectRetrievableDefinitionsFactory)
+fun jvmReflectObjectGraphConfiguration(
+    logger: ObjectGraphLogger = NoOperationObjectGraphLogger,
+    objectPostProcessors: Collection<ObjectPostProcessor> = emptyList()
+) =
+    ObjectGraphConfiguration(
+        logger,
+        objectPostProcessors,
+        JvmReflectAspectInvocationHandlerFactory,
+        JvmReflectRetrievableDefinitionsFactory
+    )

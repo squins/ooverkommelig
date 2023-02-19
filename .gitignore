@@ -1,7 +1,9 @@
 /.gradle/
 /build/
-/gradle.properties
+/local.properties
 
 /.idea/
 
 /annotations/
+
+/java_pid*.hprof

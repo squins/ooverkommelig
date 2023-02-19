@@ -30,7 +30,10 @@ class Once<TObject>(internal val create: () -> TObject) {
         return this
     }
 
-    operator fun provideDelegate(owner: SubGraphDefinition, property: KProperty<*>): ReadOnlyProperty<SubGraphDefinition, Definition<TObject>> {
+    operator fun provideDelegate(
+        owner: SubGraphDefinition,
+        property: KProperty<*>
+    ): ReadOnlyProperty<SubGraphDefinition, Definition<TObject>> {
         val result = OnceDelegate(owner, property.name, create)
         result.wire(wiringFunction).init(initializationFunction).dispose(disposalFunction)
         result.registerPropertyIfNeeded(owner, property)

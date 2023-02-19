@@ -10,7 +10,7 @@ abstract class SubGraphDefinitionOwnerCommon {
     private var isLocked = false
 
     val name = fullyQualifiedName ?: this::class.simpleName ?: "?"
-    
+
     internal abstract val fullyQualifiedName: String?
 
     internal abstract val objectGraphDefinition: ObjectGraphDefinition
@@ -28,7 +28,9 @@ abstract class SubGraphDefinitionOwnerCommon {
         subGraphs.forEach(SubGraphDefinitionOwner::lockDefinition)
     }
 
-    internal open fun allObjectlessLifecycles(): List<ObjectlessLifecycle> = subGraphs.flatMap(SubGraphDefinition::allObjectlessLifecycles)
+    internal open fun allObjectlessLifecycles(): List<ObjectlessLifecycle> =
+        subGraphs.flatMap(SubGraphDefinition::allObjectlessLifecycles)
 
-    internal open fun allObjectsToCreateEagerly(): List<Definition<*>> = subGraphs.flatMap(SubGraphDefinition::allObjectsToCreateEagerly)
+    internal open fun allObjectsToCreateEagerly(): List<Definition<*>> =
+        subGraphs.flatMap(SubGraphDefinition::allObjectsToCreateEagerly)
 }

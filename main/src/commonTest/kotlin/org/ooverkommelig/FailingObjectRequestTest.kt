@@ -7,18 +7,21 @@ class FailingObjectRequestTest {
     @Test
     fun objectRequestFailureInWireResultsInOriginalExceptionBeingThrown() {
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) : SubGraphDefinition() {
+        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(private val exception: Exception) :
+            SubGraphDefinition() {
             val definitionRequestingFailingDefinitionInWire by Once { SOME_OBJECT }
-                    .eager()
-                    .wire { req(failingDefinition) }
+                .eager()
+                .wire { req(failingDefinition) }
 
             val failingDefinition: Definition<Any> by Once {
                 throw exception
             }
         }
 
-        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestOgd(exception: Exception) : ObjectGraphDefinition() {
-            val main: ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd = add(ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(exception))
+        class ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestOgd(exception: Exception) :
+            ObjectGraphDefinition() {
+            val main: ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd =
+                add(ObjectRequestFailureInWireResultsInOriginalExceptionThrownTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()
         }

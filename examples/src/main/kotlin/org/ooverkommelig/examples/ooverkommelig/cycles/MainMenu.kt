@@ -11,10 +11,10 @@ class MainMenu : Step {
     }
 
     override fun handleInput(input: String) =
-            when (input) {
-                "1" -> eatStep
-                "2" -> drinkStep
-                "q", "Q" -> null
-                else -> this
-            }
+        when (input) {
+            "1" -> eatStep
+            "2" -> drinkStep
+            "q", "Q" -> null
+            else -> this
+        }
 }

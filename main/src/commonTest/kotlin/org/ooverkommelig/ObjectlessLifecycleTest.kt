@@ -14,7 +14,10 @@ class ObjectlessLifecycleTest {
             var wasInitOfLifecycleInvoked = false
 
             init {
-                lifecycle("Not invoked during sub graph definition creation test", { wasInitOfLifecycleInvoked = true }, {})
+                lifecycle(
+                    "Not invoked during sub graph definition creation test",
+                    { wasInitOfLifecycleInvoked = true },
+                    {})
             }
         }
 
@@ -29,7 +32,10 @@ class ObjectlessLifecycleTest {
             var wasInitOfLifecycleInvoked = false
 
             init {
-                lifecycle("Not invoked during object graph definition creation test", { wasInitOfLifecycleInvoked = true }, {})
+                lifecycle(
+                    "Not invoked during object graph definition creation test",
+                    { wasInitOfLifecycleInvoked = true },
+                    {})
             }
         }
 
@@ -221,7 +227,10 @@ class ObjectlessLifecycleTest {
             var wasDisposeInvoked = false
 
             init {
-                lifecycle("Dispose not invoked because init failed", { throw Exception() }, { wasDisposeInvoked = true })
+                lifecycle(
+                    "Dispose not invoked because init failed",
+                    { throw Exception() },
+                    { wasDisposeInvoked = true })
             }
         }
 
@@ -343,7 +352,8 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class SourceObjectIsObjectlessLifecycleIfDisposeFailsTestOgd :
+            ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(SourceObjectIsObjectlessLifecycleIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -373,7 +383,8 @@ class ObjectlessLifecycleTest {
             }
         }
 
-        class OperationIsDisposeIfDisposeFailsTestOgd : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class OperationIsDisposeIfDisposeFailsTestOgd :
+            ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(OperationIsDisposeIfDisposeFailsTestSgd())
 
             inner class Graph : DefinitionObjectGraph()
@@ -406,7 +417,8 @@ class ObjectlessLifecycleTest {
         }
 
         // Passing "exception" explicitly because of: https://youtrack.jetbrains.com/issue/KT-8120
-        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) : ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
+        class ExceptionIsNullIfDisposeFailsTestOgd(exception: Exception) :
+            ObjectGraphDefinition(ObjectGraphConfiguration(disposeFailureSpy)) {
             val sgd = add(ExceptionIsNullIfDisposeFailsTestSgd(exception))
 
             inner class Graph : DefinitionObjectGraph()

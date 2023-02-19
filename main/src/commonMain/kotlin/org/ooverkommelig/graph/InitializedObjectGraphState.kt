@@ -9,7 +9,8 @@ internal class InitializedObjectGraphState : FollowingObjectGraphState {
         initializeObjectsInInitializationContext()
     }
     private val wiringObjectSetupFunction: InitializedObjectGraphState.() -> Unit = { wireObjects() }
-    private val initializationObjectSetupFunction: InitializedObjectGraphState.() -> Unit = { wireObjectInWiringContext() }
+    private val initializationObjectSetupFunction: InitializedObjectGraphState.() -> Unit =
+        { wireObjectInWiringContext() }
 
     private lateinit var graph: ObjectGraphImpl
     private val definitionsOfObjectsBeingCreatedStack = mutableListOf<DefinitionAndArgument<*>>()
@@ -36,25 +37,36 @@ internal class InitializedObjectGraphState : FollowingObjectGraphState {
     }
 
     private fun wouldFormACycle(definition: ObjectCreatingDefinition<*>, argument: Any?) =
-            definitionsOfObjectsBeingCreatedStack.any { element ->
-                element.definition == definition && element.argument == argument
-            }
+        definitionsOfObjectsBeingCreatedStack.any { element ->
+            element.definition == definition && element.argument == argument
+        }
 
     private fun getCycleDetectedMessage(definition: ObjectCreatingDefinition<*>, argument: Any?) =
-            """Cycle detected (oldest to newest):
+        """Cycle detected (oldest to newest):
 ${getPreviousDefinitionFullyQualifiedNames()}
 ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     private fun getPreviousDefinitionFullyQualifiedNames() =
-            definitionsOfObjectsBeingCreatedStack.joinToString("\n", transform = DefinitionAndArgument<*>::fullyQualifiedName)
+        definitionsOfObjectsBeingCreatedStack.joinToString(
+            "\n",
+            transform = DefinitionAndArgument<*>::fullyQualifiedName
+        )
 
-    override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) {
+    override fun <TObject> creationEnded(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        createdObject: TObject?
+    ) {
         addObjectIfCreated(definition, argument, createdObject)
         definitionsOfObjectsBeingCreatedStack.removeLast()
         runSetUpOfCreatedObjectsIfRootCreation()
     }
 
-    private fun <TObject> addObjectIfCreated(definition: ObjectCreatingDefinition<TObject>, argument: Any?, optionalObj: TObject?) {
+    private fun <TObject> addObjectIfCreated(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        optionalObj: TObject?
+    ) {
         optionalObj?.let { obj -> addObject(definition, argument, obj) }
     }
 
@@ -110,7 +122,8 @@ ${DefinitionAndArgument(definition, argument).fullyQualifiedName()}"""
 
     private fun wasRootCreation() = definitionsOfObjectsBeingCreatedStack.isEmpty()
 
-    override fun logCleanUpError(sourceObject: Any, operation: String, exception: Exception) = throw UnsupportedOperationException("Cannot clean up sub graphs and objects while initialized.")
+    override fun logCleanUpError(sourceObject: Any, operation: String, exception: Exception) =
+        throw UnsupportedOperationException("Cannot clean up sub graphs and objects while initialized.")
 
     override fun dispose() {
         graph.transition(DisposingObjectGraphState())

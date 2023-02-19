@@ -12,17 +12,20 @@ internal class JvmReflectRetrievableDefinitions(private val owner: SubGraphDefin
 
     override fun addDefinitionProperty(property: KProperty<*>, returnsSameObjectForAllRetrievals: Boolean) {
         @Suppress("UNCHECKED_CAST")
-        definitionProperties += DefinitionProperty(property as KProperty<Definition<*>>, returnsSameObjectForAllRetrievals)
+        definitionProperties += DefinitionProperty(
+            property as KProperty<Definition<*>>,
+            returnsSameObjectForAllRetrievals
+        )
     }
 
     @Suppress("ConvertCallChainIntoSequence")
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
-            definitionProperties.filter { candidateDefinitionProperty ->
-                candidateDefinitionProperty.type.isSubtypeOf(criteria.getType())
-                        && (!criteria.mustReturnSameObjectForAllRetrievals
-                        || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
-            }.map { (definitionProperty) ->
-                @Suppress("UNCHECKED_CAST")
-                definitionProperty.getter.call(owner) as Definition<TObject>
-            }
+        definitionProperties.filter { candidateDefinitionProperty ->
+            candidateDefinitionProperty.type.isSubtypeOf(criteria.getType())
+                    && (!criteria.mustReturnSameObjectForAllRetrievals
+                    || candidateDefinitionProperty.returnsSameObjectForAllRetrievals)
+        }.map { (definitionProperty) ->
+            @Suppress("UNCHECKED_CAST")
+            definitionProperty.getter.call(owner) as Definition<TObject>
+        }
 }

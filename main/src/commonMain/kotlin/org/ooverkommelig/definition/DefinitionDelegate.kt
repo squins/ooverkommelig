@@ -8,7 +8,7 @@ abstract class DefinitionDelegate<out TDefinition> : ReadOnlyProperty<SubGraphDe
     private var definition: TDefinition? = null
 
     override operator fun getValue(thisRef: SubGraphDefinition, property: KProperty<*>) =
-            getValue(thisRef, property.name)
+        getValue(thisRef, property.name)
 
     internal fun getValue(owner: SubGraphDefinition, propertyName: String): TDefinition {
         val currentDefinition = definition ?: createDefinition(owner, "${owner.name}#$propertyName")

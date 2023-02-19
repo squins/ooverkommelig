@@ -24,13 +24,19 @@ internal class UninitializedObjectGraphState : FollowingObjectGraphState {
         }
     }
 
-    override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) = throw UnsupportedOperationException("Cannot create objects while uninitialized.")
+    override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) =
+        throw UnsupportedOperationException("Cannot create objects while uninitialized.")
 
-    override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) = throw UnsupportedOperationException("Cannot create objects while uninitialized.")
+    override fun <TObject> creationEnded(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        createdObject: TObject?
+    ) = throw UnsupportedOperationException("Cannot create objects while uninitialized.")
 
     override fun creationFailed() = throw UnsupportedOperationException("Cannot create objects while uninitialized.")
 
-    override fun logCleanUpError(sourceObject: Any, operation: String, exception: Exception) = throw UnsupportedOperationException("Cannot clean up sub graphs and objects while uninitialized.")
+    override fun logCleanUpError(sourceObject: Any, operation: String, exception: Exception) =
+        throw UnsupportedOperationException("Cannot clean up sub graphs and objects while uninitialized.")
 
     override fun dispose() {
         graph.transition(DisposedObjectGraphState())

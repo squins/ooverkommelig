@@ -4,11 +4,12 @@ import org.ooverkommelig.ParameterizedOnce
 import org.ooverkommelig.SubGraphDefinition
 
 internal class ParameterizedOnceDefinition<TObject, in TParameter>(
-        override val owner: SubGraphDefinition,
-        override val name: String,
-        override val delegate: ParameterizedOnce<TObject, TParameter>) :
-        ParameterizedDefinition<TObject, TParameter>(),
-        ObjectCreatingDefinition<TObject> {
+    override val owner: SubGraphDefinition,
+    override val name: String,
+    override val delegate: ParameterizedOnce<TObject, TParameter>
+) :
+    ParameterizedDefinition<TObject, TParameter>(),
+    ObjectCreatingDefinition<TObject> {
     private val valueCreators = mutableMapOf<TParameter, OnceCreator<TObject>>()
 
     override val type = "once"

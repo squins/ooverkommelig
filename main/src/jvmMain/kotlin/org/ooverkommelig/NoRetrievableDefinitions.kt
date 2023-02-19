@@ -9,5 +9,5 @@ object NoRetrievableDefinitions : RetrievableDefinitions {
     }
 
     override fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>) =
-            emptyList<Definition<TObject>>()
+        emptyList<Definition<TObject>>()
 }

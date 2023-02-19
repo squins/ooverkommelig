@@ -7,9 +7,10 @@ import org.ooverkommelig.definition.ObjectCreatingDefinition
 import org.ooverkommelig.definition.ObjectlessLifecycle
 
 internal class ObjectGraphImpl(
-        internal val configuration: ObjectGraphConfiguration,
-        internal val objectlessLifecycles: List<ObjectlessLifecycle>,
-        internal val objectsToCreateEagerly: List<Definition<*>>) : ObjectGraph, ObjectGraphProtocol {
+    internal val configuration: ObjectGraphConfiguration,
+    internal val objectlessLifecycles: List<ObjectlessLifecycle>,
+    internal val objectsToCreateEagerly: List<Definition<*>>
+) : ObjectGraph, ObjectGraphProtocol {
     internal val objectlessLifecyclesOfWhichSetUpHasRun = mutableListOf<ObjectlessLifecycle>()
 
     internal val objectsToBeInitialized = mutableListOf<ArgumentBoundDefinitionAndObject<*>>()
@@ -27,7 +28,11 @@ internal class ObjectGraphImpl(
         newState.enter(this)
     }
 
-    internal fun <TObject> handleCreation(definition: ObjectCreatingDefinition<TObject>, argument: Any?, creator: () -> TObject): TObject {
+    internal fun <TObject> handleCreation(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        creator: () -> TObject
+    ): TObject {
         val result: TObject?
 
         state.creationStarted(definition, argument)
@@ -45,13 +50,21 @@ internal class ObjectGraphImpl(
         return result
     }
 
-    private fun <TObject> ranPostProcessorsIfObjectCreated(optionalCreatedObject: TObject?, definition: ObjectCreatingDefinition<TObject>, argument: Any?) {
+    private fun <TObject> ranPostProcessorsIfObjectCreated(
+        optionalCreatedObject: TObject?,
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?
+    ) {
         if (optionalCreatedObject != null) {
             ranPostProcessors(optionalCreatedObject as Any, definition, argument)
         }
     }
 
-    private fun <TObject> ranPostProcessors(createdObject: Any, definition: ObjectCreatingDefinition<TObject>, argument: Any?) {
+    private fun <TObject> ranPostProcessors(
+        createdObject: Any,
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?
+    ) {
         val name = DefinitionAndArgument(definition, argument).fullyQualifiedName()
         configuration.objectPostProcessors.forEach { processor -> processor.process(name, createdObject) }
     }

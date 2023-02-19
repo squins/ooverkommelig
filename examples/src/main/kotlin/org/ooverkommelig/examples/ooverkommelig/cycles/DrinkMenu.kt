@@ -10,13 +10,13 @@ class DrinkMenu : Step {
     }
 
     override fun handleInput(input: String) =
-            when (input) {
-                "1" -> drink("water")
-                "2" -> drink("coffee")
-                "3" -> drink("tea")
-                "q", "Q" -> quitStep
-                else -> this
-            }
+        when (input) {
+            "1" -> drink("water")
+            "2" -> drink("coffee")
+            "3" -> drink("tea")
+            "q", "Q" -> quitStep
+            else -> this
+        }
 
     private fun drink(what: String): Step {
         println("Drank $what")

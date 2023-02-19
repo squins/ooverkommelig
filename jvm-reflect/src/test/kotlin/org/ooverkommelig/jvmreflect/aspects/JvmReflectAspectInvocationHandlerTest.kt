@@ -1,12 +1,12 @@
 package org.ooverkommelig.jvmreflect.aspects
 
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import org.ooverkommelig.*
 import java.io.Closeable
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Proxy
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
@@ -14,12 +14,12 @@ import kotlin.test.assertNotNull
 class JvmReflectAspectInvocationHandlerTest {
     private lateinit var graph: JvmReflectAspectInvocationHandlerTestOgd.Graph
 
-    @Before
+    @BeforeTest
     fun createGraph() {
         graph = JvmReflectAspectInvocationHandlerTestOgd().Graph()
     }
 
-    @After
+    @AfterTest
     fun closeGraph() {
         graph.close()
     }
@@ -79,7 +79,11 @@ class JvmReflectAspectInvocationHandlerTest {
 
     @Suppress("UNCHECKED_CAST")
     private fun <TInterface> newNoOperationProxyInstance(interfaceClass: Class<TInterface>): TInterface =
-            Proxy.newProxyInstance(interfaceClass.classLoader, arrayOf(interfaceClass), NO_OPERATION_INVOCATION_HANDLER) as TInterface
+        Proxy.newProxyInstance(
+            interfaceClass.classLoader,
+            arrayOf(interfaceClass),
+            NO_OPERATION_INVOCATION_HANDLER
+        ) as TInterface
 
     companion object {
         private val CLOSEABLE_CLASS = Closeable::class.java
@@ -90,22 +94,25 @@ class JvmReflectAspectInvocationHandlerTest {
     }
 }
 
-private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration: ObjectGraphConfiguration) : SubGraphDefinition(objectGraphConfiguration) {
+private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration: ObjectGraphConfiguration) :
+    SubGraphDefinition(objectGraphConfiguration) {
     val runnable by Once { Runnable { } }
 
     val anotherRunnable by Once { Runnable { } }
 
-    val aspect by AspectOnce<Any> { _, definition -> req(definition) }
+    val aspect by AspectOnce { _, definition -> req(definition) }
 
     val aspectWrappedRunnable by Once { req(aspect.weave(runnable)) }
 
     val aspectWrappedAnotherRunnable by Once { req(aspect.weave(anotherRunnable)) }
 }
 
-private val objectGraphConfiguration = ObjectGraphConfiguration(aspectInvocationHandlerFactory = JvmReflectAspectInvocationHandlerFactory)
+private val objectGraphConfiguration =
+    ObjectGraphConfiguration(aspectInvocationHandlerFactory = JvmReflectAspectInvocationHandlerFactory)
 
 private class JvmReflectAspectInvocationHandlerTestOgd : ObjectGraphDefinition(objectGraphConfiguration) {
-    val jvmReflectAspectInvocationHandlerTestSgd = add(JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration))
+    val jvmReflectAspectInvocationHandlerTestSgd =
+        add(JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration))
 
     inner class Graph : DefinitionObjectGraph() {
         fun runnable() = req(jvmReflectAspectInvocationHandlerTestSgd.runnable)

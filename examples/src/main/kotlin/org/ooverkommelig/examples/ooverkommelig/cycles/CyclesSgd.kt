@@ -8,14 +8,14 @@ import org.ooverkommelig.req
 @Suppress("MemberVisibilityCanBePrivate")
 class CyclesSgd : SubGraphDefinition() {
     val mainMenu: D<MainMenu> by Once { MainMenu() }
-            .wire {
-                it.eatStep = req(eatMenu)
-                it.drinkStep = req(drinkMenu)
-            }
+        .wire {
+            it.eatStep = req(eatMenu)
+            it.drinkStep = req(drinkMenu)
+        }
 
     val eatMenu by Once { EatMenu() }
-            .wire { it.quitStep = req(mainMenu) }
+        .wire { it.quitStep = req(mainMenu) }
 
     val drinkMenu by Once { DrinkMenu() }
-            .wire { it.quitStep = req(mainMenu) }
+        .wire { it.quitStep = req(mainMenu) }
 }

@@ -1,6 +1,6 @@
 package org.ooverkommelig.examples.ooverkommelig.homepage
 
-import org.ooverkommelig.*
+import org.ooverkommelig.ConstantDefinition
 import java.io.File
 
 fun main() {

@@ -8,5 +8,5 @@ actual abstract class SubGraphDefinitionOwner : SubGraphDefinitionOwnerCommon() 
         get() = this::class.java.name
 
     open fun <TObject> transitiveRetrievableDefinitions(criteria: DefinitionCriteria<TObject>): Collection<Definition<TObject>> =
-            subGraphs.flatMap { subGraph -> subGraph.transitiveRetrievableDefinitions(criteria) }
+        subGraphs.flatMap { subGraph -> subGraph.transitiveRetrievableDefinitions(criteria) }
 }

@@ -10,13 +10,13 @@ class EatMenu : Step {
     }
 
     override fun handleInput(input: String) =
-            when (input) {
-                "1" -> eat("bread")
-                "2" -> eat("soup")
-                "3" -> eat("dessert")
-                "q", "Q" -> quitStep
-                else -> this
-            }
+        when (input) {
+            "1" -> eat("bread")
+            "2" -> eat("soup")
+            "3" -> eat("dessert")
+            "q", "Q" -> quitStep
+            else -> this
+        }
 
     private fun eat(what: String): Step {
         println("Ate $what")

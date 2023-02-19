@@ -6,9 +6,10 @@ import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import kotlin.reflect.jvm.javaMethod
 
-internal class JvmReflectAspectInvocationHandler<TInterface: Any>(
-        private val wrapped: TInterface,
-        private val aspectFunctions: AspectFunctions<TInterface>) : InvocationHandler {
+internal class JvmReflectAspectInvocationHandler<TInterface : Any>(
+    private val wrapped: TInterface,
+    private val aspectFunctions: AspectFunctions<TInterface>
+) : InvocationHandler {
     override fun invoke(proxy: Any, method: Method, optionalArguments: Array<out Any?>?): Any? {
         val actualArguments = optionalArguments ?: NO_ARGUMENTS
 
@@ -19,10 +20,11 @@ internal class JvmReflectAspectInvocationHandler<TInterface: Any>(
         }
     }
 
-    private fun isNotNullAndAreProxyHandlerAndWrappedEqual(invokedProxy: Any, other: Any?) = other != null && areProxyHandlerAndWrappedEqual(invokedProxy, other)
+    private fun isNotNullAndAreProxyHandlerAndWrappedEqual(invokedProxy: Any, other: Any?) =
+        other != null && areProxyHandlerAndWrappedEqual(invokedProxy, other)
 
     private fun areProxyHandlerAndWrappedEqual(invokedProxy: Any, other: Any) =
-            invokedProxy.javaClass == other.javaClass && areHandlerAndWrappedEqual(other)
+        invokedProxy.javaClass == other.javaClass && areHandlerAndWrappedEqual(other)
 
     private fun areHandlerAndWrappedEqual(other: Any): Boolean {
         val handler = Proxy.getInvocationHandler(other)
@@ -52,7 +54,7 @@ internal class JvmReflectAspectInvocationHandler<TInterface: Any>(
     }
 
     private fun tryToInvoke(wrapped: Any, method: Method, arguments: Array<out Any?>) =
-            method.invoke(wrapped, *arguments)
+        method.invoke(wrapped, *arguments)
 
     companion object {
         private val NO_ARGUMENTS = emptyArray<Any>()

@@ -24,9 +24,11 @@ internal class DisposingObjectGraphState : FollowingObjectGraphState {
         }
     }
 
-    private fun cleanUp(operation: String,
-                        cleanUpFunction: (ArgumentBoundDefinitionAndObject<*>) -> Unit,
-                        objectsForWhichCorrespondingSetUpStepWasNotRun: Collection<ArgumentBoundDefinitionAndObject<*>>) {
+    private fun cleanUp(
+        operation: String,
+        cleanUpFunction: (ArgumentBoundDefinitionAndObject<*>) -> Unit,
+        objectsForWhichCorrespondingSetUpStepWasNotRun: Collection<ArgumentBoundDefinitionAndObject<*>>
+    ) {
         val objectsToCleanUp = graph.objectsInCreationOrder
         objectsToCleanUp.removeAll(objectsForWhichCorrespondingSetUpStepWasNotRun)
         objectsToCleanUp.reversed().forEach { objectToCleanUp: ArgumentBoundDefinitionAndObject<*> ->
@@ -38,9 +40,14 @@ internal class DisposingObjectGraphState : FollowingObjectGraphState {
         }
     }
 
-    override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) = throw UnsupportedOperationException("Cannot create objects while disposing.")
+    override fun creationStarted(definition: ObjectCreatingDefinition<*>, argument: Any?) =
+        throw UnsupportedOperationException("Cannot create objects while disposing.")
 
-    override fun <TObject> creationEnded(definition: ObjectCreatingDefinition<TObject>, argument: Any?, createdObject: TObject?) = throw UnsupportedOperationException("Cannot create objects while disposing.")
+    override fun <TObject> creationEnded(
+        definition: ObjectCreatingDefinition<TObject>,
+        argument: Any?,
+        createdObject: TObject?
+    ) = throw UnsupportedOperationException("Cannot create objects while disposing.")
 
     override fun creationFailed() = throw UnsupportedOperationException("Cannot create objects while disposing.")
 
