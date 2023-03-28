@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.8.10" apply false
     kotlin("multiplatform") version "1.8.10" apply false
     id("io.heapy.gradle.properties").version("1.1.2")
-    id("org.jetbrains.dokka") version "1.7.20" apply false
+    id("org.jetbrains.dokka") version "1.8.10" apply false
 }
 
 allprojects {
@@ -11,6 +11,6 @@ allprojects {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.0.1"
+    gradleVersion = "8.0.2"
     distributionType = Wrapper.DistributionType.ALL
 }
