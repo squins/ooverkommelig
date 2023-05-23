@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
-
 plugins {
     `java-library`
     kotlin("multiplatform")
@@ -31,7 +29,6 @@ java {
         languageVersion.set(JavaLanguageVersion.of(8))
 
         withJavadocJar()
-        withSourcesJar()
     }
 }
 
@@ -130,16 +127,16 @@ publishing {
         }
 
         named<MavenPublication>("js") {
-            artifactId = "${archivesName.get()}-$name"
+            artifactId = "${base.archivesName.get()}-$name"
         }
 
         named<MavenPublication>("jvm") {
-            artifactId = "${archivesName.get()}-$name"
+            artifactId = "${base.archivesName.get()}-$name"
             artifact(tasks.named("javadocJar"))
         }
 
         named<MavenPublication>("kotlinMultiplatform") {
-            artifactId = archivesName.get()
+            artifactId = base.archivesName.get()
         }
     }
 }
