@@ -100,7 +100,7 @@ private class JvmReflectAspectInvocationHandlerTestSgd(objectGraphConfiguration:
 
     val anotherRunnable by Once { Runnable { } }
 
-    val aspect by AspectOnce { _, definition -> req(definition) }
+    val aspect by AspectOnce<Runnable> { _, definition -> req(definition) }
 
     val aspectWrappedRunnable by Once { req(aspect.weave(runnable)) }
 

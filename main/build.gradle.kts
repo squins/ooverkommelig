@@ -1,5 +1,9 @@
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
 plugins {
     `java-library`
+    `jvm-test-suite`
     kotlin("multiplatform")
     `maven-publish`
     id("org.jetbrains.dokka")
@@ -41,12 +45,12 @@ kotlin {
         binaries.executable()
 
         browser {
-            commonWebpackConfig {
+            commonWebpackConfig(Action<KotlinWebpackConfig> {
                 cssSupport {
                     enabled.set(true)
                 }
-            }
-            testTask {
+            })
+            testTask(Action<KotlinJsTest> {
                 useKarma {
                     // specify which browsers to use in "local.properties". See "local.template.properties".
                     if (useChromeHeadlessForKarmaTests.toBoolean()) {
@@ -68,15 +72,12 @@ kotlin {
                         useSafari()
                     }
                 }
-            }
+            })
         }
     }
 
     jvm {
         withJava()
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
     }
 
     sourceSets {
@@ -90,6 +91,14 @@ kotlin {
         val jsTest by getting
         val jvmMain by getting
         val jvmTest by getting
+    }
+}
+
+testing {
+    suites {
+        val test by getting(JvmTestSuite::class) {
+            useJUnit()
+        }
     }
 }
 

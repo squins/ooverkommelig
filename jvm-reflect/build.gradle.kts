@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    `jvm-test-suite`
     kotlin("jvm")
     `maven-publish`
     id("org.jetbrains.dokka")
@@ -34,12 +35,16 @@ java {
     }
 }
 
-tasks.named("javadocJar", Jar::class) {
-    from(tasks.named("dokkaHtml"))
+testing {
+    suites {
+        val test by getting(JvmTestSuite::class) {
+            useJUnit()
+        }
+    }
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.named("javadocJar", Jar::class) {
+    from(tasks.named("dokkaHtml"))
 }
 
 publishing {
