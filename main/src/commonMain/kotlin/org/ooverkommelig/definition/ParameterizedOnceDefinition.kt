@@ -1,12 +1,14 @@
 package org.ooverkommelig.definition
 
+import org.ooverkommelig.DefinitionCreationContext
 import org.ooverkommelig.ParameterizedOnce
 import org.ooverkommelig.SubGraphDefinition
 
 internal class ParameterizedOnceDefinition<TObject, in TParameter>(
     override val owner: SubGraphDefinition,
     override val name: String,
-    override val delegate: ParameterizedOnce<TObject, TParameter>
+    override val delegate: ParameterizedOnce<TObject, TParameter>,
+    private val context: DefinitionCreationContext
 ) :
     ParameterizedDefinition<TObject, TParameter>(),
     ObjectCreatingDefinition<TObject> {
@@ -19,7 +21,7 @@ internal class ParameterizedOnceDefinition<TObject, in TParameter>(
     }
 
     private fun createCreator(argument: TParameter): OnceCreator<TObject> {
-        val result = OnceCreator(this, argument) { delegate.create(argument) }
+        val result = OnceCreator(this, argument) { delegate.create(context, argument) }
         valueCreators[argument] = result
         return result
     }

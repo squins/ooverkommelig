@@ -13,7 +13,7 @@ class Constant<out TObject>(private val value: TObject) : DefinitionDelegate<Def
         return this
     }
 
-    override fun createDefinition(owner: SubGraphDefinition, name: String): Definition<TObject> =
+    override fun createDefinition(owner: SubGraphDefinition, name: String, context: DefinitionCreationContext): Definition<TObject> =
         ConstantDefinition(value)
 
     operator fun getValue(any: Any, property: KProperty<*>): Definition<TObject> {

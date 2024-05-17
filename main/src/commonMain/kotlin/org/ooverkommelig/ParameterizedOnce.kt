@@ -4,10 +4,11 @@ import org.ooverkommelig.definition.ObjectCreatingDefinitionSelfProvidingDelegat
 import org.ooverkommelig.definition.ParameterizedDefinition
 import org.ooverkommelig.definition.ParameterizedOnceDefinition
 
-class ParameterizedOnce<TObject, in TParameter>(internal val create: (TParameter) -> TObject) :
+class ParameterizedOnce<TObject, in TParameter>(internal val create: DefinitionCreationContext.(TParameter) -> TObject) :
     ObjectCreatingDefinitionSelfProvidingDelegate<ParameterizedDefinition<TObject, TParameter>, TObject>() {
     override fun createDefinition(
         owner: SubGraphDefinition,
-        name: String
-    ): ParameterizedDefinition<TObject, TParameter> = ParameterizedOnceDefinition(owner, name, this)
+        name: String,
+        context: DefinitionCreationContext
+    ): ParameterizedDefinition<TObject, TParameter> = ParameterizedOnceDefinition(owner, name, this, context)
 }

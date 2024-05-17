@@ -1,6 +1,7 @@
 package org.ooverkommelig.definition
 
 import org.ooverkommelig.Definition
+import org.ooverkommelig.DefinitionCreationContext
 import org.ooverkommelig.SubGraphDefinition
 import kotlin.reflect.KProperty
 
@@ -9,7 +10,7 @@ import kotlin.reflect.KProperty
 internal class OnceDelegate<TObject>(
     private val owner: SubGraphDefinition,
     private val propertyName: String,
-    internal val create: () -> TObject
+    internal val create: DefinitionCreationContext.() -> TObject
 ) :
     ObjectCreatingDefinitionDelegate<Definition<TObject>, TObject>(),
     DelegateOfObjectToCreateEagerly<TObject> {
@@ -17,8 +18,8 @@ internal class OnceDelegate<TObject>(
         owner.addDefinitionProperty(property, true)
     }
 
-    override fun createDefinition(owner: SubGraphDefinition, name: String): Definition<TObject> =
-        OnceDefinition(owner, name, this)
+    override fun createDefinition(owner: SubGraphDefinition, name: String, context: DefinitionCreationContext): Definition<TObject> =
+        OnceDefinition(owner, name, this, context)
 
     override fun getValue() = getValue(owner, propertyName)
 }

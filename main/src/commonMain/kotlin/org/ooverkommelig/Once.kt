@@ -4,7 +4,7 @@ import org.ooverkommelig.definition.OnceDelegate
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class Once<TObject>(internal val create: () -> TObject) {
+class Once<TObject>(internal val create: DefinitionCreationContext.() -> TObject) {
     private var mustBeCreatedEagerly = false
     private var wiringFunction: (TObject) -> Unit = {}
     private var initializationFunction: (TObject) -> Unit = {}
