@@ -92,6 +92,10 @@ kotlin {
         val jvmMain by getting
         val jvmTest by getting
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }
 
 testing {
